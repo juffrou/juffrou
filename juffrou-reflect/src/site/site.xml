@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Juffrou Reflect">
+	<body>
+		<links>
+			<item name="Google Code" href="https://juffrou.googlecode.com" />
+			<item name="Releases" href="https://oss.sonatype.org/content/groups/public/com/googlecode/juffrou" />
+		</links>
+
+		<menu name="Juffrou Reflect">
+			<item name="Introduction" href="index.html" />
+		</menu>
+		<!-- 
+		<menu name="My Inherited Menu" inherit="top">
+		 -->
+		<menu name="Project Documentation">
+			<item name="Javadocs" href="apidocs/index.html" />
+		</menu>
+
+	</body>
+</project>

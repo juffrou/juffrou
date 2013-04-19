@@ -1,0 +1,20 @@
+Source Code
+
+ Juffrou project is hosted on google code at juffrou.googlecode.com
+ The source code is kept under a SVN repository and can be checked out with the command
+ 
+ <<<svn checkout http://juffrou.googlecode.com/svn/trunk/ juffrou-read-only>>>
+
+Maven Artifacts
+
+ Juffrou artifacts released to the {{{http://nexus.sonatype.org/oss-repository-hosting.html}Sonatype OSS Repository}}
+ 
+ Releases and Snapshots can be downloaded from {{https://oss.sonatype.org/content/groups/public/com/googlecode/juffrou}}
+ 
+ If you have a maven project, you can add the dependency to your project:
+ 
+ <<<\<groupId\>com.googlecode.juffrou\</groupId\>>>>
+ 
+ <<<\<artifactId\>juffrou-reflect\<artifactId\>>>>
+ 
+ <<<\<version\>${project.version}\<version\>>>>

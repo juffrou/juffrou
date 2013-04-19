@@ -1,0 +1,299 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>7</version>
+	</parent>
+	<groupId>com.googlecode.juffrou</groupId>
+	<artifactId>juffrou</artifactId>
+	<version>1.0.3-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<name>Juffrou</name>
+	<description>Juffrou stands for Java Utilities Framework For the Rest Of Us and is a collection of extremely useful classes or mini frameworks to help the java developer.</description>
+	<url>http://juffrou.sourceforge.net</url>
+	
+	<inceptionYear>2011</inceptionYear>
+
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+			<comments>A business-friendly OSS license</comments>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>Carlos Martins</name>
+			<email>carlos.mfa.martins@gmail.com</email>
+			<timezone>GMT</timezone>
+		</developer>
+	</developers>
+
+	<modules>
+		<module>juffrou-reflect</module>
+	</modules>
+
+	<!-- 
+	<scm>
+		<connection>scm:svn:https://juffrou.googlecode.com/svn/trunk</connection>
+		<developerConnection>scm:svn:https://juffrou.googlecode.com/svn/trunk</developerConnection>
+		<url>scm:svn:https://juffrou.googlecode.com/svn/trunk</url>
+	</scm>
+	 -->
+	<scm>
+		<connection>scm:git:ssh://cemartins@git.code.sf.net/p/juffrou/code</connection>
+		<developerConnection>scm:git:ssh://cemartins@git.code.sf.net/p/juffrou/code</developerConnection>
+		<url>scm:git:ssh://cemartins@git.code.sf.net/p/juffrou/code</url>
+	</scm>
+
+	<issueManagement>
+		<system>Google Code</system>
+		<url>https://code.google.com/p/juffrou/issues/list</url>
+	</issueManagement>
+
+	<distributionManagement>
+		<repository>
+			<id>sonatype-nexus-staging</id>
+			<name>Nexus Staging Repository</name>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+		</repository>
+		<snapshotRepository>
+			<id>sonatype-nexus-snapshots</id>
+			<name>Nexus Snaphots Repository</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<site>
+			<id>juffrou.sf.net</id>
+			<name>Juffrou</name>
+			<url>scp://shell.sourceforge.net/home/project-web/juffrou/htdocs</url>
+		</site>
+	</distributionManagement>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.10</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-site-plugin</artifactId>
+					<version>3.2</version>
+			          <dependencies>
+			            <dependency><!-- add support for ssh/scp -->
+			              <groupId>org.apache.maven.wagon</groupId>
+			              <artifactId>wagon-ssh</artifactId>
+			              <version>1.0</version>
+			            </dependency>
+			          </dependencies>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>2.9</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>2.2.1</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-project-info-reports-plugin</artifactId>
+					<version>2.6</version>
+				</plugin>
+				<plugin>
+					<!-- Configuration for the realease plugin -->
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-release-plugin</artifactId>
+					<version>2.4.1</version>
+					<configuration>
+						<autoVersionSubmodules>true</autoVersionSubmodules>
+						<goals>deploy</goals> <!-- do not deploy the site (because of google hosting limitation) -->
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<version>2.7</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.5.1</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<!-- GENERATE THE SITE -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-descriptor</id>
+						<phase>pre-site</phase>
+						<goals>
+							<goal>attach-descriptor</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<locales>en</locales>
+					<reportPlugins>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-javadoc-plugin</artifactId>
+							<configuration>
+								<javadocExecutable>${javadoc-executable-path}</javadocExecutable>
+								<charset>${project.build.sourceEncoding}</charset>
+								<encoding>${project.build.sourceEncoding}</encoding>
+								<docencoding>${project.build.sourceEncoding}</docencoding>
+							</configuration>
+							<reports>
+								<report>javadoc</report>
+							</reports>
+						</plugin>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-project-info-reports-plugin</artifactId>
+							<configuration>
+								<dependencyDetailsEnabled>false</dependencyDetailsEnabled>
+								<dependencyLocationsEnabled>false</dependencyLocationsEnabled>
+							</configuration>
+							<reports>
+								<!-- <report>cim</report> generate the Project Continuous Integration 
+									System report. -->
+								<!-- <report>dependencies</report> generate the Project Dependencies 
+									report. -->
+								<!-- <report>dependency-convergence</report> generate the Project 
+									Dependency Convergence report for reactor builds. -->
+								<!-- <report>dependency-info</report> to generate code snippets to 
+									be added to build tools. -->
+								<!-- <report>dependency-management</report> generate the Project 
+									DependencyManagement report. -->
+								<report>distribution-management</report> <!-- generate the Project Distribution Management report. -->
+								<report>index</report> <!-- generate the Project index page. -->
+								<report>issue-tracking</report> <!-- generate the Project Issue Tracking report. -->
+								<report>license</report> <!-- generate the Project License report. -->
+								<!-- <report>mailing-list</report> generate the Project Mailing List 
+									report. -->
+								<!-- <report>modules</report> generate the Project Modules report. -->
+								<!-- <report>plugin-management</report> generate the Project PluginManagement 
+									report. -->
+								<!-- <report>plugins</report> generate the Project Plugins report. -->
+								<report>project-team</report> <!-- generate the Project Team report. -->
+								<report>scm</report> <!-- generate the Project Source Code Management report. -->
+								<report>summary</report> <!-- generate the Project information reports summary. -->
+							</reports>
+						</plugin>
+					</reportPlugins>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.maven.wagon</groupId>
+						<artifactId>wagon-scm</artifactId>
+						<version>2.2</version>
+					</dependency>
+					<dependency>
+						<groupId>org.apache.maven.wagon</groupId>
+						<artifactId>wagon-ssh-external</artifactId>
+						<version>2.2</version>
+					</dependency>
+					<dependency>
+						<groupId>org.apache.maven.scm</groupId>
+						<artifactId>maven-scm-manager-plexus</artifactId>
+						<version>1.8</version>
+					</dependency>
+					<dependency>
+						<groupId>org.apache.maven.scm</groupId>
+						<artifactId>maven-scm-api</artifactId>
+						<version>1.8</version>
+					</dependency>
+					<dependency>
+						<groupId>org.apache.maven.scm</groupId>
+						<artifactId>maven-scm-provider-svn-commons</artifactId>
+						<version>1.8</version>
+					</dependency>
+					<dependency>
+						<groupId>org.apache.maven.scm</groupId>
+						<artifactId>maven-scm-provider-svnexe</artifactId>
+						<version>1.8</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>MacOSX-Profile</id>
+			<activation>
+				<os>
+					<family>mac</family>
+				</os>
+			</activation>
+			<properties>
+				<javadoc-executable-path>/usr/bin/javadoc</javadoc-executable-path>
+			</properties>
+		</profile>
+		<profile>
+			<id>Windows-Profile</id>
+			<activation>
+				<os>
+					<family>Windows</family>
+				</os>
+			</activation>
+			<properties>
+				<javadoc-executable-path>${env.JAVA_HOME}/bin/javadoc</javadoc-executable-path>
+			</properties>
+		</profile>
+		<profile>
+			<id>release-sign-artifacts</id>
+			<activation>
+				<property>
+					<name>performRelease</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.4</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+</project>
