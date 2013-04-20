@@ -2,7 +2,7 @@
 <project name="Juffrou Reflect">
 	<body>
 		<links>
-			<item name="Google Code" href="https://juffrou.googlecode.com" />
+			<item name="Sourceforge" href="http://sourceforge.net/p/juffrou/wiki/Home" />
 			<item name="Releases" href="https://oss.sonatype.org/content/groups/public/com/googlecode/juffrou" />
 		</links>
 

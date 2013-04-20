@@ -8,7 +8,7 @@
 	<bannerLeft>
 		<name>Juffrou</name>
 		<src>images/juffrou_logo.png</src>
-		<href>http://juffrou.googlecode.com/</href>
+		<href>http://juffrou.sourceforge.net/</href>
 	</bannerLeft>
 	<bannerRight>
 		<src>images/juffrou_text.png</src>
@@ -22,7 +22,7 @@
 	</custom>
 	<body>
 		<links>
-			<item name="Google Code" href="https://juffrou.googlecode.com" />
+			<item name="Sourceforge" href="http://sourceforge.net/p/juffrou/wiki/Home" />
 			<item name="Releases" href="https://oss.sonatype.org/content/groups/public/com/googlecode/juffrou" />
 		</links>
 
@@ -37,6 +37,6 @@
 		<menu ref="modules" />
 
 
-		<footer>Powered by Powered by Google Project Hosting</footer>
+		<footer>Powered by Powered by Sourceforge.net</footer>
 	</body>
 </project>

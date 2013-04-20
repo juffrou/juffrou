@@ -1,4 +1,4 @@
- Juffrou-reflect is focused on reflection, bean introspection, etc. These are the main classes and their key features.
+ Juffrou-reflect is focused on reflection, bean introspection and manipulation through property names. These are the main classes and their key features.
  
  Take a look at the javadocs to view the methods in detail:
 

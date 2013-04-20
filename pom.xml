@@ -11,7 +11,8 @@
 	<packaging>pom</packaging>
 
 	<name>Juffrou</name>
-	<description>Juffrou stands for Java Utilities Framework For the Rest Of Us and is a collection of extremely useful classes or mini frameworks to help the java developer.</description>
+	<description>Juffrou stands for Java Utilities Framework For the Rest Of Us and is a collection of extremely useful classes or mini frameworks to help the java developer.
+Checkout the juffrou-reflect module if you are into performant java bean hendling.</description>
 	<url>http://juffrou.sourceforge.net</url>
 	
 	<inceptionYear>2011</inceptionYear>
@@ -37,13 +38,6 @@
 		<module>juffrou-reflect</module>
 	</modules>
 
-	<!-- 
-	<scm>
-		<connection>scm:svn:https://juffrou.googlecode.com/svn/trunk</connection>
-		<developerConnection>scm:svn:https://juffrou.googlecode.com/svn/trunk</developerConnection>
-		<url>scm:svn:https://juffrou.googlecode.com/svn/trunk</url>
-	</scm>
-	 -->
 	<scm>
 		<connection>scm:git:ssh://cemartins@git.code.sf.net/p/juffrou/code</connection>
 		<developerConnection>scm:git:ssh://cemartins@git.code.sf.net/p/juffrou/code</developerConnection>
@@ -51,8 +45,8 @@
 	</scm>
 
 	<issueManagement>
-		<system>Google Code</system>
-		<url>https://code.google.com/p/juffrou/issues/list</url>
+		<system>sourceforge</system>
+		<url>https://sourceforge.net/p/juffrou/tickets</url>
 	</issueManagement>
 
 	<distributionManagement>
