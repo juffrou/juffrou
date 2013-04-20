@@ -1,4 +1,4 @@
-package com.googlecode.juffrou.reflect;
+package org.juffrou.reflect;
 
 import java.util.Date;
 

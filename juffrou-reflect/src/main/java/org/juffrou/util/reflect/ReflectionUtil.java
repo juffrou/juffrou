@@ -1,4 +1,4 @@
-package com.googlecode.juffrou.util.reflect;
+package org.juffrou.util.reflect;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.GenericArrayType;

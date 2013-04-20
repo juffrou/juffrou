@@ -1,5 +1,5 @@
 
-package com.googlecode.juffrou.util.reflect;
+package org.juffrou.util.reflect;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -9,8 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.googlecode.juffrou.error.ReflectionException;
-import com.googlecode.juffrou.util.reflect.internal.BeanFieldHandler;
+import org.juffrou.error.ReflectionException;
+import org.juffrou.util.reflect.internal.BeanFieldHandler;
+
 
 /**
  * Bean handling through property names.<p>

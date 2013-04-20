@@ -1,6 +1,6 @@
-package com.googlecode.juffrou.util.reflect;
+package org.juffrou.util.reflect;
 
-import com.googlecode.juffrou.error.BeanInstanceCreatorException;
+import org.juffrou.error.BeanInstanceCreatorException;
 
 /**
  * Used by the {@link BeanWrapperContext#newBeanInstance()} to instantiate the wrapped bean when necessary.<br>

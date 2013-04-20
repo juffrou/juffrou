@@ -1,4 +1,4 @@
-package com.googlecode.juffrou.reflect;
+package org.juffrou.reflect;
 
 public class Programmer extends Person {
 	

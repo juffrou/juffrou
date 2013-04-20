@@ -1,4 +1,4 @@
-package com.googlecode.juffrou.util.reflect.internal;
+package org.juffrou.util.reflect.internal;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -7,9 +7,10 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 
-import com.googlecode.juffrou.error.ReflectionException;
-import com.googlecode.juffrou.util.reflect.BeanWrapper;
-import com.googlecode.juffrou.util.reflect.BeanWrapperContext;
+import org.juffrou.error.ReflectionException;
+import org.juffrou.util.reflect.BeanWrapper;
+import org.juffrou.util.reflect.BeanWrapperContext;
+
 
 public class BeanFieldHandler {
 

@@ -1,4 +1,4 @@
-package com.googlecode.juffrou.error;
+package org.juffrou.error;
 
 public class BeanInstanceCreatorException extends Exception {
 

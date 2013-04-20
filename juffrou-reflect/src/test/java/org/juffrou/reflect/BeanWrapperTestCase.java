@@ -1,12 +1,12 @@
-package com.googlecode.juffrou.reflect;
+package org.juffrou.reflect;
 
+import org.juffrou.error.BeanInstanceCreatorException;
+import org.juffrou.util.reflect.BeanInstanceCreator;
+import org.juffrou.util.reflect.BeanWrapper;
+import org.juffrou.util.reflect.BeanWrapperContext;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.googlecode.juffrou.error.BeanInstanceCreatorException;
-import com.googlecode.juffrou.util.reflect.BeanInstanceCreator;
-import com.googlecode.juffrou.util.reflect.BeanWrapper;
-import com.googlecode.juffrou.util.reflect.BeanWrapperContext;
 
 public class BeanWrapperTestCase {
 

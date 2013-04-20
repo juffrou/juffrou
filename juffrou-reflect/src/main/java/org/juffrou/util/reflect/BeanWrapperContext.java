@@ -1,4 +1,4 @@
-package com.googlecode.juffrou.util.reflect;
+package org.juffrou.util.reflect;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -6,9 +6,10 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.googlecode.juffrou.error.BeanInstanceCreatorException;
-import com.googlecode.juffrou.error.ReflectionException;
-import com.googlecode.juffrou.util.reflect.internal.BeanFieldHandler;
+import org.juffrou.error.BeanInstanceCreatorException;
+import org.juffrou.error.ReflectionException;
+import org.juffrou.util.reflect.internal.BeanFieldHandler;
+
 
 /**
  * Holds metadata and preferences for a BeanWrapper.<p>
