@@ -6,6 +6,7 @@ import org.juffrou.util.reflect.BeanWrapper;
 import org.juffrou.util.reflect.BeanWrapperContext;
 import org.junit.Assert;
 import org.junit.Test;
+import org.springframework.beans.BeanWrapperImpl;
 
 
 public class BeanWrapperTestCase {
@@ -37,9 +38,20 @@ public class BeanWrapperTestCase {
 		}
 		stop = System.currentTimeMillis();
 		Long withContext = new Long(stop - start);
+
+		// compare with Springs BeanWrapperImpl
+		start = System.currentTimeMillis();
+		for(int i=0; i < loop; i++) {
+			BeanWrapperImpl bw = new BeanWrapperImpl(Programmer.class);
+		}
+		stop = System.currentTimeMillis();
+		Long spring = new Long(stop - start);
+
+		
 		Assert.assertTrue(withContext.longValue() < noContext.longValue());
 		System.out.println(loop + " instantiations without context: " + noContext);
 		System.out.println(loop + " instantiations with context: " + withContext);
+		System.out.println(loop + " instantiations with spring BeanWrapperImpl: " + spring);
 	}
 	
 	@Test
@@ -59,5 +71,14 @@ public class BeanWrapperTestCase {
 		Programmer programmer = (Programmer) bw.getBean();
 		Assert.assertEquals("John", programmer.getFirstName());
 		Assert.assertEquals("Smith", programmer.getLastName());
+	}
+	
+	
+	@Test
+	public void testNestedWrapper() {
+		BeanWrapperContext context = new BeanWrapperContext(Country.class);
+		BeanWrapper bw = new BeanWrapper(context);
+		bw.setValue("programmer.specialization", null);
+		bw.setValue("president.genericProperty", null);
 	}
 }

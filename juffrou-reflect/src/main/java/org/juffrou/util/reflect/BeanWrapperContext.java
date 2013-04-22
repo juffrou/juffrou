@@ -3,6 +3,8 @@ package org.juffrou.util.reflect;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,7 +16,8 @@ import org.juffrou.util.reflect.internal.BeanFieldHandler;
 /**
  * Holds metadata and preferences for a BeanWrapper.<p>
  * Performs introspection and holds metadata information about a class used by the {@link BeanWrapper}.<br>
- * If you have to create several BeanWrappers for the same java class, use this and save the introspection overhead.
+ * If you have to create several BeanWrappers for the same java class, use this and save the introspection overhead.<br>
+ * This class is thread safe.
  * @author cemartins
  *
  */
@@ -22,7 +25,7 @@ public class BeanWrapperContext {
 
 	// metadata info
 	private final Class clazz;
-	private final Map<Type, Type> typeArgumentsMap;
+	private final Map<TypeVariable<?>, Type> typeArgumentsMap;
 	private final Map<String, BeanFieldHandler> fields;
 	private final Map<String, BeanWrapper> nestesWrappers;
 
@@ -31,9 +34,27 @@ public class BeanWrapperContext {
 	private boolean eagerInstatiation;
 
 
+	@SuppressWarnings("unchecked")
 	public BeanWrapperContext(Class clazz) {
+		this(clazz, null);
+	}
+
+	public BeanWrapperContext(Class clazz, Type...types) {
+		this.typeArgumentsMap = new HashMap<TypeVariable<?>, Type>();
+		if(types != null) {
+			TypeVariable<?>[] typeParameters = clazz.getTypeParameters();
+			for(int i = 0; i < types.length; i++) {
+				this.typeArgumentsMap.put(typeParameters[i], types[i]);
+			}
+		}
 		this.clazz = clazz;
-		this.typeArgumentsMap = ReflectionUtil.getTypeArgumentsMap(Class.class, clazz);
+		this.typeArgumentsMap.putAll(ReflectionUtil.getTypeArgumentsMap(Class.class, clazz));
+		if( ! this.typeArgumentsMap.keySet().containsAll(Arrays.asList(clazz.getTypeParameters()))) {
+			if(types == null)
+				throw new ReflectionException(clazz.getSimpleName() + " is a parameterized type. Please use the BeanWrapperContext(Class clazz, Type...types) constructor.");
+			else
+				throw new ReflectionException(clazz.getSimpleName() + " has more parameterized types than those specified.");
+		}
 		this.fields = new HashMap<String, BeanFieldHandler>();
 		initFieldInfo(this.clazz, this.fields);
 		this.nestesWrappers = new HashMap<String, BeanWrapper>();
@@ -41,7 +62,7 @@ public class BeanWrapperContext {
 		beanInstanceCreator = new DefaultBeanInstanceCreator();
 		eagerInstatiation = false;
 	}
-	
+
 	private void initFieldInfo(Class<?> clazz, Map<String, BeanFieldHandler> fs) {
 		Class<?> superclass = clazz.getSuperclass();
 		if(superclass != Object.class) {
@@ -92,7 +113,7 @@ public class BeanWrapperContext {
 		return fields;
 	}
 
-	public Map<Type, Type> getTypeArgumentsMap() {
+	public Map<TypeVariable<?>, Type> getTypeArgumentsMap() {
 		return typeArgumentsMap;
 	}
 

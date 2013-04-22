@@ -3,6 +3,7 @@ package org.juffrou.util.reflect;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -57,6 +58,7 @@ public class BeanWrapper {
 	 * Construct a bean wrapper around an existing bean instance.<br>
 	 * This constructor will have to create a BeanWrapperContext to get introspection metadata. You can use {@link #BeanWrapper(BeanWrapperContext, Object)} instead.
 	 * @param instance
+	 * @deprecated
 	 */
 	public BeanWrapper(Object instance) {
 		this.instance = instance;
@@ -67,8 +69,9 @@ public class BeanWrapper {
 	 * Construct a bean wrapper around a class. Bean instances will be instances of that class.<br>
 	 * This constructor will have to create a BeanWrapperContext to get introspection metadata. You can use {@link #BeanWrapper(BeanWrapperContext, Object)} instead.
 	 * @param clazz class to instantiate the wrapped bean
+	 * @deprecated
 	 */
-	public BeanWrapper(Class clazz) {
+	public BeanWrapper(Class<?> clazz) {
 		this.context = new BeanWrapperContext(clazz);
 		if(context.isEagerInstatiation())
 			this.instance = context.newBeanInstance();
@@ -86,6 +89,8 @@ public class BeanWrapper {
 	 * @return the wrapped bean
 	 */
 	public Object getBean() {
+		if(instance == null)
+			instance = context.newBeanInstance();
 		return instance;
 	}
 	
@@ -360,14 +365,20 @@ public class BeanWrapper {
 	private BeanWrapper getNestedWrapper(String thisProperty) {
 		BeanWrapper nestedWrapper = context.getNestedWrappers().get(thisProperty);
 		if (nestedWrapper == null) {
+			Type propertyType = getType(thisProperty);
+			BeanWrapperContext bwc;
+			if(propertyType instanceof ParameterizedType)
+				bwc = new BeanWrapperContext((Class<?>)((ParameterizedType) propertyType).getRawType(), ((ParameterizedType) propertyType).getActualTypeArguments());
+			else
+				bwc = new BeanWrapperContext((Class<?>) propertyType);
+			
 			Object value = getValue(thisProperty);
-			if (value != null) {
-				nestedWrapper = new BeanWrapper(value);
-			} else {
-				Class<?> propertyType = (Class<?>) getType(thisProperty);
-				nestedWrapper = new BeanWrapper(propertyType);
-				setValue(thisProperty, nestedWrapper.getBean());
-			}
+			if (value != null)
+				nestedWrapper = new BeanWrapper(bwc, value);
+			else
+				nestedWrapper = new BeanWrapper(bwc);
+			
+			setValue(thisProperty, nestedWrapper.getBean());
 			context.getNestedWrappers().put(thisProperty, nestedWrapper);
 		}
 		return nestedWrapper;

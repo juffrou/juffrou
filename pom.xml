@@ -5,13 +5,13 @@
 		<artifactId>oss-parent</artifactId>
 		<version>7</version>
 	</parent>
-	<groupId>com.googlecode.juffrou</groupId>
+	<groupId>org.juffrou</groupId>
 	<artifactId>juffrou</artifactId>
 	<version>1.0.3-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Juffrou</name>
-	<description>Juffrou stands for Java Utilities Framework For the Rest Of Us and is a collection of extremely useful classes or mini frameworks to help the java developer.
+	<description>Juffrou stands for Java Utilities Framework For the Rest Of Us and is a collection of useful classes or mini frameworks to help the java developer.
 Checkout the juffrou-reflect module if you are into performant java bean hendling.</description>
 	<url>http://juffrou.sourceforge.net</url>
 	
@@ -36,6 +36,7 @@ Checkout the juffrou-reflect module if you are into performant java bean hendlin
 
 	<modules>
 		<module>juffrou-reflect</module>
+		<module>juffrou-xml</module>
 	</modules>
 
 	<scm>
@@ -118,7 +119,7 @@ Checkout the juffrou-reflect module if you are into performant java bean hendlin
 					<version>2.4.1</version>
 					<configuration>
 						<autoVersionSubmodules>true</autoVersionSubmodules>
-						<goals>deploy</goals> <!-- do not deploy the site (because of google hosting limitation) -->
+						<!-- <goals>deploy</goals> do not deploy the site (because of google hosting limitation) -->
 					</configuration>
 				</plugin>
 				<plugin>
