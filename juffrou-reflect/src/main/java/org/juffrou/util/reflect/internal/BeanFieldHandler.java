@@ -27,6 +27,8 @@ public class BeanFieldHandler {
 		Type t = field.getGenericType();
 		if (t instanceof TypeVariable) {
 			t = context.getTypeArgumentsMap().get(t);
+			if(t == null)
+				t = Object.class;
 		}
 		if (t instanceof ParameterizedType) {
 			ParameterizedType pt = (ParameterizedType) t;

@@ -124,8 +124,8 @@ public final class ReflectionUtil {
 	 *            the child class
 	 * @return A map where the keys are TypeVariable (the type variables declared by the generic declaration) and the values are the Type objects representing the actual type argument the corresponds.
 	 */
-	public static <T> Map<Type, Type> getTypeArgumentsMap(Class<T> baseClass, Class<? extends T> childClass) {
-		Map<Type, Type> resolvedTypes = new HashMap<Type, Type>();
+	public static <T> Map<TypeVariable<?>, Type> getTypeArgumentsMap(Class<T> baseClass, Class<? extends T> childClass) {
+		Map<TypeVariable<?>, Type> resolvedTypes = new HashMap<TypeVariable<?>, Type>();
 		Type type = childClass;
 		// start walking up the inheritance hierarchy until we hit baseClass
 		while (type != null && !getClass(type).equals(baseClass)) {

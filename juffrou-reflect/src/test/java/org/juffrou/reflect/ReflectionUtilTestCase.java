@@ -1,8 +1,13 @@
 package org.juffrou.reflect;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
+
 import junit.framework.Assert;
 
-import org.juffrou.util.reflect.ReflectionUtil;
+import org.juffrou.util.reflect.BeanWrapper;
+import org.juffrou.util.reflect.BeanWrapperContext;
 import org.junit.Test;
 
 public class ReflectionUtilTestCase {
@@ -22,7 +27,23 @@ public class ReflectionUtilTestCase {
 		}
 	}
 	
+	@Test
 	public void testGenericClassExtended() {
-//		ReflectionUtil.getTypeArgumentsMap(Class.class, GenericPerson.class);
+		BeanWrapperContext context = new BeanWrapperContext(GenericPerson.class);
+		BeanWrapper bw = new BeanWrapper(context);
+		Type type = bw.getType("genericProperty");
+		Assert.assertTrue(Person.class.equals(type));
 	}
+	
+	
+	@Test
+	public void testGenericClassInstance() {
+		
+		BeanWrapperContext context = new BeanWrapperContext(GenericBean.class, Person.class);
+		GenericBean<Person> genericPerson = new GenericBean<Person>();
+		BeanWrapper bw = new BeanWrapper(context, genericPerson);
+		Type type = bw.getType("genericProperty");
+		Assert.assertTrue(Person.class.equals(type));
+	}
+
 }

@@ -60,4 +60,12 @@ public class BeanWrapperTestCase {
 		Assert.assertEquals("John", programmer.getFirstName());
 		Assert.assertEquals("Smith", programmer.getLastName());
 	}
+	
+	@Test
+	public void testNestedWrapper() {
+		BeanWrapperContext context = new BeanWrapperContext(Country.class);
+		BeanWrapper bw = new BeanWrapper(context);
+		bw.setValue("programmer.specialization", null);
+		bw.setValue("president.genericProperty", null);
+	}
 }
