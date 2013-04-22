@@ -11,7 +11,7 @@
 	<packaging>pom</packaging>
 
 	<name>Juffrou</name>
-	<description>Juffrou stands for Java Utilities Framework For the Rest Of Us and is a collection of extremely useful classes or mini frameworks to help the java developer.
+	<description>Juffrou stands for Java Utilities Framework For the Rest Of Us and is a collection of useful classes or mini frameworks to help the java developer.
 Checkout the juffrou-reflect module if you are into performant java bean hendling.</description>
 	<url>http://juffrou.sourceforge.net</url>
 	
