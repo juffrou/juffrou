@@ -73,7 +73,6 @@ public class BeanWrapperTestCase {
 		Assert.assertEquals("Smith", programmer.getLastName());
 	}
 	
-	
 	@Test
 	public void testNestedWrapper() {
 		BeanWrapperContext context = new BeanWrapperContext(Country.class);
