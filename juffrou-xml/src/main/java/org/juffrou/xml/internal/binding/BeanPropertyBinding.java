@@ -1,4 +1,4 @@
-package org.juffrou.xml.internal;
+package org.juffrou.xml.internal.binding;
 
 public class BeanPropertyBinding {
 
