@@ -1,13 +1,13 @@
 package org.juffrou.xml.converter;
 
-import java.io.IOException;
-import java.io.Writer;
 import java.util.Collection;
 
 import org.juffrou.util.reflect.BeanWrapper;
 import org.juffrou.util.reflect.BeanWrapperContext;
-import org.juffrou.xml.internal.BeanClassBinding;
-import org.juffrou.xml.internal.BeanPropertyBinding;
+import org.juffrou.xml.internal.JuffrouMarshaller;
+import org.juffrou.xml.internal.binding.BeanClassBinding;
+import org.juffrou.xml.internal.binding.BeanPropertyBinding;
+import org.juffrou.xml.internal.io.JuffrouWriter;
 
 public class BeanClassConverter implements Converter {
 
@@ -23,7 +23,7 @@ public class BeanClassConverter implements Converter {
 		return beanWrapperContext;
 	}
 
-	public void toXml(Writer writer, Object instance) throws IOException {
+	public void toXml(JuffrouMarshaller marshaller, JuffrouWriter writer, Object instance) {
 		if(instance == null)
 			return;
 		Collection<BeanPropertyBinding> propertiesToMarshall = beanClassBinding.getBeanPropertiesToMarshall().values();
@@ -31,11 +31,10 @@ public class BeanClassConverter implements Converter {
 		for(BeanPropertyBinding beanPropertyBinding : propertiesToMarshall) {
 			Object value = bw.getValue(beanPropertyBinding.getBeanPropertyName());
 			if(value != null) {
-				writer.write("<" + beanPropertyBinding.getXmlElementName() + ">");
-				writer.write(value.toString());
-				writer.write("</" + beanPropertyBinding.getXmlElementName() + ">");
+				writer.startNode(beanPropertyBinding.getXmlElementName());
+				marshaller.marshallProperty(writer, value);
+				writer.endNode();
 			}
 		}
-
 	}
 }

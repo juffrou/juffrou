@@ -1,4 +1,4 @@
-package org.juffrou.xml.internal;
+package org.juffrou.xml.internal.binding;
 
 import java.util.HashMap;
 import java.util.Map;

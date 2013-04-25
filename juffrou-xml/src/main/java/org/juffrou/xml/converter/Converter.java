@@ -1,9 +1,9 @@
 package org.juffrou.xml.converter;
 
-import java.io.IOException;
-import java.io.Writer;
+import org.juffrou.xml.internal.JuffrouMarshaller;
+import org.juffrou.xml.internal.io.JuffrouWriter;
 
 public interface Converter {
 
-	void toXml(Writer writer, Object instance) throws IOException;
+	void toXml(JuffrouMarshaller marshaller, JuffrouWriter writer, Object instance);
 }
