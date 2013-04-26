@@ -1,13 +1,22 @@
 package org.juffrou.xml.converter;
 
+<<<<<<< HEAD
+=======
+import java.io.IOException;
+>>>>>>> origin/master
 import java.util.Collection;
 
 import org.juffrou.util.reflect.BeanWrapper;
 import org.juffrou.util.reflect.BeanWrapperContext;
+<<<<<<< HEAD
 import org.juffrou.xml.internal.JuffrouMarshaller;
 import org.juffrou.xml.internal.binding.BeanClassBinding;
 import org.juffrou.xml.internal.binding.BeanPropertyBinding;
 import org.juffrou.xml.internal.io.JuffrouReader;
+=======
+import org.juffrou.xml.internal.binding.BeanClassBinding;
+import org.juffrou.xml.internal.binding.BeanPropertyBinding;
+>>>>>>> origin/master
 import org.juffrou.xml.internal.io.JuffrouWriter;
 
 public class BeanClassConverter implements Converter {
@@ -24,7 +33,11 @@ public class BeanClassConverter implements Converter {
 		return beanWrapperContext;
 	}
 
+<<<<<<< HEAD
 	public void toXml(JuffrouMarshaller marshaller, JuffrouWriter writer, Object instance) {
+=======
+	public void toXml(JuffrouWriter writer, Object instance) throws IOException {
+>>>>>>> origin/master
 		if(instance == null)
 			return;
 		Collection<BeanPropertyBinding> propertiesToMarshall = beanClassBinding.getBeanPropertiesToMarshall().values();
@@ -33,7 +46,11 @@ public class BeanClassConverter implements Converter {
 			Object value = bw.getValue(beanPropertyBinding.getBeanPropertyName());
 			if(value != null) {
 				writer.startNode(beanPropertyBinding.getXmlElementName());
+<<<<<<< HEAD
 				marshaller.marshallProperty(writer, value);
+=======
+				writer.write(value.toString());
+>>>>>>> origin/master
 				writer.endNode();
 			}
 		}

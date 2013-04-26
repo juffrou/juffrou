@@ -1,14 +1,20 @@
 package org.juffrou.xml.test;
 
+<<<<<<< HEAD
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
+=======
+>>>>>>> origin/master
 import org.juffrou.util.reflect.BeanWrapper;
 import org.juffrou.util.reflect.BeanWrapperContext;
 import org.juffrou.xml.internal.JuffrouMarshaller;
 import org.juffrou.xml.internal.io.JuffrouWriter;
+<<<<<<< HEAD
 import org.juffrou.xml.internal.io.XmlReader;
+=======
+>>>>>>> origin/master
 import org.juffrou.xml.internal.io.XmlWriter;
 import org.junit.Test;
 

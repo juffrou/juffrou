@@ -17,45 +17,38 @@ public class JuffrouBeanMetadata {
 
 	private Map<Type, Converter> generalConverters = new HashMap<Type, Converter>();
 	private Map<Class<?>, BeanClassBinding> classToBindingMap = new HashMap<Class<?>, BeanClassBinding>();
-	private Map<String, BeanClassBinding> xmlElementNameToBindingMap = new HashMap<String, BeanClassBinding>();
 	
 	public JuffrouBeanMetadata() {
 		setDefaultConverters();
 	}
 	
-	public BeanClassBinding getBeanClassBinding(Object bean) {
-		Class<? extends Object> beanClass = bean.getClass();
-		BeanClassBinding beanClassBinding = classToBindingMap.get(beanClass);
-		if(beanClassBinding == null) {
-			beanClassBinding = new BeanClassBinding(beanClass);
-			
-			// add all the properties
-			BeanWrapperContext beanWrapperContext = beanClassBinding.getBeanWrapperContext();
-			BeanWrapper bw = new BeanWrapper(beanWrapperContext);
-			for(String propertyName : bw.getPropertyNames()) {
-				BeanPropertyBinding beanPropertyBinding = new BeanPropertyBinding();
-				beanPropertyBinding.setBeanPropertyName(propertyName);
-				beanPropertyBinding.setXmlElementName(propertyName);
-				beanClassBinding.putBeanPropertyBinding(beanPropertyBinding);
-			}
-			putBeanClassBinding(beanClassBinding);
-		}
-		return beanClassBinding;
+	public BeanClassBinding getBeanClassBinding(Class<?> beanClass) {
+		return classToBindingMap.get(beanClass);
 	}
-	public void putBeanClassBinding(BeanClassBinding beanClassBinding) {
-		classToBindingMap.put(beanClassBinding.getBeanWrapperContext().getBeanClass(), beanClassBinding);
-		xmlElementNameToBindingMap.put(beanClassBinding.getXmlElementName(), beanClassBinding);
+	
+	public BeanClassBinding addBeanClassBinding(Object bean) {
+		Class<? extends Object> BeanClass = bean.getClass();
+		BeanClassBinding beanClassBinding = new BeanClassBinding(BeanClass);
+		
+		// add all the properties
+		BeanWrapperContext beanWrapperContext = beanClassBinding.getBeanWrapperContext();
+		BeanWrapper bw = new BeanWrapper(beanWrapperContext);
+		for(String propertyName : bw.getPropertyNames()) {
+			BeanPropertyBinding beanPropertyBinding = new BeanPropertyBinding();
+			beanPropertyBinding.setBeanPropertyName(propertyName);
+			beanPropertyBinding.setXmlElementName(propertyName);
+			beanClassBinding.putBeanPropertyBinding(beanPropertyBinding);
+		}
+		
+		classToBindingMap.put(BeanClass, beanClassBinding);
+		return beanClassBinding;
 	}
 	
 	public Converter getConverterForType(Type type) {
 		Converter converter = generalConverters.get(type);
 		return converter;
 	}
-
-	public BeanClassBinding getBeanClassBinding(String xmlElementName) {
-		return xmlElementNameToBindingMap.get(xmlElementName);
-	}
-
+	
 	private void setDefaultConverters() {
 		ToStringConverter toStringConverter = new ToStringConverter();
 		generalConverters.put(Boolean.class, toStringConverter);

@@ -1,9 +1,15 @@
 package org.juffrou.xml.internal;
 
+<<<<<<< HEAD
 import org.juffrou.util.reflect.BeanWrapper;
 import org.juffrou.xml.converter.Converter;
 import org.juffrou.xml.internal.binding.BeanClassBinding;
 import org.juffrou.xml.internal.io.JuffrouReader;
+=======
+import java.io.IOException;
+
+import org.juffrou.xml.internal.binding.BeanClassBinding;
+>>>>>>> origin/master
 import org.juffrou.xml.internal.io.JuffrouWriter;
 
 public class JuffrouMarshaller {
@@ -15,6 +21,7 @@ public class JuffrouMarshaller {
 	}
 
 	public void marshallBean(JuffrouWriter writer, Object bean) {
+<<<<<<< HEAD
 		BeanClassBinding beanClassBinding = xmlBeanMetadata.getBeanClassBinding(bean);
 		writer.startNode(beanClassBinding.getXmlElementName());
 		beanClassBinding.getConverter().toXml(this, writer, bean);
@@ -39,4 +46,18 @@ public class JuffrouMarshaller {
 		return object;
 	}
 
+=======
+		BeanClassBinding beanClassBinding = xmlBeanMetadata.getBeanClassBinding(bean.getClass());
+		if(beanClassBinding == null)
+			beanClassBinding = xmlBeanMetadata.addBeanClassBinding(bean);
+		try {
+			writer.startNode(beanClassBinding.getXmlElementName());
+			beanClassBinding.getConverter().toXml(writer, bean);
+			writer.endNode();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+		
+>>>>>>> origin/master
 }

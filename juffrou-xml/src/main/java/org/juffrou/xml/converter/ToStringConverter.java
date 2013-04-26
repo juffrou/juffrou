@@ -1,13 +1,19 @@
 package org.juffrou.xml.converter;
 
+<<<<<<< HEAD
 import org.juffrou.util.reflect.BeanWrapper;
 import org.juffrou.xml.internal.JuffrouMarshaller;
 import org.juffrou.xml.internal.io.JuffrouReader;
+=======
+import java.io.IOException;
+
+>>>>>>> origin/master
 import org.juffrou.xml.internal.io.JuffrouWriter;
 
 public class ToStringConverter implements Converter {
 
 	@Override
+<<<<<<< HEAD
 	public void toXml(JuffrouMarshaller marshaller, JuffrouWriter writer, Object instance) {
 		writer.write(instance.toString());
 	}
@@ -19,4 +25,10 @@ public class ToStringConverter implements Converter {
 		return null;
 	}
 
+=======
+	public void toXml(JuffrouWriter writer, Object instance) throws IOException {
+		writer.write(instance.toString());
+	}
+
+>>>>>>> origin/master
 }
