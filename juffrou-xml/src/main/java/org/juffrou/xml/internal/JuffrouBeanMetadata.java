@@ -17,6 +17,7 @@ public class JuffrouBeanMetadata {
 
 	private Map<Type, Converter> generalConverters = new HashMap<Type, Converter>();
 	private Map<Class<?>, BeanClassBinding> classToBindingMap = new HashMap<Class<?>, BeanClassBinding>();
+	private Map<String, BeanClassBinding> xmlElementNameToBindingMap = new HashMap<String, BeanClassBinding>();
 	
 	public JuffrouBeanMetadata() {
 		setDefaultConverters();
@@ -37,16 +38,24 @@ public class JuffrouBeanMetadata {
 				beanPropertyBinding.setXmlElementName(propertyName);
 				beanClassBinding.putBeanPropertyBinding(beanPropertyBinding);
 			}
-			classToBindingMap.put(beanClass, beanClassBinding);
+			putBeanClassBinding(beanClassBinding);
 		}
 		return beanClassBinding;
+	}
+	public void putBeanClassBinding(BeanClassBinding beanClassBinding) {
+		classToBindingMap.put(beanClassBinding.getBeanWrapperContext().getBeanClass(), beanClassBinding);
+		xmlElementNameToBindingMap.put(beanClassBinding.getXmlElementName(), beanClassBinding);
 	}
 	
 	public Converter getConverterForType(Type type) {
 		Converter converter = generalConverters.get(type);
 		return converter;
 	}
-	
+
+	public BeanClassBinding getBeanClassBinding(String xmlElementName) {
+		return xmlElementNameToBindingMap.get(xmlElementName);
+	}
+
 	private void setDefaultConverters() {
 		ToStringConverter toStringConverter = new ToStringConverter();
 		generalConverters.put(Boolean.class, toStringConverter);

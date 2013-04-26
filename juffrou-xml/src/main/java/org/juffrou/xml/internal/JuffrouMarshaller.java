@@ -1,7 +1,9 @@
 package org.juffrou.xml.internal;
 
+import org.juffrou.util.reflect.BeanWrapper;
 import org.juffrou.xml.converter.Converter;
 import org.juffrou.xml.internal.binding.BeanClassBinding;
+import org.juffrou.xml.internal.io.JuffrouReader;
 import org.juffrou.xml.internal.io.JuffrouWriter;
 
 public class JuffrouMarshaller {
@@ -28,4 +30,13 @@ public class JuffrouMarshaller {
 		converter.toXml(this, writer, bean);
 	}
 	
+	public Object unmarshall(JuffrouReader reader) {
+		
+		String next = reader.next();
+		BeanClassBinding beanClassBinding = xmlBeanMetadata.getBeanClassBinding(next);
+		BeanWrapper beanWrapper = new BeanWrapper(beanClassBinding.getBeanWrapperContext());
+		Object object = beanClassBinding.getConverter().fromXml(this, reader, beanWrapper);
+		return object;
+	}
+
 }

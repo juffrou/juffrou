@@ -7,6 +7,7 @@ import org.juffrou.util.reflect.BeanWrapperContext;
 import org.juffrou.xml.internal.JuffrouMarshaller;
 import org.juffrou.xml.internal.binding.BeanClassBinding;
 import org.juffrou.xml.internal.binding.BeanPropertyBinding;
+import org.juffrou.xml.internal.io.JuffrouReader;
 import org.juffrou.xml.internal.io.JuffrouWriter;
 
 public class BeanClassConverter implements Converter {
@@ -36,5 +37,18 @@ public class BeanClassConverter implements Converter {
 				writer.endNode();
 			}
 		}
+	}
+	
+	public Object fromXml(JuffrouMarshaller marshaller, JuffrouReader reader, BeanWrapper instance) {
+		String propertyName = reader.enterNode();
+		BeanPropertyBinding beanPropertyBinding = beanClassBinding.getBeanPropertiesToMarshall().get(propertyName);
+		if(beanPropertyBinding.isBeanClass()) {
+			
+		}
+		else {
+			
+		}
+		reader.exitNode();
+		return instance.getBean();
 	}
 }

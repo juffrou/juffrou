@@ -4,6 +4,7 @@ public class BeanPropertyBinding {
 
 	private String beanPropertyName;
 	private String xmlElementName;
+	private boolean isBeanClass = false;
 	
 	public String getBeanPropertyName() {
 		return beanPropertyName;
@@ -16,5 +17,11 @@ public class BeanPropertyBinding {
 	}
 	public void setXmlElementName(String xmlElementName) {
 		this.xmlElementName = xmlElementName;
+	}
+	public boolean isBeanClass() {
+		return isBeanClass;
+	}
+	public void setBeanClass(boolean isBeanClass) {
+		this.isBeanClass = isBeanClass;
 	}
 }
