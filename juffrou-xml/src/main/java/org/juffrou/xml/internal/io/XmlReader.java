@@ -41,12 +41,17 @@ public class XmlReader implements JuffrouReader {
 		if(currentNode == null)
 			return null;
 		currentNode = currentNode.getNextSibling();
+		while(currentNode != null && currentNode.getNodeType() != Node.ELEMENT_NODE)
+			currentNode = currentNode.getNextSibling();
 		return currentNode != null ? currentNode.getNodeName() : null;
 	}
 	
 	public String enterNode() {
 		parentNodes.push(currentNode);
+		currentNode.getNodeType();
 		currentNode = currentNode.getFirstChild();
+		while(currentNode != null && currentNode.getNodeType() != Node.ELEMENT_NODE)
+			currentNode = currentNode.getNextSibling();
 		return currentNode != null ? currentNode.getNodeName() : null;
 	}
 

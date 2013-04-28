@@ -1,20 +1,18 @@
 package org.juffrou.xml.internal.binding;
 
-import java.lang.reflect.Type;
-
-import org.juffrou.xml.converter.Converter;
+import org.juffrou.xml.serializer.Serializer;
 
 public class BeanPropertyBinding {
 
-	private Type propertyType;
+	private Class<?> propertyType;
 	private String beanPropertyName;
 	private String xmlElementName;
-	private Converter converter;
+	private Serializer converter;
 	
-	public Type getPropertyType() {
+	public Class<?> getPropertyType() {
 		return propertyType;
 	}
-	public void setPropertyType(Type propertyType) {
+	public void setPropertyType(Class<?> propertyType) {
 		this.propertyType = propertyType;
 	}
 	public String getBeanPropertyName() {
@@ -29,10 +27,10 @@ public class BeanPropertyBinding {
 	public void setXmlElementName(String xmlElementName) {
 		this.xmlElementName = xmlElementName;
 	}
-	public Converter getConverter() {
+	public Serializer getConverter() {
 		return converter;
 	}
-	public void setConverter(Converter converter) {
+	public void setConverter(Serializer converter) {
 		this.converter = converter;
 	}
 }
