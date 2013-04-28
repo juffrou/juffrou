@@ -362,7 +362,12 @@ public class BeanWrapper {
 		}
 	}
 
-	private BeanWrapper getNestedWrapper(String thisProperty) {
+	/**
+	 * Obtains the BeanWrapper that corresponds to the bean instance of this property type.
+	 * @param thisProperty property name in this bean wrapper. It must be of bean type.
+	 * @return
+	 */
+	public BeanWrapper getNestedWrapper(String thisProperty) {
 		BeanWrapper nestedWrapper = context.getNestedWrappers().get(thisProperty);
 		if (nestedWrapper == null) {
 			Type propertyType = getType(thisProperty);

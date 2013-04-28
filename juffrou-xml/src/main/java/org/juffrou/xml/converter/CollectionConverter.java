@@ -2,14 +2,19 @@ package org.juffrou.xml.converter;
 
 import java.util.Collection;
 
-import org.juffrou.util.reflect.BeanWrapper;
 import org.juffrou.xml.internal.JuffrouMarshaller;
 import org.juffrou.xml.internal.io.JuffrouReader;
 import org.juffrou.xml.internal.io.JuffrouWriter;
 
 public class CollectionConverter implements Converter {
+	
+	private JuffrouMarshaller marshaller;
+	
+	public CollectionConverter(JuffrouMarshaller marshaller) {
+		this.marshaller = marshaller;
+	}
 
-	public void toXml(JuffrouMarshaller marshaller, JuffrouWriter writer, Object instance) {
+	public void toXml(JuffrouWriter writer, Object instance) {
 		if(instance == null)
 			return;
 		Collection<?> collection = (Collection<?>) instance;
@@ -19,8 +24,7 @@ public class CollectionConverter implements Converter {
 	}
 
 	@Override
-	public Object fromXml(JuffrouMarshaller marshaller, JuffrouReader reader,
-			BeanWrapper instance) {
+	public Object fromXml(JuffrouReader reader) {
 		// TODO Auto-generated method stub
 		return null;
 	}

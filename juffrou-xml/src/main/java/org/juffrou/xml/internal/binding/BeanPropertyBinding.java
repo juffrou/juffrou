@@ -1,11 +1,22 @@
 package org.juffrou.xml.internal.binding;
 
+import java.lang.reflect.Type;
+
+import org.juffrou.xml.converter.Converter;
+
 public class BeanPropertyBinding {
 
+	private Type propertyType;
 	private String beanPropertyName;
 	private String xmlElementName;
-	private boolean isBeanClass = false;
+	private Converter converter;
 	
+	public Type getPropertyType() {
+		return propertyType;
+	}
+	public void setPropertyType(Type propertyType) {
+		this.propertyType = propertyType;
+	}
 	public String getBeanPropertyName() {
 		return beanPropertyName;
 	}
@@ -18,10 +29,10 @@ public class BeanPropertyBinding {
 	public void setXmlElementName(String xmlElementName) {
 		this.xmlElementName = xmlElementName;
 	}
-	public boolean isBeanClass() {
-		return isBeanClass;
+	public Converter getConverter() {
+		return converter;
 	}
-	public void setBeanClass(boolean isBeanClass) {
-		this.isBeanClass = isBeanClass;
+	public void setConverter(Converter converter) {
+		this.converter = converter;
 	}
 }

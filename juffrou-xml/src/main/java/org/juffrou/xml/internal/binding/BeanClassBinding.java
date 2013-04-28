@@ -9,13 +9,14 @@ import org.juffrou.xml.converter.Converter;
 
 public class BeanClassBinding {
 
+	private BeanWrapperContext beanWrapperContext;
 	private BeanClassConverter converter;
 	private String xmlElementName;
 	private Map<String, BeanPropertyBinding> beanPropertiesToMarshall = new HashMap<String, BeanPropertyBinding>();
 	
 	public BeanClassBinding(Class<?> clazz) {
 		
-		this.converter = new BeanClassConverter(this, new BeanWrapperContext(clazz));
+		this.beanWrapperContext = new BeanWrapperContext(clazz);
 		xmlElementName = clazz.getName();
 	}
 	
@@ -29,7 +30,7 @@ public class BeanClassBinding {
 		return converter;
 	}
 	public BeanWrapperContext getBeanWrapperContext() {
-		return converter.getBeanWrapperContext();
+		return beanWrapperContext;
 	}
 	public Map<String, BeanPropertyBinding> getBeanPropertiesToMarshall() {
 		return beanPropertiesToMarshall;

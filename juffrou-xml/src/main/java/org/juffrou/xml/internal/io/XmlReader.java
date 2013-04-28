@@ -26,6 +26,7 @@ public class XmlReader implements JuffrouReader {
 			doc = docBuilder.parse(xml);
 	        // normalize text representation
 			doc.getDocumentElement ().normalize();
+			currentNode = doc;
 		} catch (SAXException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -38,23 +39,22 @@ public class XmlReader implements JuffrouReader {
 	
 	public String next() {
 		if(currentNode == null)
-			currentNode = doc.getFirstChild();
-		else
-			currentNode = currentNode.getNextSibling();
-		return currentNode.getNodeName();
+			return null;
+		currentNode = currentNode.getNextSibling();
+		return currentNode != null ? currentNode.getNodeName() : null;
 	}
 	
 	public String enterNode() {
+		parentNodes.push(currentNode);
 		currentNode = currentNode.getFirstChild();
-		return currentNode.getNodeName();
+		return currentNode != null ? currentNode.getNodeName() : null;
 	}
 
 	public void exitNode() {
-		currentNode = currentNode.getParentNode();
+		currentNode = parentNodes.pop();
 	}
 
-	public String getValue() {
-		currentNode = currentNode.getFirstChild();
-		return currentNode.getNodeName();
+	public String getText() {
+		return currentNode != null ? currentNode.getTextContent() : null;
 	}
 }
