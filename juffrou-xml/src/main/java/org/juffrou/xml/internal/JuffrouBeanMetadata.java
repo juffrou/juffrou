@@ -11,11 +11,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.juffrou.util.reflect.BeanWrapper;
-import org.juffrou.util.reflect.BeanWrapperContext;
 import org.juffrou.xml.NoImplementationClassException;
+import org.juffrou.xml.UnknownXmlElementException;
 import org.juffrou.xml.internal.binding.BeanClassBinding;
-import org.juffrou.xml.internal.binding.BeanPropertyBinding;
+import org.juffrou.xml.internal.binding.XmlBeanWrapperContextCreator;
+import org.juffrou.xml.serializer.ArrayListSerializer;
+import org.juffrou.xml.serializer.BeanWrapperSerializer;
 import org.juffrou.xml.serializer.BigDecimalSerializer;
 import org.juffrou.xml.serializer.BigIntegerSerializer;
 import org.juffrou.xml.serializer.BooleanSerializer;
@@ -25,6 +26,7 @@ import org.juffrou.xml.serializer.DateSerializer;
 import org.juffrou.xml.serializer.DoubleSerializer;
 import org.juffrou.xml.serializer.EnumSerializer;
 import org.juffrou.xml.serializer.FloatSerializer;
+import org.juffrou.xml.serializer.HashSetSerializer;
 import org.juffrou.xml.serializer.IntegerSerializer;
 import org.juffrou.xml.serializer.LongSerializer;
 import org.juffrou.xml.serializer.Serializer;
@@ -33,12 +35,16 @@ import org.juffrou.xml.serializer.StringSerializer;
 
 public class JuffrouBeanMetadata {
 
+	private XmlBeanWrapperContextCreator xmlBeanWrapperContextCreator;
 	private Map<Type, Serializer> generalConverters = new HashMap<Type, Serializer>();
 	private Map<Class<?>, Class<?>> defaultImplementations = new HashMap<Class<?>, Class<?>>();
 	private Map<Class<?>, BeanClassBinding> classToBindingMap = new HashMap<Class<?>, BeanClassBinding>();
 	private Map<String, BeanClassBinding> xmlElementNameToBindingMap = new HashMap<String, BeanClassBinding>();
+	private BeanWrapperSerializer defaultSerializer;
 	
 	public JuffrouBeanMetadata() {
+		defaultSerializer = new BeanWrapperSerializer(this);
+		xmlBeanWrapperContextCreator = new XmlBeanWrapperContextCreator(this);
 		setDefaultImplementations();
 		setDefaultConverters();
 	}
@@ -46,32 +52,28 @@ public class JuffrouBeanMetadata {
 	public BeanClassBinding getBeanClassBindingFromClass(Object bean) {
 		Class<? extends Object> beanClass = bean.getClass();
 		BeanClassBinding beanClassBinding = classToBindingMap.get(beanClass);
-		if(beanClassBinding == null) {
-			beanClassBinding = new BeanClassBinding(beanClass);
-			
-			// add all the properties
-			BeanWrapperContext beanWrapperContext = beanClassBinding.getBeanWrapperContext();
-			BeanWrapper bw = new BeanWrapper(beanWrapperContext);
-			for(String propertyName : bw.getPropertyNames()) {
-				BeanPropertyBinding beanPropertyBinding = new BeanPropertyBinding();
-				beanPropertyBinding.setBeanPropertyName(propertyName);
-				beanPropertyBinding.setXmlElementName(propertyName);
-				beanPropertyBinding.setPropertyType(bw.getClazz(propertyName));
-				beanClassBinding.putBeanPropertyBinding(beanPropertyBinding);
-			}
-			putBeanClassBinding(beanClassBinding);
-		}
+		if(beanClassBinding == null)
+			beanClassBinding = xmlBeanWrapperContextCreator.newBeanWrapperContext(beanClass);
 		return beanClassBinding;
 	}
 	public BeanClassBinding getBeanClassBindingFromXmlElement(String xmlElement) {
-		return xmlElementNameToBindingMap.get(xmlElement);
+		BeanClassBinding beanClassBinding = xmlElementNameToBindingMap.get(xmlElement);
+		if(beanClassBinding == null) {
+			try {
+				Class<?> beanClass = Class.forName(xmlElement);
+				beanClassBinding = classToBindingMap.get(beanClass);
+			} catch (ClassNotFoundException e) {
+				throw new UnknownXmlElementException("The element '" + xmlElement + "' has not been registered");
+			}
+		}
+		return beanClassBinding;
 	}
 	public void putBeanClassBinding(BeanClassBinding beanClassBinding) {
-		classToBindingMap.put(beanClassBinding.getBeanWrapperContext().getBeanClass(), beanClassBinding);
+		classToBindingMap.put(beanClassBinding.getBeanClass(), beanClassBinding);
 		xmlElementNameToBindingMap.put(beanClassBinding.getXmlElementName(), beanClassBinding);
 	}
 	
-	public Serializer getConverterForType(Class<?> clazz) {
+	public Serializer getSerializerForClass(Class<?> clazz) {
 		Class<?> target = clazz;
 		if(clazz.isInterface())
 			target = defaultImplementations.get(clazz);
@@ -81,6 +83,13 @@ public class JuffrouBeanMetadata {
 		return converter;
 	}
 	
+	public BeanWrapperSerializer getDefaultSerializer() {
+		return defaultSerializer;
+	}
+	public void setDefaultSerializer(BeanWrapperSerializer defaultSerializer) {
+		this.defaultSerializer = defaultSerializer;
+	}
+
 	private void setDefaultImplementations() {
 		defaultImplementations.put(List.class, ArrayList.class);
 		defaultImplementations.put(Set.class, HashSet.class);
@@ -100,7 +109,9 @@ public class JuffrouBeanMetadata {
 		generalConverters.put(BigInteger.class, new BigIntegerSerializer());
 		generalConverters.put(BigDecimal.class, new BigDecimalSerializer());
 		generalConverters.put(Date.class, new DateSerializer());
-		
 		generalConverters.put(Enum.class, new EnumSerializer());
+		
+		generalConverters.put(ArrayList.class, new ArrayListSerializer(this));
+		generalConverters.put(HashSet.class, new HashSetSerializer(this));
 	}
 }

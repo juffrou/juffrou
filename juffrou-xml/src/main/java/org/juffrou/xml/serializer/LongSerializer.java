@@ -1,18 +1,19 @@
 package org.juffrou.xml.serializer;
 
+import org.juffrou.util.reflect.BeanWrapper;
 import org.juffrou.xml.internal.io.JuffrouReader;
 import org.juffrou.xml.internal.io.JuffrouWriter;
 
 public class LongSerializer implements Serializer {
 
 	@Override
-	public void serialize(JuffrouWriter writer, Object instance) {
-		writer.write(instance.toString());
+	public void serialize(JuffrouWriter writer, BeanWrapper valueOwner, String valuePropertyName) {
+		writer.write(valueOwner.getValue(valuePropertyName).toString());
 	}
 
 	@Override
-	public Object deserialize(JuffrouReader reader) {
+	public void deserialize(JuffrouReader reader, BeanWrapper valueOwner, String valuePropertyName) {
 		String value = reader.getText();
-		return Long.valueOf(value);
+		valueOwner.setValue(valuePropertyName, Long.valueOf(value));
 	}
 }

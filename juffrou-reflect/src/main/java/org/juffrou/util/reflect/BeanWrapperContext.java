@@ -31,6 +31,7 @@ public class BeanWrapperContext {
 
 	// preferences info
 	private BeanInstanceCreator beanInstanceCreator;
+	private BeanContextCreator<? extends BeanWrapperContext> beanContextCreator;
 	private boolean eagerInstatiation;
 
 
@@ -60,6 +61,7 @@ public class BeanWrapperContext {
 		this.nestesWrappers = new HashMap<String, BeanWrapper>();
 		
 		beanInstanceCreator = new DefaultBeanInstanceCreator();
+		beanContextCreator = new DefaultBeanContextCreator();
 		eagerInstatiation = false;
 	}
 
@@ -108,25 +110,32 @@ public class BeanWrapperContext {
 		return nestesWrappers;
 	}
 	
-	
 	public Map<String, BeanFieldHandler> getFields() {
 		return fields;
 	}
-
 	public Map<TypeVariable<?>, Type> getTypeArgumentsMap() {
 		return typeArgumentsMap;
 	}
 
-
+	/**
+	 * The bean wrapper creates new instances using Class.newIntance(). You can use this this if you want to create class instances yourself.  
+	 * @param beanInstanceCreator
+	 */
 	public void setBeanInstanceCreator(BeanInstanceCreator beanInstanceCreator) {
 		this.beanInstanceCreator = beanInstanceCreator;
 	}
 	
+	public BeanContextCreator<? extends BeanWrapperContext> getBeanContextCreator() {
+		return beanContextCreator;
+	}
+	public void setBeanContextCreator(
+			BeanContextCreator<? extends BeanWrapperContext> beanContextCreator) {
+		this.beanContextCreator = beanContextCreator;
+	}
 
 	public boolean isEagerInstatiation() {
 		return eagerInstatiation;
 	}
-
 	/**
 	 * Defines when a new instance is created.<br>If eager is true, a new instance is created when the BeanWrapper is created and reset. If eager is false, a new instance will only be created when setting a property value.<br>Default is false.
 	 * @param eagerInstatiation
@@ -150,6 +159,20 @@ public class BeanWrapperContext {
 			}
 			return instance;
 		}
+	}
+	
+	private class DefaultBeanContextCreator implements BeanContextCreator<BeanWrapperContext> {
+
+		@Override
+		public BeanWrapperContext newBeanWrapperContext(Class clazz) {
+			return new BeanWrapperContext(clazz);
+		}
+
+		@Override
+		public BeanWrapperContext newBeanWrapperContext(Class clazz, Type... types) {
+			return new BeanWrapperContext(clazz, types);
+		}
+		
 	}
 	
 }

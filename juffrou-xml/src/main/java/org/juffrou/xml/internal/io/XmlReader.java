@@ -62,4 +62,9 @@ public class XmlReader implements JuffrouReader {
 	public String getText() {
 		return currentNode != null ? currentNode.getTextContent() : null;
 	}
+	
+	@Override
+	public String getNodeName() {
+		return currentNode != null ? currentNode.getNodeName() : null;
+	}
 }

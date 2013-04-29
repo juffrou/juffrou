@@ -8,5 +8,7 @@ public interface JuffrouReader {
 	
 	void exitNode();
 	
+	String getNodeName();
+	
 	String getText();
 }

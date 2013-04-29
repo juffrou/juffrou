@@ -2,6 +2,7 @@ package org.juffrou.xml.serializer;
 
 import java.lang.reflect.Type;
 import java.util.Collection;
+import java.util.Map;
 
 import org.juffrou.util.reflect.BeanWrapper;
 import org.juffrou.util.reflect.BeanWrapperContext;
@@ -10,26 +11,29 @@ import org.juffrou.xml.internal.binding.BeanClassBinding;
 import org.juffrou.xml.internal.io.JuffrouReader;
 import org.juffrou.xml.internal.io.JuffrouWriter;
 
-public abstract class AbstractCollectionSerializer implements Serializer {
+public abstract class HashMapSerializer implements Serializer {
 	
 	private final JuffrouBeanMetadata xmlBeanMetadata;
 	private final BeanWrapperContext valueHolderWrapperContext;
 	
-	public AbstractCollectionSerializer(JuffrouBeanMetadata xmlBeanMetadata) {
+	public HashMapSerializer(JuffrouBeanMetadata xmlBeanMetadata) {
 		this.xmlBeanMetadata = xmlBeanMetadata;
 		this.valueHolderWrapperContext = new BeanWrapperContext(ValueHolder.class);
 	}
 
 	public void serialize(JuffrouWriter writer, BeanWrapper valueOwner, String valuePropertyName) {
-		Collection<?> collection = (Collection<?>) valueOwner.getValue(valuePropertyName);
-		if(collection.isEmpty())
+		Map map = (Map) valueOwner.getValue(valuePropertyName);
+		if(map.isEmpty())
 			return;
-		Object bean = collection.iterator().next();
+		/*
+		Object bean = map.iterator().next();
 		Serializer serializer = xmlBeanMetadata.getSerializerForClass(bean.getClass());
 		if(serializer != null)
-			serializeSimpleType(writer, collection, serializer);
+			serializeSimpleType(writer, map, serializer);
 		else
-			serializeBeanType(writer, collection, bean);
+			serializeBeanType(writer, map, bean);
+			
+			*/
 	}
 	
 	private void serializeSimpleType(JuffrouWriter writer, Collection<?> collection, Serializer serializer) {

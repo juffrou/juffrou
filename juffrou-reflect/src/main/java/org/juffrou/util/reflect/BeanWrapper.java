@@ -171,6 +171,15 @@ public class BeanWrapper {
 		
 		return propertyNames.toArray(new String[0]);
 	}
+	
+	/**
+	 * Returns the string representation of the wrapped bean instance, or and empty string if the instance is null.
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return instance == null ? "" : instance.toString();
+	}
 
 	/**
 	 * Gets the value of a property in the wrapped bean. If that property references another bean (a nested bean) Its
@@ -373,9 +382,9 @@ public class BeanWrapper {
 			Type propertyType = getType(thisProperty);
 			BeanWrapperContext bwc;
 			if(propertyType instanceof ParameterizedType)
-				bwc = new BeanWrapperContext((Class<?>)((ParameterizedType) propertyType).getRawType(), ((ParameterizedType) propertyType).getActualTypeArguments());
+				bwc = context.getBeanContextCreator().newBeanWrapperContext((Class<?>)((ParameterizedType) propertyType).getRawType(), ((ParameterizedType) propertyType).getActualTypeArguments());
 			else
-				bwc = new BeanWrapperContext((Class<?>) propertyType);
+				bwc = context.getBeanContextCreator().newBeanWrapperContext((Class<?>) propertyType);
 			
 			Object value = getValue(thisProperty);
 			if (value != null)
