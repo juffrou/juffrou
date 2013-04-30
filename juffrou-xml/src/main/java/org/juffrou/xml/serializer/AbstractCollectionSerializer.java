@@ -6,6 +6,7 @@ import java.util.Collection;
 import org.juffrou.util.reflect.BeanWrapper;
 import org.juffrou.util.reflect.BeanWrapperContext;
 import org.juffrou.xml.internal.JuffrouBeanMetadata;
+import org.juffrou.xml.internal.ValueHolder;
 import org.juffrou.xml.internal.binding.BeanClassBinding;
 import org.juffrou.xml.internal.io.JuffrouReader;
 import org.juffrou.xml.internal.io.JuffrouWriter;
@@ -27,16 +28,16 @@ public abstract class AbstractCollectionSerializer implements Serializer {
 		Object bean = collection.iterator().next();
 		Serializer serializer = xmlBeanMetadata.getSerializerForClass(bean.getClass());
 		if(serializer != null)
-			serializeSimpleType(writer, collection, serializer);
+			serializeSimpleType(writer, collection, serializer, bean.getClass().getSimpleName().toLowerCase());
 		else
 			serializeBeanType(writer, collection, bean);
 	}
 	
-	private void serializeSimpleType(JuffrouWriter writer, Collection<?> collection, Serializer serializer) {
+	private void serializeSimpleType(JuffrouWriter writer, Collection<?> collection, Serializer serializer, String elementName) {
 		BeanWrapper valueHolderWrapper = new BeanWrapper(valueHolderWrapperContext);
 		for(Object object : collection) {
 			valueHolderWrapper.setValue("value", object);
-			writer.startNode("value");
+			writer.startNode(elementName);
 			serializer.serialize(writer, valueHolderWrapper, "value");
 			writer.endNode();
 		}
@@ -99,14 +100,4 @@ public abstract class AbstractCollectionSerializer implements Serializer {
 	
 	protected abstract Collection<?> instantiateCollection();
 	
-	public static class ValueHolder {
-		private Object value;
-		
-		public Object getValue() {
-			return value;
-		}
-		public void setValue(Object value) {
-			this.value = value;
-		}
-	}
 }

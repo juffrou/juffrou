@@ -11,8 +11,8 @@ import java.lang.reflect.Type;
 public interface BeanContextCreator<T extends BeanWrapperContext> {
 
 	@SuppressWarnings("rawtypes")
-	T newBeanWrapperContext(Class clazz);
+	public T newBeanWrapperContext(Class clazz);
 	
 	@SuppressWarnings("rawtypes")
-	T newBeanWrapperContext(Class clazz, Type...types);
+	public T newBeanWrapperContext(Class clazz, Type...types);
 }

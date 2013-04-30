@@ -3,15 +3,17 @@ package org.juffrou.xml.serializer;
 import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.juffrou.util.reflect.BeanWrapper;
 import org.juffrou.util.reflect.BeanWrapperContext;
 import org.juffrou.xml.internal.JuffrouBeanMetadata;
+import org.juffrou.xml.internal.ValueHolder;
 import org.juffrou.xml.internal.binding.BeanClassBinding;
 import org.juffrou.xml.internal.io.JuffrouReader;
 import org.juffrou.xml.internal.io.JuffrouWriter;
 
-public abstract class HashMapSerializer implements Serializer {
+public class HashMapSerializer implements Serializer {
 	
 	private final JuffrouBeanMetadata xmlBeanMetadata;
 	private final BeanWrapperContext valueHolderWrapperContext;
@@ -22,46 +24,74 @@ public abstract class HashMapSerializer implements Serializer {
 	}
 
 	public void serialize(JuffrouWriter writer, BeanWrapper valueOwner, String valuePropertyName) {
-		Map map = (Map) valueOwner.getValue(valuePropertyName);
+		boolean isSimpleKey = false;
+		boolean isSimpleValue = false;
+		Map<?,?> map = (Map<?,?>) valueOwner.getValue(valuePropertyName);
 		if(map.isEmpty())
 			return;
-		/*
-		Object bean = map.iterator().next();
-		Serializer serializer = xmlBeanMetadata.getSerializerForClass(bean.getClass());
-		if(serializer != null)
-			serializeSimpleType(writer, map, serializer);
-		else
-			serializeBeanType(writer, map, bean);
-			
-			*/
+		// analyze the entry types
+		Entry<?, ?> firstEntry = map.entrySet().iterator().next();
+		Serializer keySerializer = xmlBeanMetadata.getSerializerForClass(firstEntry.getKey().getClass());
+		BeanWrapper keyWrapper;
+		BeanClassBinding keyClassBinding = null;
+		if(keySerializer != null) {
+			isSimpleKey = true;
+			keyWrapper = new BeanWrapper(valueHolderWrapperContext);
+		}
+		else {
+			keyClassBinding = xmlBeanMetadata.getBeanClassBindingFromClass(firstEntry.getKey());
+			keyWrapper = new BeanWrapper(keyClassBinding);
+		}
+		Serializer valueSerializer = xmlBeanMetadata.getSerializerForClass(firstEntry.getValue().getClass());
+		BeanWrapper valueWrapper;
+		BeanClassBinding valueClassBinding = null;
+		if(valueSerializer != null) {
+			isSimpleValue = true;
+			valueWrapper = new BeanWrapper(valueHolderWrapperContext);
+		}
+		else {
+			valueClassBinding = xmlBeanMetadata.getBeanClassBindingFromClass(firstEntry.getValue());
+			valueWrapper = new BeanWrapper(valueClassBinding);
+		}
+		// write everything
+		for(Entry<?,?> entry : map.entrySet()) {
+			writer.startNode("entry");
+			// write the key
+			if(isSimpleKey) {
+				keyWrapper.setValue("value", entry.getKey());
+				writer.startNode(firstEntry.getKey().getClass().getSimpleName().toLowerCase());
+				keySerializer.serialize(writer, keyWrapper, "value");
+				writer.endNode();
+			}
+			else {
+				keyWrapper.setBean(entry.getKey());
+				writer.startNode(keyClassBinding.getXmlElementName());
+				xmlBeanMetadata.getDefaultSerializer().serializeBeanProperties(writer, keyWrapper);
+				writer.endNode();
+			}
+			// write the value
+			if(isSimpleValue) {
+				valueWrapper.setValue("value", entry.getValue());
+				writer.startNode(firstEntry.getValue().getClass().getSimpleName().toLowerCase());
+				valueSerializer.serialize(writer, valueWrapper, "value");
+				writer.endNode();
+			}
+			else {
+				valueWrapper.setBean(entry.getValue());
+				writer.startNode(valueClassBinding.getXmlElementName());
+				xmlBeanMetadata.getDefaultSerializer().serializeBeanProperties(writer, valueWrapper);
+				writer.endNode();
+			}
+			writer.endNode();
+		}
 	}
 	
-	private void serializeSimpleType(JuffrouWriter writer, Collection<?> collection, Serializer serializer) {
-		BeanWrapper valueHolderWrapper = new BeanWrapper(valueHolderWrapperContext);
-		for(Object object : collection) {
-			valueHolderWrapper.setValue("value", object);
-			writer.startNode("value");
-			serializer.serialize(writer, valueHolderWrapper, "value");
-			writer.endNode();
-		}
-	}
-
-	private void serializeBeanType(JuffrouWriter writer, Collection<?> collection, Object firstBean) {
-		BeanClassBinding beanClassBinding = xmlBeanMetadata.getBeanClassBindingFromClass(firstBean);
-		BeanWrapper bw = new BeanWrapper(beanClassBinding);
-		for(Object object : collection) {
-			bw.setBean(object);
-			writer.startNode(beanClassBinding.getXmlElementName());
-			xmlBeanMetadata.getDefaultSerializer().serializeBeanProperties(writer, bw);
-			writer.endNode();
-		}
-	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void deserialize(JuffrouReader reader, BeanWrapper valueOwner, String valuePropertyName) {
 		Type[] collectionElementTypes = valueOwner.getTypeArguments(valuePropertyName);
-		Collection collection = instantiateCollection();
+		Collection collection = null;
 		if(collectionElementTypes == null || collectionElementTypes.length == 0)
 			deserializeBeanType(reader, collection);
 		else {
@@ -99,18 +129,5 @@ public abstract class HashMapSerializer implements Serializer {
 			next= reader.next();
 		}
 
-	}
-	
-	protected abstract Collection<?> instantiateCollection();
-	
-	public static class ValueHolder {
-		private Object value;
-		
-		public Object getValue() {
-			return value;
-		}
-		public void setValue(Object value) {
-			this.value = value;
-		}
 	}
 }

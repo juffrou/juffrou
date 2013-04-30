@@ -6,7 +6,9 @@ import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.juffrou.util.reflect.BeanWrapper;
@@ -21,6 +23,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.thoughtworks.xstream.XStream;
+
 public class BasicXmlTestCase {
 	
 	private Country country;
@@ -31,7 +35,6 @@ public class BasicXmlTestCase {
 		try {
 			country.setFounded(new SimpleDateFormat("yyyy-MM-dd").parse("1147-01-01"));
 		} catch (ParseException e) {
-			e.printStackTrace();
 		}
 		country.setName("Portugal");
 		Person president = new Person();
@@ -43,6 +46,17 @@ public class BasicXmlTestCase {
 		Set<Person> people = new HashSet<Person>();
 		people.add(president);
 		country.setPeople(people);
+		Person carlos = new Person();
+		try {
+			carlos.setBirthDay(new SimpleDateFormat("yyyy-MM-dd").parse("1967-10-01"));
+		} catch (ParseException e) {
+		}
+		carlos.setFirstName("Carlos");
+		carlos.setLastName("Martins");
+		people.add(carlos);
+		Map<String, Person> partyLeaders = new HashMap<String,Person>();
+		partyLeaders.put("PS", president);
+		country.setPartyLeaders(partyLeaders);
 	}
 
 	@Test
@@ -80,13 +94,21 @@ public class BasicXmlTestCase {
 		String xmlString = writer.toString();
 		System.out.println(xmlString);
 	}
-	
+
+	@Test
+	public void testXStreamMarshallCountry() {
+		XStream xstream = new XStream();
+		xstream.setMode(XStream.NO_REFERENCES);
+		String xmlString = xstream.toXML(country);
+		System.out.println(xmlString);
+	}
+
 	@Test
 	public void unmarshalCountry() {
 
 		JuffrouMarshaller marshaller = new JuffrouMarshaller();
 		marshaller.getJuffrouBeanMetadata().getBeanClassBindingFromClass(country);
-		String xml ="<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><org.juffrou.xml.test.dom.Country><founded>1147-01-01</founded><president><lastName>Sampaio</lastName><firstName>Jorge</firstName></president><name>Portugal</name><provinces><value>Estremadura</value><value>Alentejo</value><value>Algarve</value><value>Beira Baixa</value><value>Beira Alta</value><value>Ribatejo</value><value>Douro</value><value>Minho</value><value>Trás os Montes</value></provinces><people><org.juffrou.xml.test.dom.Person><lastName>Sampaio</lastName><firstName>Jorge</firstName></org.juffrou.xml.test.dom.Person></people></org.juffrou.xml.test.dom.Country>";
+		String xml ="<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><org.juffrou.xml.test.dom.Country><founded>1147-01-01</founded><president><lastName>Sampaio</lastName><firstName>Jorge</firstName></president><name>Portugal</name><partyLeaders><entry><string>PS</string><org.juffrou.xml.test.dom.Person><lastName>Sampaio</lastName><firstName>Jorge</firstName></org.juffrou.xml.test.dom.Person></entry></partyLeaders><provinces><string>Estremadura</string><string>Alentejo</string><string>Algarve</string><string>Beira Baixa</string><string>Beira Alta</string><string>Ribatejo</string><string>Douro</string><string>Minho</string><string>Trás os Montes</string></provinces><people><org.juffrou.xml.test.dom.Person><lastName>Sampaio</lastName><firstName>Jorge</firstName></org.juffrou.xml.test.dom.Person><org.juffrou.xml.test.dom.Person><lastName>Martins</lastName><birthDay>1967-10-01</birthDay><firstName>Carlos</firstName></org.juffrou.xml.test.dom.Person></people></org.juffrou.xml.test.dom.Country>";
 		
 		Object unmarshall = null;
 		try {

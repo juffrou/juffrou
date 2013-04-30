@@ -26,6 +26,7 @@ import org.juffrou.xml.serializer.DateSerializer;
 import org.juffrou.xml.serializer.DoubleSerializer;
 import org.juffrou.xml.serializer.EnumSerializer;
 import org.juffrou.xml.serializer.FloatSerializer;
+import org.juffrou.xml.serializer.HashMapSerializer;
 import org.juffrou.xml.serializer.HashSetSerializer;
 import org.juffrou.xml.serializer.IntegerSerializer;
 import org.juffrou.xml.serializer.LongSerializer;
@@ -113,5 +114,6 @@ public class JuffrouBeanMetadata {
 		
 		generalConverters.put(ArrayList.class, new ArrayListSerializer(this));
 		generalConverters.put(HashSet.class, new HashSetSerializer(this));
+		generalConverters.put(HashMap.class, new HashMapSerializer(this));
 	}
 }

@@ -10,5 +10,5 @@ import org.juffrou.error.BeanInstanceCreatorException;
  */
 public interface BeanInstanceCreator {
 
-	Object newBeanInstance() throws BeanInstanceCreatorException ;
+	public Object newBeanInstance() throws BeanInstanceCreatorException ;
 }
