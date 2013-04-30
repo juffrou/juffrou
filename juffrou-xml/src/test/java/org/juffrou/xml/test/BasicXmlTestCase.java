@@ -1,8 +1,5 @@
 package org.juffrou.xml.test;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -13,10 +10,7 @@ import java.util.Set;
 
 import org.juffrou.util.reflect.BeanWrapper;
 import org.juffrou.util.reflect.BeanWrapperContext;
-import org.juffrou.xml.internal.JuffrouMarshaller;
-import org.juffrou.xml.internal.io.JuffrouWriter;
-import org.juffrou.xml.internal.io.XmlReader;
-import org.juffrou.xml.internal.io.XmlWriter;
+import org.juffrou.xml.JuffrouXml;
 import org.juffrou.xml.test.dom.Country;
 import org.juffrou.xml.test.dom.Person;
 import org.junit.Assert;
@@ -27,10 +21,14 @@ import com.thoughtworks.xstream.XStream;
 
 public class BasicXmlTestCase {
 	
+	private JuffrouXml juffrouXml;
 	private Country country;
 	
 	@Before
 	public void setup() {
+		
+		juffrouXml = new JuffrouXml();
+		
 		country = new Country();
 		try {
 			country.setFounded(new SimpleDateFormat("yyyy-MM-dd").parse("1147-01-01"));
@@ -45,7 +43,6 @@ public class BasicXmlTestCase {
 		country.setProvinces(Arrays.asList(provinces));
 		Set<Person> people = new HashSet<Person>();
 		people.add(president);
-		country.setPeople(people);
 		Person carlos = new Person();
 		try {
 			carlos.setBirthDay(new SimpleDateFormat("yyyy-MM-dd").parse("1967-10-01"));
@@ -56,6 +53,14 @@ public class BasicXmlTestCase {
 		people.add(carlos);
 		Map<String, Person> partyLeaders = new HashMap<String,Person>();
 		partyLeaders.put("PS", president);
+		
+		Person cunhal = new Person();
+		cunhal.setFirstName("Alvaro");
+		cunhal.setLastName("Cunhal");
+		people.add(cunhal);
+		partyLeaders.put("PCP", cunhal);
+		
+		country.setPeople(people);
 		country.setPartyLeaders(partyLeaders);
 	}
 
@@ -66,32 +71,18 @@ public class BasicXmlTestCase {
 		bw.setValue("firstName", "Carlos");
 		bw.setValue("lastName", "Martins");
 		
-		JuffrouMarshaller marshaller = new JuffrouMarshaller();
-		JuffrouWriter writer = new XmlWriter();
-		marshaller.marshallBean(writer, bw.getBean());
-		
-		String xmlString = writer.toString();
+		String xmlString = juffrouXml.toXml(bw.getBean());
 		System.out.println(xmlString);
-		Object unmarshall = null;
-		try {
-			InputStream stream = new ByteArrayInputStream(xmlString.getBytes("UTF-8"));
-			XmlReader reader = new XmlReader(stream);
-			
-			unmarshall = marshaller.unmarshallBean(reader);
-			
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-			Assert.fail(e.getMessage());
-		}
-		Assert.assertTrue(unmarshall instanceof Person);
+		Object object = juffrouXml.fromXml(xmlString);
+		Assert.assertTrue(object instanceof Person);
+		Person person = (Person) object;
+		Assert.assertEquals("Carlos", person.getFirstName());
+		Assert.assertEquals("Martins", person.getLastName());
 	}
 	
 	@Test
 	public void testMarshallCountry() {
-		JuffrouMarshaller marshaller = new JuffrouMarshaller();
-		JuffrouWriter writer = new XmlWriter();
-		marshaller.marshallBean(writer, country);
-		String xmlString = writer.toString();
+		String xmlString = juffrouXml.toXml(country);
 		System.out.println(xmlString);
 	}
 
@@ -106,22 +97,15 @@ public class BasicXmlTestCase {
 	@Test
 	public void unmarshalCountry() {
 
-		JuffrouMarshaller marshaller = new JuffrouMarshaller();
-		marshaller.getJuffrouBeanMetadata().getBeanClassBindingFromClass(country);
-		String xml ="<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><org.juffrou.xml.test.dom.Country><founded>1147-01-01</founded><president><lastName>Sampaio</lastName><firstName>Jorge</firstName></president><name>Portugal</name><partyLeaders><entry><string>PS</string><org.juffrou.xml.test.dom.Person><lastName>Sampaio</lastName><firstName>Jorge</firstName></org.juffrou.xml.test.dom.Person></entry></partyLeaders><provinces><string>Estremadura</string><string>Alentejo</string><string>Algarve</string><string>Beira Baixa</string><string>Beira Alta</string><string>Ribatejo</string><string>Douro</string><string>Minho</string><string>Trás os Montes</string></provinces><people><org.juffrou.xml.test.dom.Person><lastName>Sampaio</lastName><firstName>Jorge</firstName></org.juffrou.xml.test.dom.Person><org.juffrou.xml.test.dom.Person><lastName>Martins</lastName><birthDay>1967-10-01</birthDay><firstName>Carlos</firstName></org.juffrou.xml.test.dom.Person></people></org.juffrou.xml.test.dom.Country>";
+		String xml = juffrouXml.toXml(country);
 		
-		Object unmarshall = null;
-		try {
-			InputStream stream = new ByteArrayInputStream(xml.getBytes("UTF-8"));
-			XmlReader reader = new XmlReader(stream);
-			
-			unmarshall = marshaller.unmarshallBean(reader);
-			
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-			Assert.fail(e.getMessage());
-		}
-		Assert.assertTrue(unmarshall instanceof Country);
-
+		Object object = juffrouXml.fromXml(xml);
+		Assert.assertTrue(object instanceof Country);
+		Country unmarshalledCountry = (Country) object;
+		Assert.assertEquals(country.getName(), unmarshalledCountry.getName());
+		Assert.assertEquals(country.getFounded(), unmarshalledCountry.getFounded());
+		Assert.assertEquals(country.getPartyLeaders().size(), unmarshalledCountry.getPartyLeaders().size());
+		Assert.assertEquals(country.getPeople().size(), unmarshalledCountry.getPeople().size());
+		Assert.assertEquals(country.getProvinces().size(), unmarshalledCountry.getProvinces().size());
 	}
 }

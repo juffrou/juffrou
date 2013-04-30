@@ -44,7 +44,7 @@ public abstract class AbstractCollectionSerializer implements Serializer {
 	}
 
 	private void serializeBeanType(JuffrouWriter writer, Collection<?> collection, Object firstBean) {
-		BeanClassBinding beanClassBinding = xmlBeanMetadata.getBeanClassBindingFromClass(firstBean);
+		BeanClassBinding beanClassBinding = xmlBeanMetadata.getBeanClassBindingFromClass(firstBean.getClass());
 		BeanWrapper bw = new BeanWrapper(beanClassBinding);
 		for(Object object : collection) {
 			bw.setBean(object);
@@ -72,8 +72,7 @@ public abstract class AbstractCollectionSerializer implements Serializer {
 	}
 
 	private void deserializeSimpleType(JuffrouReader reader, Collection collection, Serializer serializer) {
-		String next = reader.getNodeName();
-		next = reader.enterNode(); // <value>
+		String next = reader.enterNode(); // <value>
 		while(next != null) {
 			BeanWrapper valueHolderWrapper = new BeanWrapper(valueHolderWrapperContext);
 			serializer.deserialize(reader, valueHolderWrapper, "value");
@@ -86,13 +85,10 @@ public abstract class AbstractCollectionSerializer implements Serializer {
 	private void deserializeBeanType(JuffrouReader reader, Collection collection) {
 		String next = reader.enterNode();
 		BeanClassBinding beanClassBinding = xmlBeanMetadata.getBeanClassBindingFromXmlElement(next);
-		reader.exitNode();
 		while(next != null) {
-			next = reader.enterNode();
 			BeanWrapper beanWrapper = new BeanWrapper(beanClassBinding);
 			xmlBeanMetadata.getDefaultSerializer().deserializeBeanProperties(reader, beanWrapper);
 			collection.add(beanWrapper.getBean());
-			reader.exitNode();
 			next= reader.next();
 		}
 

@@ -37,10 +37,10 @@ import org.juffrou.xml.serializer.StringSerializer;
 public class JuffrouBeanMetadata {
 
 	private XmlBeanWrapperContextCreator xmlBeanWrapperContextCreator;
-	private Map<Type, Serializer> generalConverters = new HashMap<Type, Serializer>();
-	private Map<Class<?>, Class<?>> defaultImplementations = new HashMap<Class<?>, Class<?>>();
 	private Map<Class<?>, BeanClassBinding> classToBindingMap = new HashMap<Class<?>, BeanClassBinding>();
 	private Map<String, BeanClassBinding> xmlElementNameToBindingMap = new HashMap<String, BeanClassBinding>();
+	private Map<Class<?>, Class<?>> defaultImplementations = new HashMap<Class<?>, Class<?>>();
+	private Map<Type, Serializer> generalSerializers = new HashMap<Type, Serializer>();
 	private BeanWrapperSerializer defaultSerializer;
 	
 	public JuffrouBeanMetadata() {
@@ -50,8 +50,7 @@ public class JuffrouBeanMetadata {
 		setDefaultConverters();
 	}
 	
-	public BeanClassBinding getBeanClassBindingFromClass(Object bean) {
-		Class<? extends Object> beanClass = bean.getClass();
+	public BeanClassBinding getBeanClassBindingFromClass(Class beanClass) {
 		BeanClassBinding beanClassBinding = classToBindingMap.get(beanClass);
 		if(beanClassBinding == null)
 			beanClassBinding = xmlBeanWrapperContextCreator.newBeanWrapperContext(beanClass);
@@ -62,7 +61,7 @@ public class JuffrouBeanMetadata {
 		if(beanClassBinding == null) {
 			try {
 				Class<?> beanClass = Class.forName(xmlElement);
-				beanClassBinding = classToBindingMap.get(beanClass);
+				beanClassBinding = getBeanClassBindingFromClass(beanClass);
 			} catch (ClassNotFoundException e) {
 				throw new UnknownXmlElementException("The element '" + xmlElement + "' has not been registered");
 			}
@@ -80,7 +79,7 @@ public class JuffrouBeanMetadata {
 			target = defaultImplementations.get(clazz);
 		if(target == null)
 			throw new NoImplementationClassException("I don't know which implementation of " + clazz.getSimpleName() + " to choose. Please add to the default implementations.");
-		Serializer converter = generalConverters.get(target);
+		Serializer converter = generalSerializers.get(target);
 		return converter;
 	}
 	
@@ -98,22 +97,22 @@ public class JuffrouBeanMetadata {
 	}
 	
 	private void setDefaultConverters() {
-		generalConverters.put(Boolean.class, new BooleanSerializer());
-		generalConverters.put(Byte.class, new ByteSerializer());
-		generalConverters.put(Character.class, new CharacterSerializer());
-		generalConverters.put(Double.class, new DoubleSerializer());
-		generalConverters.put(Float.class, new FloatSerializer());
-		generalConverters.put(Integer.class, new IntegerSerializer());
-		generalConverters.put(Long.class, new LongSerializer());
-		generalConverters.put(Short.class, new ShortSerializer());
-		generalConverters.put(String.class, new StringSerializer());
-		generalConverters.put(BigInteger.class, new BigIntegerSerializer());
-		generalConverters.put(BigDecimal.class, new BigDecimalSerializer());
-		generalConverters.put(Date.class, new DateSerializer());
-		generalConverters.put(Enum.class, new EnumSerializer());
+		generalSerializers.put(Boolean.class, new BooleanSerializer());
+		generalSerializers.put(Byte.class, new ByteSerializer());
+		generalSerializers.put(Character.class, new CharacterSerializer());
+		generalSerializers.put(Double.class, new DoubleSerializer());
+		generalSerializers.put(Float.class, new FloatSerializer());
+		generalSerializers.put(Integer.class, new IntegerSerializer());
+		generalSerializers.put(Long.class, new LongSerializer());
+		generalSerializers.put(Short.class, new ShortSerializer());
+		generalSerializers.put(String.class, new StringSerializer());
+		generalSerializers.put(BigInteger.class, new BigIntegerSerializer());
+		generalSerializers.put(BigDecimal.class, new BigDecimalSerializer());
+		generalSerializers.put(Date.class, new DateSerializer());
+		generalSerializers.put(Enum.class, new EnumSerializer());
 		
-		generalConverters.put(ArrayList.class, new ArrayListSerializer(this));
-		generalConverters.put(HashSet.class, new HashSetSerializer(this));
-		generalConverters.put(HashMap.class, new HashMapSerializer(this));
+		generalSerializers.put(ArrayList.class, new ArrayListSerializer(this));
+		generalSerializers.put(HashSet.class, new HashSetSerializer(this));
+		generalSerializers.put(HashMap.class, new HashMapSerializer(this));
 	}
 }

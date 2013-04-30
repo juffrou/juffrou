@@ -1,12 +1,13 @@
 package org.juffrou.xml.serializer;
 
 import java.lang.reflect.Type;
-import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.juffrou.util.reflect.BeanWrapper;
 import org.juffrou.util.reflect.BeanWrapperContext;
+import org.juffrou.xml.error.NonParameterizedGenericType;
 import org.juffrou.xml.internal.JuffrouBeanMetadata;
 import org.juffrou.xml.internal.ValueHolder;
 import org.juffrou.xml.internal.binding.BeanClassBinding;
@@ -39,7 +40,7 @@ public class HashMapSerializer implements Serializer {
 			keyWrapper = new BeanWrapper(valueHolderWrapperContext);
 		}
 		else {
-			keyClassBinding = xmlBeanMetadata.getBeanClassBindingFromClass(firstEntry.getKey());
+			keyClassBinding = xmlBeanMetadata.getBeanClassBindingFromClass(firstEntry.getKey().getClass());
 			keyWrapper = new BeanWrapper(keyClassBinding);
 		}
 		Serializer valueSerializer = xmlBeanMetadata.getSerializerForClass(firstEntry.getValue().getClass());
@@ -50,7 +51,7 @@ public class HashMapSerializer implements Serializer {
 			valueWrapper = new BeanWrapper(valueHolderWrapperContext);
 		}
 		else {
-			valueClassBinding = xmlBeanMetadata.getBeanClassBindingFromClass(firstEntry.getValue());
+			valueClassBinding = xmlBeanMetadata.getBeanClassBindingFromClass(firstEntry.getValue().getClass());
 			valueWrapper = new BeanWrapper(valueClassBinding);
 		}
 		// write everything
@@ -90,44 +91,79 @@ public class HashMapSerializer implements Serializer {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void deserialize(JuffrouReader reader, BeanWrapper valueOwner, String valuePropertyName) {
+		Map map = new HashMap();
+		boolean isSimpleKey = false;
+		boolean isSimpleValue = false;
+		String[] mapXmlElementNames = getMapXmlElementNames(reader);
+		
+		// analyze the key and value types
 		Type[] collectionElementTypes = valueOwner.getTypeArguments(valuePropertyName);
-		Collection collection = null;
-		if(collectionElementTypes == null || collectionElementTypes.length == 0)
-			deserializeBeanType(reader, collection);
+		if(collectionElementTypes == null || collectionElementTypes.length < 0)
+			throw new NonParameterizedGenericType("Cannot deserialize Map because its element types are undetermined.");
+		Class keyType = (Class) collectionElementTypes[0];
+		Class valueType = (Class) collectionElementTypes[1];
+		
+		Serializer keySerializer = xmlBeanMetadata.getSerializerForClass(keyType);
+		BeanWrapper keyWrapper = null;
+		BeanClassBinding keyClassBinding = null;
+		if(keySerializer != null) {
+			isSimpleKey = true;
+			keyWrapper = new BeanWrapper(valueHolderWrapperContext);
+		}
 		else {
-			Serializer serializer = xmlBeanMetadata.getSerializerForClass((Class)collectionElementTypes[0]);
-			if(serializer == null)
-				deserializeBeanType(reader, collection);
-			else
-				deserializeSimpleType(reader, collection, serializer);
+			keyClassBinding = xmlBeanMetadata.getBeanClassBindingFromXmlElement(mapXmlElementNames[0]);
 		}
-		valueOwner.setValue(valuePropertyName, collection);
-	}
+		Serializer valueSerializer = xmlBeanMetadata.getSerializerForClass(valueType);
+		BeanWrapper valueWrapper = null;
+		BeanClassBinding valueClassBinding = null;
+		if(valueSerializer != null) {
+			isSimpleValue = true;
+			valueWrapper = new BeanWrapper(valueHolderWrapperContext);
+		}
+		else {
+			valueClassBinding = xmlBeanMetadata.getBeanClassBindingFromXmlElement(mapXmlElementNames[1]);
+		}
 
-	private void deserializeSimpleType(JuffrouReader reader, Collection collection, Serializer serializer) {
-		String next = reader.getNodeName();
-		next = reader.enterNode(); // <value>
-		while(next != null) {
-			BeanWrapper valueHolderWrapper = new BeanWrapper(valueHolderWrapperContext);
-			serializer.deserialize(reader, valueHolderWrapper, "value");
-			collection.add(valueHolderWrapper.getValue("value"));
-			next = reader.next();
+		String nodeName = reader.enterNode(); // entry
+		while(nodeName != null) {
+			reader.enterNode();	// key
+			Object key;
+			if(isSimpleKey) {
+				keySerializer.deserialize(reader, keyWrapper, "value");
+				key = keyWrapper.getValue("value");
+			}
+			else {
+				keyWrapper = new BeanWrapper(keyClassBinding);
+				xmlBeanMetadata.getDefaultSerializer().deserializeBeanProperties(reader, keyWrapper);
+				key = keyWrapper.getBean();
+			}
+			reader.next();	// value
+			Object value;
+			if(isSimpleValue) {
+				valueSerializer.deserialize(reader, valueWrapper, "value");
+				value = valueWrapper.getValue("value");
+			}
+			else {
+				valueWrapper = new BeanWrapper(valueClassBinding);
+				xmlBeanMetadata.getDefaultSerializer().deserializeBeanProperties(reader, valueWrapper);
+				value = valueWrapper.getBean();
+			}
+			map.put(key, value);
+			reader.exitNode();	// entry
+			nodeName = reader.next();	// next entry
 		}
 		reader.exitNode();
+		
+		valueOwner.setValue(valuePropertyName, map);
 	}
-
-	private void deserializeBeanType(JuffrouReader reader, Collection collection) {
-		String next = reader.enterNode();
-		BeanClassBinding beanClassBinding = xmlBeanMetadata.getBeanClassBindingFromXmlElement(next);
-		reader.exitNode();
-		while(next != null) {
-			next = reader.enterNode();
-			BeanWrapper beanWrapper = new BeanWrapper(beanClassBinding);
-			xmlBeanMetadata.getDefaultSerializer().deserializeBeanProperties(reader, beanWrapper);
-			collection.add(beanWrapper.getBean());
-			reader.exitNode();
-			next= reader.next();
-		}
-
+	
+	private String[] getMapXmlElementNames(JuffrouReader reader) {
+		String[] xmlElementNames = new String[2];
+		reader.enterNode(); // entry
+		xmlElementNames[0] = reader.enterNode(); // key
+		xmlElementNames[1] = reader.next();	// value
+		reader.exitNode();	// entry
+		reader.exitNode();	// top
+		return xmlElementNames;
 	}
 }
