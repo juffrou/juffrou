@@ -2,9 +2,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.juffrou</groupId>
+		<groupId>net.sf.juffrou</groupId>
 		<artifactId>juffrou</artifactId>
 		<version>1.0.3-SNAPSHOT</version>
+		<relativePath>..</relativePath>
 	</parent>
 	<artifactId>juffrou-reflect</artifactId>
 	<name>Juffrou Reflect</name>
@@ -60,6 +61,19 @@
 					<docencoding>${project.build.sourceEncoding}</docencoding>
 					<excludePackageNames>com.googlecode.juffrou.util.reflect.internal.*</excludePackageNames>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>wagon-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>upload-to-sourceforge</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>upload</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

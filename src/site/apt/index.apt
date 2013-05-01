@@ -2,7 +2,9 @@ J.U.F.F.R.O.U.
 
  Juffrou stands for Java Utilities Framework For the Rest Of Us and is a collection of useful classes or mini frameworks to help the java developer.
 
- Checkout the juffrou-reflect module if you are into performant java bean hendling.
+ Checkout the juffrou-reflect module if you are into performant java bean handling.
+ 
+ There is also an xml marshaller / unmarshaller which is easy to use and has cool features.
  
  I have been developing on enterprise java application for many years always relying on the springframework / hibernate stack
  and built some utility classes along the way. I created Juffrou to share these utility classes/framework with the development community

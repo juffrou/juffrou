@@ -8,9 +8,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import net.sf.juffrou.xml.JuffrouXml;
+
 import org.juffrou.util.reflect.BeanWrapper;
 import org.juffrou.util.reflect.BeanWrapperContext;
-import org.juffrou.xml.JuffrouXml;
 import org.juffrou.xml.test.dom.Country;
 import org.juffrou.xml.test.dom.Person;
 import org.junit.Assert;

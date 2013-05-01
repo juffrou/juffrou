@@ -1,3 +1,7 @@
+Latest Release
+
+ You can download the latest release artifacts from the sourceforge downloads {{{http://sourceforge.net/projects/juffrou/files}page}}.
+ 
 Source Code
 
  Juffrou project is hosted on sourceforge at juffrou.sourceforge.net
@@ -13,8 +17,9 @@ Maven Artifacts
  
  If you have a maven project, you can add the dependency to your project:
  
- <<<\<groupId\>com.googlecode.juffrou\</groupId\>>>>
+ <<<\<groupId\>net.sf.juffrou\</groupId\>>>>
  
  <<<\<artifactId\>juffrou-reflect\<artifactId\>>>>
  
  <<<\<version\>${project.version}\<version\>>>>
+ 
