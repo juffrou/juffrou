@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Juffrou">
+<project xmlns="http://maven.apache.org/DECORATION/1.4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/DECORATION/1.4.0 http://maven.apache.org/xsd/decoration-1.4.0.xsd"
+  name="Juffrou">
 	<skin>
 		<groupId>org.apache.maven.skins</groupId>
 		<artifactId>maven-fluido-skin</artifactId>
@@ -7,11 +9,15 @@
 	</skin>
 	<bannerLeft>
 		<name>Juffrou</name>
-		<src>images/juffrou_logo.png</src>
+		<src>images/juffrou_extense.jpg</src>
 		<href>http://juffrou.sourceforge.net/</href>
+		<width>334</width>
+		<height>73</height>
 	</bannerLeft>
 	<bannerRight>
-		<src>images/juffrou_text.png</src>
+		<src>images/juffrou_text_new.jpg</src>
+		<width>140</width>
+		<height>73</height>
 	</bannerRight>
 	<publishDate position="left" />
 	<version position="left" />
@@ -21,6 +27,9 @@
 		</fluidoSkin>
 	</custom>
 	<body>
+		<head>
+			<link rel="shortcut icon" href="http://juffrou.sourceforge.net/favicon.ico" />
+		</head>
 		<links>
 			<item name="Sourceforge" href="http://sourceforge.net/p/juffrou/wiki/Home" />
 			<item name="Releases" href="https://oss.sonatype.org/content/groups/public/com/googlecode/juffrou" />
