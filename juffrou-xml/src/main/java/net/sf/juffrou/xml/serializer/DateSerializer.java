@@ -4,10 +4,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import net.sf.juffrou.util.reflect.BeanWrapper;
 import net.sf.juffrou.xml.internal.io.JuffrouReader;
 import net.sf.juffrou.xml.internal.io.JuffrouWriter;
-
-import org.juffrou.util.reflect.BeanWrapper;
 
 public class DateSerializer implements Serializer {
 

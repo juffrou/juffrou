@@ -13,7 +13,7 @@
 	
 	<dependencies>
 		<dependency>
-			<groupId>org.juffrou</groupId>
+			<groupId>net.sf.juffrou</groupId>
 			<artifactId>juffrou-reflect</artifactId>
 			<version>1.0.3-SNAPSHOT</version>
 		</dependency>

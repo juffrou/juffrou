@@ -127,8 +127,6 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 					<version>2.4.1</version>
 					<configuration>
 						<autoVersionSubmodules>true</autoVersionSubmodules>
-						<!-- <goals>deploy</goals> do not deploy the site (because of google 
-							hosting limitation) -->
 					</configuration>
 				</plugin>
 				<plugin>

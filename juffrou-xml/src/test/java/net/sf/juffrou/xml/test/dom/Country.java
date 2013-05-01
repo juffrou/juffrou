@@ -1,4 +1,4 @@
-package org.juffrou.xml.test.dom;
+package net.sf.juffrou.xml.test.dom;
 
 import java.util.Date;
 import java.util.List;

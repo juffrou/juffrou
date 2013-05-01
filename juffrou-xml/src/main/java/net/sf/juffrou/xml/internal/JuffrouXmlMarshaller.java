@@ -4,14 +4,13 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
+import net.sf.juffrou.util.reflect.BeanWrapper;
 import net.sf.juffrou.xml.JuffrouXmlException;
 import net.sf.juffrou.xml.internal.binding.BeanClassBinding;
 import net.sf.juffrou.xml.internal.io.JuffrouReader;
 import net.sf.juffrou.xml.internal.io.JuffrouWriter;
 import net.sf.juffrou.xml.internal.io.XmlReader;
 import net.sf.juffrou.xml.internal.io.XmlWriter;
-
-import org.juffrou.util.reflect.BeanWrapper;
 
 public class JuffrouXmlMarshaller {
 	

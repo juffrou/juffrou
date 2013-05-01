@@ -5,9 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.juffrou.util.reflect.BeanWrapperContext;
-import org.juffrou.util.reflect.ReflectionUtil;
-import org.juffrou.util.reflect.internal.BeanFieldHandler;
+import net.sf.juffrou.util.reflect.BeanWrapperContext;
+import net.sf.juffrou.util.reflect.ReflectionUtil;
+import net.sf.juffrou.util.reflect.internal.BeanFieldHandler;
 
 public class BeanClassBinding extends BeanWrapperContext {
 

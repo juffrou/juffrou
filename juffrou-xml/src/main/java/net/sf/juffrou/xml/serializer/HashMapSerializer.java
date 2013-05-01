@@ -5,15 +5,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.sf.juffrou.util.reflect.BeanWrapper;
+import net.sf.juffrou.util.reflect.BeanWrapperContext;
 import net.sf.juffrou.xml.error.NonParameterizedGenericType;
 import net.sf.juffrou.xml.internal.JuffrouBeanMetadata;
 import net.sf.juffrou.xml.internal.ValueHolder;
 import net.sf.juffrou.xml.internal.binding.BeanClassBinding;
 import net.sf.juffrou.xml.internal.io.JuffrouReader;
 import net.sf.juffrou.xml.internal.io.JuffrouWriter;
-
-import org.juffrou.util.reflect.BeanWrapper;
-import org.juffrou.util.reflect.BeanWrapperContext;
 
 public class HashMapSerializer implements Serializer {
 	

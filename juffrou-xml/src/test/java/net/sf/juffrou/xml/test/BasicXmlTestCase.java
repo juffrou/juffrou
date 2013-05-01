@@ -1,4 +1,4 @@
-package org.juffrou.xml.test;
+package net.sf.juffrou.xml.test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -8,12 +8,12 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import net.sf.juffrou.util.reflect.BeanWrapper;
+import net.sf.juffrou.util.reflect.BeanWrapperContext;
 import net.sf.juffrou.xml.JuffrouXml;
+import net.sf.juffrou.xml.test.dom.Country;
+import net.sf.juffrou.xml.test.dom.Person;
 
-import org.juffrou.util.reflect.BeanWrapper;
-import org.juffrou.util.reflect.BeanWrapperContext;
-import org.juffrou.xml.test.dom.Country;
-import org.juffrou.xml.test.dom.Person;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

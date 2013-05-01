@@ -2,9 +2,8 @@ package net.sf.juffrou.xml.internal.binding;
 
 import java.lang.reflect.Type;
 
+import net.sf.juffrou.util.reflect.BeanContextCreator;
 import net.sf.juffrou.xml.internal.JuffrouBeanMetadata;
-
-import org.juffrou.util.reflect.BeanContextCreator;
 
 public class XmlBeanWrapperContextCreator implements BeanContextCreator<BeanClassBinding> {
 

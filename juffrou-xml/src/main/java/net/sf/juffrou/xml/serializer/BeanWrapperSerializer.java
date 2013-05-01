@@ -2,13 +2,12 @@ package net.sf.juffrou.xml.serializer;
 
 import java.util.Collection;
 
+import net.sf.juffrou.util.reflect.BeanWrapper;
 import net.sf.juffrou.xml.internal.JuffrouBeanMetadata;
 import net.sf.juffrou.xml.internal.binding.BeanClassBinding;
 import net.sf.juffrou.xml.internal.binding.BeanPropertyBinding;
 import net.sf.juffrou.xml.internal.io.JuffrouReader;
 import net.sf.juffrou.xml.internal.io.JuffrouWriter;
-
-import org.juffrou.util.reflect.BeanWrapper;
 
 public class BeanWrapperSerializer implements Serializer {
 
