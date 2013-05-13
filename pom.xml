@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.sonatype.oss</groupId>
@@ -43,8 +44,8 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 		<connection>scm:git:ssh://cemartins@git.code.sf.net/p/juffrou/code</connection>
 		<developerConnection>scm:git:ssh://cemartins@git.code.sf.net/p/juffrou/code</developerConnection>
 		<url>scm:git:ssh://cemartins@git.code.sf.net/p/juffrou/code</url>
-	  <tag>HEAD</tag>
-  </scm>
+		<tag>HEAD</tag>
+	</scm>
 
 	<issueManagement>
 		<system>sourceforge</system>
@@ -97,6 +98,11 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-site-plugin</artifactId>
 					<version>3.2</version>
+					<configuration>
+						<chmod>true</chmod>
+						<inputEncoding>UTF-8</inputEncoding>
+						<outputEncoding>UTF-8</outputEncoding>
+					</configuration>
 					<dependencies>
 						<dependency><!-- add support for ssh/scp -->
 							<groupId>org.apache.maven.wagon</groupId>
@@ -168,6 +174,7 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 						<id>attach-descriptor</id>
 						<phase>pre-site</phase>
 						<goals>
+							<goal>render-books</goal>
 							<goal>attach-descriptor</goal>
 						</goals>
 					</execution>
@@ -225,6 +232,11 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 				</configuration>
 				<dependencies>
 					<dependency>
+						<groupId>org.apache.maven.doxia</groupId>
+						<artifactId>doxia-module-docbook-simple</artifactId>
+						<version>1.4</version>
+					</dependency>
+					<dependency>
 						<groupId>org.apache.maven.wagon</groupId>
 						<artifactId>wagon-scm</artifactId>
 						<version>2.4</version>
@@ -255,6 +267,42 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 						<version>1.8</version>
 					</dependency>
 				</dependencies>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.doxia</groupId>
+				<artifactId>doxia-book-maven-plugin</artifactId>
+				<version>1.2</version>
+				<executions>
+					<execution>
+						<phase>pre-site</phase>
+						<goals>
+							<goal>render-books</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<books>
+						<book>
+							<directory>content/books/example-book</directory>
+							<descriptor>content/books/example-book.xml</descriptor>
+							<formats>
+								<format>
+									<id>latex</id>
+								</format>
+								<format>
+									<id>xdoc</id>
+								</format>
+								<format>
+									<id>pdf</id>
+								</format>
+								<format>
+									<id>rtf</id>
+								</format>
+							</formats>
+						</book>
+					</books>
+				</configuration>
 			</plugin>
 
 		</plugins>
