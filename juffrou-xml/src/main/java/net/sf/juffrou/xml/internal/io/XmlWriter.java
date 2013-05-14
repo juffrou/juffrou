@@ -50,6 +50,10 @@ public class XmlWriter implements JuffrouWriter {
 		parentNode = grandParents.pop();
 	}
 	
+	public void setAttribute(String attributeName, String value) {
+		((Element)parentNode).setAttribute(attributeName, value);
+	}
+	
 	public void write(String value) {
 		parentNode.appendChild(doc.createTextNode(value));
 	}

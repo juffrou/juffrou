@@ -13,6 +13,7 @@
     <item name="Introduction" ref="index.apt"/>
     <item name="Reflection" ref="reflect-index.apt"/>
     <item name="XML" ref="xml-index.apt"/>
+    <item name="Manual" ref="reference-manual.xml"/>
     <!-- 
     <item name="Configuring Reports" ref="/examples/configuring-reports.xml.vm"/>
     <item name="Limitations" ref="limitations.apt"/>

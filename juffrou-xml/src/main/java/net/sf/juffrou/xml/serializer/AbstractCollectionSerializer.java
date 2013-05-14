@@ -23,6 +23,8 @@ public abstract class AbstractCollectionSerializer implements Serializer {
 
 	public void serialize(JuffrouWriter writer, BeanWrapper valueOwner, String valuePropertyName) {
 		Collection<?> collection = (Collection<?>) valueOwner.getValue(valuePropertyName);
+		if(xmlBeanMetadata.getPreferences().isCollectionWithSizeAttribute())
+			writer.setAttribute("size", String.valueOf(collection.size()));
 		if(collection.isEmpty())
 			return;
 		Object bean = collection.iterator().next();

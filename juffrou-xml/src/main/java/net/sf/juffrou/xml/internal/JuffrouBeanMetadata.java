@@ -15,6 +15,7 @@ import net.sf.juffrou.xml.NoImplementationClassException;
 import net.sf.juffrou.xml.UnknownXmlElementException;
 import net.sf.juffrou.xml.internal.binding.BeanClassBinding;
 import net.sf.juffrou.xml.internal.binding.XmlBeanWrapperContextCreator;
+import net.sf.juffrou.xml.internal.config.JuffrouXmlPreferences;
 import net.sf.juffrou.xml.serializer.ArrayListSerializer;
 import net.sf.juffrou.xml.serializer.BeanWrapperSerializer;
 import net.sf.juffrou.xml.serializer.BigDecimalSerializer;
@@ -38,15 +39,17 @@ import net.sf.juffrou.xml.serializer.StringSerializer;
 public class JuffrouBeanMetadata {
 
 	private XmlBeanWrapperContextCreator xmlBeanWrapperContextCreator;
-	private Map<Class<?>, BeanClassBinding> classToBindingMap = new HashMap<Class<?>, BeanClassBinding>();
-	private Map<String, BeanClassBinding> xmlElementNameToBindingMap = new HashMap<String, BeanClassBinding>();
-	private Map<Class<?>, Class<?>> defaultImplementations = new HashMap<Class<?>, Class<?>>();
-	private Map<Type, Serializer> generalSerializers = new HashMap<Type, Serializer>();
+	private final Map<Class<?>, BeanClassBinding> classToBindingMap = new HashMap<Class<?>, BeanClassBinding>();
+	private final Map<String, BeanClassBinding> xmlElementNameToBindingMap = new HashMap<String, BeanClassBinding>();
+	private final Map<Class<?>, Class<?>> defaultImplementations = new HashMap<Class<?>, Class<?>>();
+	private final Map<Type, Serializer> generalSerializers = new HashMap<Type, Serializer>();
 	private BeanWrapperSerializer defaultSerializer;
+	private JuffrouXmlPreferences preferences;
 	
 	public JuffrouBeanMetadata() {
 		defaultSerializer = new BeanWrapperSerializer(this);
 		xmlBeanWrapperContextCreator = new XmlBeanWrapperContextCreator(this);
+		preferences = new JuffrouXmlPreferences();
 		setDefaultImplementations();
 		setDefaultConverters();
 	}
@@ -89,6 +92,14 @@ public class JuffrouBeanMetadata {
 	}
 	public void setDefaultSerializer(BeanWrapperSerializer defaultSerializer) {
 		this.defaultSerializer = defaultSerializer;
+	}
+
+	public JuffrouXmlPreferences getPreferences() {
+		return preferences;
+	}
+
+	public void setPreferences(JuffrouXmlPreferences preferences) {
+		this.preferences = preferences;
 	}
 
 	private void setDefaultImplementations() {
