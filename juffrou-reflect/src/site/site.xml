@@ -7,7 +7,7 @@
 		</links>
 
 		<menu name="Juffrou Reflect">
-			<item name="Introduction" href="index.html" />
+			<item name="Introduction" href="reflect-index.html" />
 		</menu>
 		<!-- 
 		<menu name="My Inherited Menu" inherit="top">

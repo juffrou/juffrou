@@ -37,6 +37,7 @@
 
 		<menu name="Juffrou">
 			<item name="Introduction" href="index.html" />
+			<item name="Reference" href="reference-manual.html" />
 			<item name="Downloads" href="downloads.html" />
 			<item name="Release Notes" href="release-notes.html" />
 		</menu>

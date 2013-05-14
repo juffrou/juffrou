@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/DOCUMENT/1.0.1"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/DOCUMENT/1.0.1 http://maven.apache.org/xsd/document-1.0.1.xsd"
+  outputName="juffrou-reference">
+
+  <meta>
+    <title>Juffrou Reference</title>
+    <author>Carlos Martins</author>
+  </meta>
+
+  <toc name="Table of Contents">
+    <item name="Introduction" ref="index.apt"/>
+    <item name="Reflection" ref="reflect-index.apt"/>
+    <item name="XML" ref="xml-index.apt"/>
+    <!-- 
+    <item name="Configuring Reports" ref="/examples/configuring-reports.xml.vm"/>
+    <item name="Limitations" ref="limitations.apt"/>
+    <item name="FAQ" ref="faq.fml"/>
+     -->
+  </toc>
+
+  <cover>
+    <coverTitle>${project.name}</coverTitle>
+    <coverSubTitle>v. ${project.version}</coverSubTitle>
+    <coverType>Reference Manual</coverType>
+    <projectName>${project.name}</projectName>
+    <projectLogo>images/juffrou_text_new.jpg</projectLogo>
+    <companyName>Juffrou</companyName>
+    <companyLogo>images/juffrou_extense.jpg</companyLogo>
+  </cover>
+</document>
