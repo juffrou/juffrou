@@ -15,18 +15,27 @@ public class XmlBeanWrapperContextCreator implements BeanContextCreator<BeanClas
 	
 	@Override
 	public BeanClassBinding newBeanWrapperContext(Class clazz) {
-		BeanClassBinding xmlBeanWrapperContext = new BeanClassBinding(clazz);
-		xmlBeanWrapperContext.setBeanContextCreator(this);
-		juffrouBeanMetadata.putBeanClassBinding(xmlBeanWrapperContext);
-		return xmlBeanWrapperContext;
+		BeanClassBinding beanClassBinding = juffrouBeanMetadata.getBeanClassBindingFromClass(clazz);
+		if(beanClassBinding == null) {
+			beanClassBinding = new BeanClassBinding(clazz);
+			registerBeanClassBinding(beanClassBinding);
+		}
+		return beanClassBinding;
 	}
 
 	@Override
 	public BeanClassBinding newBeanWrapperContext(Class clazz, Type... types) {
-		BeanClassBinding xmlBeanWrapperContext = new BeanClassBinding(clazz, types);
+		BeanClassBinding beanClassBinding = juffrouBeanMetadata.getBeanClassBindingFromClass(clazz);
+		if(beanClassBinding == null) {
+			beanClassBinding = new BeanClassBinding(clazz, types);
+			registerBeanClassBinding(beanClassBinding);
+		}
+		return beanClassBinding;
+	}
+	
+	public void registerBeanClassBinding(BeanClassBinding xmlBeanWrapperContext) {
 		xmlBeanWrapperContext.setBeanContextCreator(this);
 		juffrouBeanMetadata.putBeanClassBinding(xmlBeanWrapperContext);
-		return xmlBeanWrapperContext;
 	}
 
 }

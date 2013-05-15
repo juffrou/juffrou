@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping>
+
+	<preferences>
+		<collectionWithSizeAttribute>true</collectionWithSizeAttribute>
+	</preferences>
+
+	<root-element type="net.sf.juffrou.xml.test.dom.Country">
+		<xml name="Country"></xml>
+		<serializer class="" />
+	</root-element>
+	
+	<root-element xml="Person" type="net.sf.juffrou.xml.test.dom.Person" />
+	
+</mapping>
