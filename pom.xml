@@ -38,6 +38,7 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 	<modules>
 		<module>juffrou-reflect</module>
 		<module>juffrou-xml</module>
+		<module>juffrou-assemble</module>
 	</modules>
 
 	<scm>
@@ -150,6 +151,11 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-deploy-plugin</artifactId>
 					<version>2.7</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>2.4</version>
 				</plugin>
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>

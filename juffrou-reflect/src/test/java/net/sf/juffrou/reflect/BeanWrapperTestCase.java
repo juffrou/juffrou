@@ -14,7 +14,7 @@ public class BeanWrapperTestCase {
 
 	@Test
 	public void testNestedBeanIntrospection() {
-		String[] expectedPropertyNames = new String[] {"lastName", "birthDay", "firstName", "specialization"};
+		String[] expectedPropertyNames = new String[] {"firstName", "lastName", "birthDay", "specialization"};
 		BeanWrapperContext context = new BeanWrapperContext(Programmer.class);
 		Programmer programmer = new Programmer();
 		BeanWrapper bw = new BeanWrapper(context, programmer);
