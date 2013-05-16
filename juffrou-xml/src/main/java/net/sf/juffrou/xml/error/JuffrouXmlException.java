@@ -1,4 +1,4 @@
-package net.sf.juffrou.xml;
+package net.sf.juffrou.xml.error;
 
 public class JuffrouXmlException extends RuntimeException {
 

@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.sf.juffrou.xml.NoImplementationClassException;
-import net.sf.juffrou.xml.UnknownXmlElementException;
+import net.sf.juffrou.xml.error.NoImplementationClassException;
+import net.sf.juffrou.xml.error.UnknownXmlElementException;
 import net.sf.juffrou.xml.internal.binding.BeanClassBinding;
 import net.sf.juffrou.xml.internal.binding.XmlBeanWrapperContextCreator;
 import net.sf.juffrou.xml.internal.config.JuffrouXmlPreferences;

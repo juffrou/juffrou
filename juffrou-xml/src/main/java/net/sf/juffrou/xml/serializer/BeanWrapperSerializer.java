@@ -3,6 +3,7 @@ package net.sf.juffrou.xml.serializer;
 import java.util.Collection;
 
 import net.sf.juffrou.util.reflect.BeanWrapper;
+import net.sf.juffrou.xml.error.UnknownXmlElementException;
 import net.sf.juffrou.xml.internal.JuffrouBeanMetadata;
 import net.sf.juffrou.xml.internal.binding.BeanClassBinding;
 import net.sf.juffrou.xml.internal.binding.BeanPropertyBinding;
@@ -57,6 +58,8 @@ public class BeanWrapperSerializer implements Serializer {
 		String xmlElementName = reader.enterNode();
 		while(xmlElementName != null) {
 			BeanPropertyBinding beanPropertyBinding = beanClassBinding.getBeanPropertiesToMarshall().get(xmlElementName);
+			if(beanPropertyBinding == null)
+				throw new UnknownXmlElementException("I do not know the element " + xmlElementName + " of the class " + instance.getBeanClass().getSimpleName());
 			Serializer converter = beanPropertyBinding.getConverter();
 			if(converter == null)
 				converter = xmlBeanMetadata.getSerializerForClass(beanPropertyBinding.getPropertyType());

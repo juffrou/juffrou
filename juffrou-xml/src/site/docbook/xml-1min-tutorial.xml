@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<article xmlns="http://docbook.org/ns/docbook" version="5.0">
+		<articleinfo>
+			<title>1 Minute Tutorial</title>
+			<author>
+				<firstname>Carlos</firstname>
+				<surname>Martins</surname>
+			</author>
+		</articleinfo>
+		<section>
+			<title>1 Minute Tutorial</title>
+			<para>Getting to work with juffrou-xml is very easy. This is how you get the XML representation of an object:</para>
+			<programlisting>
+ // create a java bean and fill up some of its properties
+ Country country = new Country();
+ ....
+ // instantiate Jufrou-xml
+ JuffrouXml juffrouXml = new JuffrouXml();
+ // marshall the bean into an XML string
+ String xmlString = juffrouXml.toXml(country);
+  			</programlisting>
+		<para>And the other way around is also straight forward:</para>
+			<programlisting>
+ Country country = (Country) juffrouXml.fromXml(xmlString);
+  			</programlisting>
+		</section>
+</article>

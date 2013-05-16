@@ -5,12 +5,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import net.sf.juffrou.util.reflect.BeanWrapperContext;
 import net.sf.juffrou.util.reflect.ReflectionUtil;
 import net.sf.juffrou.util.reflect.internal.BeanFieldHandler;
 
 public class BeanClassBinding extends BeanWrapperContext {
 
+	@XmlElement
 	private String xmlElementName;
 	private Map<String, BeanPropertyBinding> beanPropertiesToMarshall = new HashMap<String, BeanPropertyBinding>();
 	

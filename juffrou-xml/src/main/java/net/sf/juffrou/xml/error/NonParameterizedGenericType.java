@@ -1,6 +1,5 @@
 package net.sf.juffrou.xml.error;
 
-import net.sf.juffrou.xml.JuffrouXmlException;
 
 public class NonParameterizedGenericType extends JuffrouXmlException {
 

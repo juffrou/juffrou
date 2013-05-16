@@ -8,6 +8,7 @@
 
 		<menu name="Juffrou XML">
 			<item name="Introduction" href="xml-index.html" />
+			<item name="1 minute tutorial" href="xml-1min-tutorial.html" />
 		</menu>
 		<!-- 
 		<menu name="My Inherited Menu" inherit="top">

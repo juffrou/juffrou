@@ -6,8 +6,9 @@
 	</preferences>
 
 	<root-element type="net.sf.juffrou.xml.test.dom.Country">
-		<xml name="Country"></xml>
+		<xml id="Country"></xml>
 		<serializer class="" />
+		<element property="founded" xml="founded" type="java.util.Date" />
 	</root-element>
 	
 	<root-element xml="Person" type="net.sf.juffrou.xml.test.dom.Person" />

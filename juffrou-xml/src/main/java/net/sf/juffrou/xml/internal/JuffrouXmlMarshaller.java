@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
 import net.sf.juffrou.util.reflect.BeanWrapper;
-import net.sf.juffrou.xml.JuffrouXmlException;
+import net.sf.juffrou.xml.error.JuffrouXmlException;
 import net.sf.juffrou.xml.internal.binding.BeanClassBinding;
 import net.sf.juffrou.xml.internal.io.JuffrouReader;
 import net.sf.juffrou.xml.internal.io.JuffrouWriter;
