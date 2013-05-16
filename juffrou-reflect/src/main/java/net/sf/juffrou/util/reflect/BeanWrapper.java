@@ -3,12 +3,13 @@ package net.sf.juffrou.util.reflect;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import net.sf.juffrou.error.ReflectionException;
 import net.sf.juffrou.util.reflect.internal.BeanFieldHandler;
@@ -30,6 +31,7 @@ public class BeanWrapper {
 
 	private final BeanWrapperContext context;
 	private Object instance;
+	private final Map<String, BeanWrapper> nestedWrappers = new HashMap<String, BeanWrapper>();
 
 	/**
 	 * Construct a bean wrapper using the metadata and preferences of an existing BeanWrapperContext.<br>
@@ -105,8 +107,13 @@ public class BeanWrapper {
 			throw new InvalidParameterException("Bean must be of type " + context.getBeanClass().getSimpleName());
 		}
 		instance = bean;
+		
+		// update the wrappers
+		for(Entry<String, BeanWrapper> entry : nestedWrappers.entrySet()) {
+			entry.getValue().setBean(getValue(entry.getKey()));
+		}
 	}
-
+	
 	/**
 	 * Get the wrapped bean class
 	 * @return
@@ -121,14 +128,14 @@ public class BeanWrapper {
 	 * @return a Map where the keys are property names and the values are bean wrappers
 	 */
 	public Map<String, BeanWrapper> getNestedWrappers() {
-		return context.getNestedWrappers();
+		return nestedWrappers;
 	}
 	
 	/**
 	 * sets all properties to null in this instance and in all nested bean instances
 	 */
 	public void reset() {
-		for(BeanWrapper bw : context.getNestedWrappers().values()) {
+		for(BeanWrapper bw : nestedWrappers.values()) {
 			bw.reset();
 		}
 		if(context.isEagerInstatiation())
@@ -378,14 +385,10 @@ public class BeanWrapper {
 	 * @return
 	 */
 	public BeanWrapper getNestedWrapper(String thisProperty) {
-		BeanWrapper nestedWrapper = context.getNestedWrappers().get(thisProperty);
+		BeanWrapper nestedWrapper = nestedWrappers.get(thisProperty);
 		if (nestedWrapper == null) {
 			Type propertyType = getType(thisProperty);
-			BeanWrapperContext bwc;
-			if(propertyType instanceof ParameterizedType)
-				bwc = context.getBeanContextCreator().newBeanWrapperContext((Class<?>)((ParameterizedType) propertyType).getRawType(), ((ParameterizedType) propertyType).getActualTypeArguments());
-			else
-				bwc = context.getBeanContextCreator().newBeanWrapperContext((Class<?>) propertyType);
+			BeanWrapperContext bwc = context.getNestedContext(thisProperty);
 			
 			Object value = getValue(thisProperty);
 			if (value != null)
@@ -394,7 +397,7 @@ public class BeanWrapper {
 				nestedWrapper = new BeanWrapper(bwc);
 			
 			setValue(thisProperty, nestedWrapper.getBean());
-			context.getNestedWrappers().put(thisProperty, nestedWrapper);
+			nestedWrappers.put(thisProperty, nestedWrapper);
 		}
 		return nestedWrapper;
 	}

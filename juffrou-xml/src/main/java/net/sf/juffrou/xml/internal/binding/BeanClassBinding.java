@@ -1,11 +1,11 @@
 package net.sf.juffrou.xml.internal.binding;
 
 import java.lang.reflect.Type;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import javax.xml.bind.annotation.XmlElement;
 
 import net.sf.juffrou.util.reflect.BeanWrapperContext;
 import net.sf.juffrou.util.reflect.ReflectionUtil;
@@ -13,9 +13,15 @@ import net.sf.juffrou.util.reflect.internal.BeanFieldHandler;
 
 public class BeanClassBinding extends BeanWrapperContext {
 
-	@XmlElement
 	private String xmlElementName;
-	private Map<String, BeanPropertyBinding> beanPropertiesToMarshall = new HashMap<String, BeanPropertyBinding>();
+	/**
+	 * Map where keys are bean property names and values are bean property bindings
+	 */
+	private Map<String, BeanPropertyBinding> beanPropertiesToMarshall = new LinkedHashMap<String, BeanPropertyBinding>();
+	/**
+	 * Map where keys are xml element names and values are bean property bindings
+	 */
+	private Map<String, BeanPropertyBinding> xmlElementsToBeanProperties = new HashMap<String, BeanPropertyBinding>();
 	
 	public BeanClassBinding(Class<?> clazz) {
 		super(clazz);
@@ -32,9 +38,6 @@ public class BeanClassBinding extends BeanWrapperContext {
 	public void setXmlElementName(String xmlElementName) {
 		this.xmlElementName = xmlElementName;
 	}
-	public Map<String, BeanPropertyBinding> getBeanPropertiesToMarshall() {
-		return beanPropertiesToMarshall;
-	}
 	public Map<String, BeanPropertyBinding> setAllBeanPropertiesToMarshall() {
 		for(Entry<String, BeanFieldHandler> entry : getFields().entrySet()) {
 			String propertyName = entry.getKey();
@@ -48,6 +51,22 @@ public class BeanClassBinding extends BeanWrapperContext {
 	}
 	public void addBeanPropertyBinding(BeanPropertyBinding beanPropertyBinding) {
 		this.beanPropertiesToMarshall.put(beanPropertyBinding.getBeanPropertyName(), beanPropertyBinding);
+		this.xmlElementsToBeanProperties.put(beanPropertyBinding.getXmlElementName(), beanPropertyBinding);
 	}
 	
+	public Collection<BeanPropertyBinding> getPropertyBindings() {
+		return beanPropertiesToMarshall.values();
+	}
+	
+	public BeanPropertyBinding getBeanPropertyBindingFromPropertyName(String propertyName) {
+		return beanPropertiesToMarshall.get(propertyName);
+	}
+
+	public BeanPropertyBinding getBeanPropertyBindingFromXmlElement(String xmlElementName) {
+		return xmlElementsToBeanProperties.get(xmlElementName);
+	}
+
+	public boolean isEmpty() {
+		return beanPropertiesToMarshall.isEmpty();
+	}
 }

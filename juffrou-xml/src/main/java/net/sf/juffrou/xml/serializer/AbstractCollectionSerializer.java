@@ -94,7 +94,7 @@ public abstract class AbstractCollectionSerializer implements Serializer {
 			collection.add(beanWrapper.getBean());
 			next= reader.next();
 		}
-
+		reader.exitNode();
 	}
 	
 	protected abstract Collection<?> instantiateCollection();

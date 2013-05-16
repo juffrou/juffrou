@@ -7,7 +7,7 @@ public class BeanPropertyBinding {
 	private Class<?> propertyType;
 	private String beanPropertyName;
 	private String xmlElementName;
-	private Serializer converter;
+	private Serializer serializer;
 	
 	public Class<?> getPropertyType() {
 		return propertyType;
@@ -27,10 +27,10 @@ public class BeanPropertyBinding {
 	public void setXmlElementName(String xmlElementName) {
 		this.xmlElementName = xmlElementName;
 	}
-	public Serializer getConverter() {
-		return converter;
+	public Serializer getSerializer() {
+		return serializer;
 	}
-	public void setConverter(Serializer converter) {
-		this.converter = converter;
+	public void setSerializer(Serializer serializer) {
+		this.serializer = serializer;
 	}
 }

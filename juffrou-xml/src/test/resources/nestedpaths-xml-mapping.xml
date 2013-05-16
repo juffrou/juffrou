@@ -6,11 +6,10 @@
 	</preferences>
 
 	<root-element type="net.sf.juffrou.xml.test.dom.Country">
-		<xml id="Country"></xml>
-		<serializer class="" />
-		<element property="founded" xml="founded" type="java.util.Date" />
+		<xml id="Country" />
+		<element property="founded" xml="founded" />
 		<element property="name" />
-		<element property="president" />
+		<element property="president.firstName" xml="presidentName" />
 		<element property="provinces" />
 		<element property="people" />
 		<element property="partyLeaders" />

@@ -11,7 +11,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import net.sf.juffrou.xml.XmlElementType;
 import net.sf.juffrou.xml.error.NoImplementationClassException;
+import net.sf.juffrou.xml.error.NoSerializerException;
 import net.sf.juffrou.xml.error.UnknownXmlElementException;
 import net.sf.juffrou.xml.internal.binding.BeanClassBinding;
 import net.sf.juffrou.xml.internal.binding.XmlBeanWrapperContextCreator;
@@ -42,7 +44,8 @@ public class JuffrouBeanMetadata {
 	private final Map<Class<?>, BeanClassBinding> classToBindingMap = new HashMap<Class<?>, BeanClassBinding>();
 	private final Map<String, BeanClassBinding> xmlElementNameToBindingMap = new HashMap<String, BeanClassBinding>();
 	private final Map<Class<?>, Class<?>> defaultImplementations = new HashMap<Class<?>, Class<?>>();
-	private final Map<Type, Serializer> generalSerializers = new HashMap<Type, Serializer>();
+	private final Map<String, Serializer> serializerRegistry = new HashMap<String, Serializer>();
+	private final Map<Type, XmlElementType> classToSerializerRef = new HashMap<Type, XmlElementType>();
 	private BeanWrapperSerializer defaultSerializer;
 	private JuffrouXmlPreferences preferences;
 	
@@ -86,8 +89,15 @@ public class JuffrouBeanMetadata {
 			target = defaultImplementations.get(clazz);
 		if(target == null)
 			throw new NoImplementationClassException("I don't know which implementation of " + clazz.getSimpleName() + " to choose. Please add to the default implementations.");
-		Serializer converter = generalSerializers.get(target);
-		return converter;
+		XmlElementType xmlElementType = classToSerializerRef.get(target);
+		return xmlElementType != null ? getSerializerWithId(xmlElementType.xml()) : null;
+	}
+	
+	public Serializer getSerializerWithId(String serializerId) {
+		Serializer serializer = serializerRegistry.get(serializerId);
+		if(serializer == null)
+			throw new NoSerializerException("There is no serializer with id " + serializerId);
+		return serializer;
 	}
 	
 	public BeanWrapperSerializer getDefaultSerializer() {
@@ -112,22 +122,40 @@ public class JuffrouBeanMetadata {
 	}
 	
 	private void setDefaultConverters() {
-		generalSerializers.put(Boolean.class, new BooleanSerializer());
-		generalSerializers.put(Byte.class, new ByteSerializer());
-		generalSerializers.put(Character.class, new CharacterSerializer());
-		generalSerializers.put(Double.class, new DoubleSerializer());
-		generalSerializers.put(Float.class, new FloatSerializer());
-		generalSerializers.put(Integer.class, new IntegerSerializer());
-		generalSerializers.put(Long.class, new LongSerializer());
-		generalSerializers.put(Short.class, new ShortSerializer());
-		generalSerializers.put(String.class, new StringSerializer());
-		generalSerializers.put(BigInteger.class, new BigIntegerSerializer());
-		generalSerializers.put(BigDecimal.class, new BigDecimalSerializer());
-		generalSerializers.put(Date.class, new DateSerializer());
-		generalSerializers.put(Enum.class, new EnumSerializer());
-		
-		generalSerializers.put(ArrayList.class, new ArrayListSerializer(this));
-		generalSerializers.put(HashSet.class, new HashSetSerializer(this));
-		generalSerializers.put(HashMap.class, new HashMapSerializer(this));
+
+		classToSerializerRef.put(Boolean.class, XmlElementType.BOOLEAN);
+		classToSerializerRef.put(Byte.class, XmlElementType.BYTE);
+		classToSerializerRef.put(Character.class, XmlElementType.CHARACTER);
+		classToSerializerRef.put(Double.class, XmlElementType.DOUBLE);
+		classToSerializerRef.put(Float.class, XmlElementType.FLOAT);
+		classToSerializerRef.put(Integer.class, XmlElementType.INTEGER);
+		classToSerializerRef.put(Long.class, XmlElementType.LONG);
+		classToSerializerRef.put(Short.class, XmlElementType.SHORT);
+		classToSerializerRef.put(String.class, XmlElementType.STRING);
+		classToSerializerRef.put(BigInteger.class, XmlElementType.BIGINTEGER);
+		classToSerializerRef.put(BigDecimal.class, XmlElementType.BIGDECIMAL);
+		classToSerializerRef.put(Date.class, XmlElementType.DATE);
+		classToSerializerRef.put(Enum.class, XmlElementType.ENUM);
+		classToSerializerRef.put(ArrayList.class, XmlElementType.LIST);
+		classToSerializerRef.put(HashSet.class, XmlElementType.SET);
+		classToSerializerRef.put(HashMap.class, XmlElementType.MAP);
+
+		serializerRegistry.put(XmlElementType.BEAN.xml(), defaultSerializer);
+		serializerRegistry.put(XmlElementType.BOOLEAN.xml(), new BooleanSerializer());
+		serializerRegistry.put(XmlElementType.BYTE.xml(), new ByteSerializer());
+		serializerRegistry.put(XmlElementType.CHARACTER.xml(), new CharacterSerializer());
+		serializerRegistry.put(XmlElementType.DOUBLE.xml(), new DoubleSerializer());
+		serializerRegistry.put(XmlElementType.FLOAT.xml(), new FloatSerializer());
+		serializerRegistry.put(XmlElementType.INTEGER.xml(), new IntegerSerializer());
+		serializerRegistry.put(XmlElementType.LONG.xml(), new LongSerializer());
+		serializerRegistry.put(XmlElementType.SHORT.xml(), new ShortSerializer());
+		serializerRegistry.put(XmlElementType.STRING.xml(), new StringSerializer());
+		serializerRegistry.put(XmlElementType.BIGINTEGER.xml(), new BigIntegerSerializer());
+		serializerRegistry.put(XmlElementType.BIGDECIMAL.xml(), new BigDecimalSerializer());
+		serializerRegistry.put(XmlElementType.DATE.xml(), new DateSerializer());
+		serializerRegistry.put(XmlElementType.ENUM.xml(), new EnumSerializer());
+		serializerRegistry.put(XmlElementType.LIST.xml(), new ArrayListSerializer(this));
+		serializerRegistry.put(XmlElementType.SET.xml(), new HashSetSerializer(this));
+		serializerRegistry.put(XmlElementType.MAP.xml(), new HashMapSerializer(this));
 	}
 }

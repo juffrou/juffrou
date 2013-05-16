@@ -32,14 +32,14 @@ public class BeanWrapperSerializer implements Serializer {
 	
 	public void serializeBeanProperties(JuffrouWriter writer, BeanWrapper bw) {
 		BeanClassBinding beanClassBinding = (BeanClassBinding) bw.getContext();
-		if(beanClassBinding.getBeanPropertiesToMarshall().isEmpty())
+		if(beanClassBinding.isEmpty())
 			beanClassBinding.setAllBeanPropertiesToMarshall();
-		Collection<BeanPropertyBinding> propertiesToMarshall = beanClassBinding.getBeanPropertiesToMarshall().values();
+		Collection<BeanPropertyBinding> propertiesToMarshall = beanClassBinding.getPropertyBindings();
 		for(BeanPropertyBinding beanPropertyBinding : propertiesToMarshall) {
 			Object value = bw.getValue(beanPropertyBinding.getBeanPropertyName());
 			if(value != null) {
 				writer.startNode(beanPropertyBinding.getXmlElementName());
-				Serializer converter = beanPropertyBinding.getConverter();
+				Serializer converter = beanPropertyBinding.getSerializer();
 				if(converter == null)
 					converter = xmlBeanMetadata.getSerializerForClass(beanPropertyBinding.getPropertyType());
 				if(converter == null)
@@ -53,14 +53,14 @@ public class BeanWrapperSerializer implements Serializer {
 
 	public void deserializeBeanProperties(JuffrouReader reader, BeanWrapper instance) {
 		BeanClassBinding beanClassBinding = (BeanClassBinding) instance.getContext();
-		if(beanClassBinding.getBeanPropertiesToMarshall().isEmpty())
+		if(beanClassBinding.isEmpty())
 			beanClassBinding.setAllBeanPropertiesToMarshall();
 		String xmlElementName = reader.enterNode();
 		while(xmlElementName != null) {
-			BeanPropertyBinding beanPropertyBinding = beanClassBinding.getBeanPropertiesToMarshall().get(xmlElementName);
+			BeanPropertyBinding beanPropertyBinding = beanClassBinding.getBeanPropertyBindingFromXmlElement(xmlElementName);
 			if(beanPropertyBinding == null)
 				throw new UnknownXmlElementException("I do not know the element " + xmlElementName + " of the class " + instance.getBeanClass().getSimpleName());
-			Serializer converter = beanPropertyBinding.getConverter();
+			Serializer converter = beanPropertyBinding.getSerializer();
 			if(converter == null)
 				converter = xmlBeanMetadata.getSerializerForClass(beanPropertyBinding.getPropertyType());
 			if(converter == null)

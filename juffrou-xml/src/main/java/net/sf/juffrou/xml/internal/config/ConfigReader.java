@@ -11,12 +11,14 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import net.sf.juffrou.util.reflect.BeanWrapper;
+import net.sf.juffrou.util.reflect.BeanWrapperContext;
 import net.sf.juffrou.xml.error.JuffrouXmlException;
 import net.sf.juffrou.xml.error.XmlMappingReaderException;
 import net.sf.juffrou.xml.internal.JuffrouBeanMetadata;
 import net.sf.juffrou.xml.internal.binding.BeanClassBinding;
 import net.sf.juffrou.xml.internal.binding.BeanPropertyBinding;
 import net.sf.juffrou.xml.internal.config.protocols.classpath.Handler;
+import net.sf.juffrou.xml.serializer.Serializer;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -33,9 +35,11 @@ public class ConfigReader {
 	private static String PREFERENCES_NODENAME = "preferences";
 	private static String ROOT_ELEMENT_NODENAME = "root-element";
 	private static String ELEMENT_ELEMENT_NODENAME = "element";
+	private static String SERIALIZER_ELEMENT_NODENAME = "serializer";
 	private static String TYPE_ELEMENT_NODENAME = "type";
 	private static String XML_ELEMENT_NODENAME = "xml";
-	private static String NAME_ELEMENT_NODENAME = "name";
+	private static String REF_ELEMENT_NODENAME = "ref";
+	private static String CLASS_ELEMENT_NODENAME = "class";
 	private static String ID_ELEMENT_NODENAME = "id";
 	private static String PROPERTY_ELEMENT_NODENAME = "property";
 
@@ -126,10 +130,14 @@ public class ConfigReader {
 		// read tag content
 		currentNode = currentNode.getFirstChild();
 		while(currentNode != null) {
-			if(currentNode.getNodeName().equals(ELEMENT_ELEMENT_NODENAME))
-				processElement(metadata, xmlBeanWrapperContext, currentNode);
-			else if(currentNode.getNodeName().equals(XML_ELEMENT_NODENAME))
-				processRootElementXml(metadata, xmlBeanWrapperContext, currentNode);
+			if(currentNode.getNodeType() == Node.ELEMENT_NODE) {
+				if(currentNode.getNodeName().equals(ELEMENT_ELEMENT_NODENAME))
+					processElement(metadata, xmlBeanWrapperContext, currentNode);
+				else if(currentNode.getNodeName().equals(XML_ELEMENT_NODENAME))
+					processRootElementXml(metadata, xmlBeanWrapperContext, currentNode);
+				/*else if(currentNode.getNodeName().equals(SERIALIZER_ELEMENT_NODENAME))
+					xmlBeanWrapperContext.setSerializer(processSerializer(metadata, currentNode));*/
+			}
 			currentNode = currentNode.getNextSibling();
 		}
 		
@@ -173,8 +181,12 @@ public class ConfigReader {
 		// read tag content
 		currentNode = currentNode.getFirstChild();
 		while(currentNode != null) {
-			if(currentNode.getNodeName().equals(XML_ELEMENT_NODENAME))
-				processElementXml(metadata, propertyBinding, currentNode);
+			if(currentNode.getNodeType() == Node.ELEMENT_NODE) {
+				if(currentNode.getNodeName().equals(XML_ELEMENT_NODENAME))
+					processElementXml(metadata, propertyBinding, currentNode);
+				else if(currentNode.getNodeName().equals(SERIALIZER_ELEMENT_NODENAME))
+					propertyBinding.setSerializer(processSerializer(metadata, currentNode));
+			}
 			currentNode = currentNode.getNextSibling();
 		}
 
@@ -198,4 +210,37 @@ public class ConfigReader {
 		propertyBinding.setXmlElementName(attribute.getNodeValue());
 	}
 
+	private static Serializer processSerializer(JuffrouBeanMetadata metadata, Node currentNode) {
+		// read tag attributes
+		NamedNodeMap attributes = currentNode.getAttributes();
+		Node attribute = attributes.getNamedItem(REF_ELEMENT_NODENAME);
+		if(attribute != null)
+			return metadata.getSerializerWithId(attribute.getNodeValue());
+		
+		attribute = attributes.getNamedItem(CLASS_ELEMENT_NODENAME);
+		if(attribute == null)
+			throw new XmlMappingReaderException("Serializer must have a 'class' or 'ref' atribute");
+		
+		Class<?> clazz;
+		try {
+			clazz = Class.forName(attribute.getNodeValue());
+		} catch (ClassNotFoundException e) {
+			throw new XmlMappingReaderException(e);
+		}
+		
+		BeanWrapperContext bwContext = new BeanWrapperContext(clazz);
+		bwContext.setEagerInstatiation(true);
+		BeanWrapper serializerWrapper = new BeanWrapper(bwContext);
+
+		// read tag content
+		currentNode = currentNode.getFirstChild();
+		while(currentNode != null) {
+			if(currentNode.getNodeType() == Node.ELEMENT_NODE) {
+				serializerWrapper.setValueOfString(currentNode.getNodeName(), currentNode.getTextContent());
+			}
+			currentNode = currentNode.getNextSibling();
+		}
+		
+		return (Serializer) serializerWrapper.getBean();
+	}
 }

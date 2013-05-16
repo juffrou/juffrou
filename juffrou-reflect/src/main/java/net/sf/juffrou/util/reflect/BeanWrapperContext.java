@@ -2,10 +2,12 @@ package net.sf.juffrou.util.reflect;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import net.sf.juffrou.error.BeanInstanceCreatorException;
@@ -28,7 +30,7 @@ public class BeanWrapperContext {
 	private final Class clazz;
 	private final Map<TypeVariable<?>, Type> typeArgumentsMap;
 	private final Map<String, BeanFieldHandler> fields;
-	private final Map<String, BeanWrapper> nestesWrappers;
+	private final Map<String, BeanWrapperContext> nestedContexts;
 
 	// preferences info
 	private BeanInstanceCreator beanInstanceCreator;
@@ -57,9 +59,9 @@ public class BeanWrapperContext {
 			else
 				throw new ReflectionException(clazz.getSimpleName() + " has more parameterized types than those specified.");
 		}
-		this.fields = new HashMap<String, BeanFieldHandler>();
+		this.fields = new LinkedHashMap<String, BeanFieldHandler>();
 		initFieldInfo(this.clazz, this.fields);
-		this.nestesWrappers = new HashMap<String, BeanWrapper>();
+		this.nestedContexts = new HashMap<String, BeanWrapperContext>();
 		
 		beanInstanceCreator = new DefaultBeanInstanceCreator();
 		beanContextCreator = new DefaultBeanContextCreator();
@@ -75,6 +77,25 @@ public class BeanWrapperContext {
 			if( !Modifier.isStatic(f.getModifiers()) )
 				fs.put(f.getName(), new BeanFieldHandler(this, f));
 		}
+	}
+	
+	/**
+	 * Obtains the BeanWrapperContext that corresponds to the bean type of this property type.
+	 * @param thisProperty property name in this bean wrapper context (bean class). It must be of bean type.
+	 * @return
+	 */
+	public BeanWrapperContext getNestedContext(String thisProperty) {
+		BeanWrapperContext nestedContext = nestedContexts.get(thisProperty);
+		if (nestedContext == null) {
+			Type propertyType = getBeanFieldHandler(thisProperty).getType();
+			if(propertyType instanceof ParameterizedType)
+				nestedContext = beanContextCreator.newBeanWrapperContext((Class<?>)((ParameterizedType) propertyType).getRawType(), ((ParameterizedType) propertyType).getActualTypeArguments());
+			else
+				nestedContext = beanContextCreator.newBeanWrapperContext((Class<?>) propertyType);
+			
+			nestedContexts.put(thisProperty, nestedContext);
+		}
+		return nestedContext;
 	}
 
 	public BeanFieldHandler getBeanFieldHandler(String propertyName) {
@@ -100,15 +121,6 @@ public class BeanWrapperContext {
 		} catch (BeanInstanceCreatorException e) {
 			throw new ReflectionException(e);
 		}
-	}
-	
-	/**
-	 * Returns all the nested bean wrappers that have been created inside this bean wrapper.<br>
-	 * Nested bean wrappers are created when you access a nested property (i.e. getValue("prop1.prop2"))
-	 * @return a Map where the keys are property names and the values are bean wrappers
-	 */
-	public Map<String, BeanWrapper> getNestedWrappers() {
-		return nestesWrappers;
 	}
 	
 	public Map<String, BeanFieldHandler> getFields() {
