@@ -7,7 +7,9 @@
 
 	<root-element type="net.sf.juffrou.xml.test.dom.Country">
 		<xml id="Country" />
-		<element property="founded" xml="founded" />
+		<element property="founded" xml="founded">
+			<serializer ref="simpledate" />
+		</element>
 		<element property="name" />
 		<element property="president.firstName" xml="presidentName" />
 		<element property="provinces" />
@@ -15,6 +17,12 @@
 		<element property="partyLeaders" />
 	</root-element>
 	
-	<root-element xml="Person" type="net.sf.juffrou.xml.test.dom.Person" />
+	<root-element xml="Person" type="net.sf.juffrou.xml.test.dom.Person">
+		<element property="firstName" />
+		<element property="lastName" />
+		<element property="birthDay">
+			<serializer ref="simpledate" />
+		</element>
+	</root-element>
 	
 </mapping>

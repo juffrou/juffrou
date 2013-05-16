@@ -8,9 +8,9 @@ import net.sf.juffrou.util.reflect.BeanWrapper;
 import net.sf.juffrou.xml.internal.io.JuffrouReader;
 import net.sf.juffrou.xml.internal.io.JuffrouWriter;
 
-public class DateSerializer implements Serializer {
+public class SimpleDateSerializer implements Serializer {
 
-	private final SimpleDateFormat formatter = new SimpleDateFormat();
+	private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 	
 	@Override
 	public void serialize(JuffrouWriter writer, BeanWrapper valueOwner, String valuePropertyName) {

@@ -35,6 +35,7 @@ import net.sf.juffrou.xml.serializer.IntegerSerializer;
 import net.sf.juffrou.xml.serializer.LongSerializer;
 import net.sf.juffrou.xml.serializer.Serializer;
 import net.sf.juffrou.xml.serializer.ShortSerializer;
+import net.sf.juffrou.xml.serializer.SimpleDateSerializer;
 import net.sf.juffrou.xml.serializer.StringSerializer;
 
 
@@ -153,6 +154,7 @@ public class JuffrouBeanMetadata {
 		serializerRegistry.put(XmlElementType.BIGINTEGER.xml(), new BigIntegerSerializer());
 		serializerRegistry.put(XmlElementType.BIGDECIMAL.xml(), new BigDecimalSerializer());
 		serializerRegistry.put(XmlElementType.DATE.xml(), new DateSerializer());
+		serializerRegistry.put("simpledate", new SimpleDateSerializer());
 		serializerRegistry.put(XmlElementType.ENUM.xml(), new EnumSerializer());
 		serializerRegistry.put(XmlElementType.LIST.xml(), new ArrayListSerializer(this));
 		serializerRegistry.put(XmlElementType.SET.xml(), new HashSetSerializer(this));
