@@ -8,22 +8,27 @@
 		<format>zip</format>
 	</formats>
 	<includeBaseDirectory>false</includeBaseDirectory>
-	<fileSets>
-		<fileSet>
-			<includes>
-				<include>**/*-javadoc.jar</include>
-			</includes>
-			<outputDirectory>/</outputDirectory>
-		</fileSet>
-	</fileSets>
+	
+	<!-- "groupId:artifactId:type:version[:classifier]" -->
+	
 	<moduleSets>
 		<moduleSet>
 			<!-- Enable access to all projects in the current multimodule build! -->
 			<useAllReactorProjects>true</useAllReactorProjects>
 			<binaries>
-				<includeDependencies>false</includeDependencies>
+				<includeDependencies>true</includeDependencies>
 				<outputDirectory>/</outputDirectory>
 				<unpack>false</unpack>
+				<dependencySets>
+					<dependencySet>
+						<outputDirectory>/</outputDirectory>
+						<unpack>false</unpack>
+						<useStrictFiltering>false</useStrictFiltering>
+						<includes>
+							<include>*:*:jar:sources</include>
+						</includes>
+					</dependencySet>
+				</dependencySets>
 			</binaries>
 		</moduleSet>
 	</moduleSets>

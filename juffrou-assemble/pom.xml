@@ -11,6 +11,19 @@
 	<name>Juffrou Assemble</name>
 	<description>Assemble the files to distribute in sourceforge</description>
 	
+	<dependencies>
+		<dependency>
+			<groupId>net.sf.juffrou</groupId>
+			<artifactId>juffrou-reflect</artifactId>
+			<version>1.0.5-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.juffrou</groupId>
+			<artifactId>juffrou-xml</artifactId>
+			<version>1.0.5-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+	
 	<build>
 		<finalName>juffrou-${project.version}</finalName>
 		<plugins>
