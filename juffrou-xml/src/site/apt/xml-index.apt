@@ -1,2 +1,0 @@
- Juffrou-XML is a simple library to Marshall java beans to XML and back. It uses the bean wrapper and thus allows the easy mapping of nested values in the object graph to xml elements.
- Take a look at the javadocs to view the methods in detail:

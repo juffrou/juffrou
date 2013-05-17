@@ -1,7 +1,0 @@
-1 Minute Tutorial
-
-  Juffrou XML is very simple to use:
-  // create a java bean and fill up some of its properties
-  Country country = new Country();
-  ....	
-  String xmlString = juffrouXml.toXml(country);

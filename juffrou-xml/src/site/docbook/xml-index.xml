@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<article xmlns="http://docbook.org/ns/docbook" version="5.0">
+<articleinfo>
+		<title>Introduction</title>
+		<author>
+			<firstname>Carlos</firstname>
+			<surname>Martins</surname>
+		</author>
+</articleinfo>
+<section><title>Introduction</title>
+<para>Juffrou-XML is a simple library to Marshall java beans to XML and back. It uses the bean wrapper and thus allows for the simplified marshalling of an object graph to xml elements.</para>
+<para>Take a look at the Three minute tutorial and the javadocs to view the methods in detail.</para>
+<section><title>Features</title>
+<itemizedlist mark="disc">
+<listitem>Ease of use - can start using without any configuration</listitem>
+<listitem override="circle">Simplified marshalling - reference nested properties easily</listitem>
+<listitem>Tweaks and configuration can be done by mapping file and programatically</listitem>
+<listitem>Highly configurable - custom serializers are easy to implement</listitem>
+</itemizedlist>
+</section>
+<section><title>Use cases</title>
+<itemizedlist mark="disc">
+<listitem>Web services</listitem>
+<listitem>System integration</listitem>
+<listitem>Configuration</listitem>
+</itemizedlist>
+</section>
+</section>
+</article>

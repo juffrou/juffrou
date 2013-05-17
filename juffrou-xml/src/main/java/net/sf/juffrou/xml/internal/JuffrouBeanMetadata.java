@@ -11,11 +11,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import net.sf.juffrou.util.reflect.ReflectionUtil;
 import net.sf.juffrou.xml.XmlElementType;
 import net.sf.juffrou.xml.error.NoImplementationClassException;
 import net.sf.juffrou.xml.error.NoSerializerException;
 import net.sf.juffrou.xml.error.UnknownXmlElementException;
 import net.sf.juffrou.xml.internal.binding.BeanClassBinding;
+import net.sf.juffrou.xml.internal.binding.BeanPropertyBinding;
 import net.sf.juffrou.xml.internal.binding.XmlBeanWrapperContextCreator;
 import net.sf.juffrou.xml.internal.config.JuffrouXmlPreferences;
 import net.sf.juffrou.xml.serializer.ArrayListSerializer;
@@ -35,7 +37,6 @@ import net.sf.juffrou.xml.serializer.IntegerSerializer;
 import net.sf.juffrou.xml.serializer.LongSerializer;
 import net.sf.juffrou.xml.serializer.Serializer;
 import net.sf.juffrou.xml.serializer.ShortSerializer;
-import net.sf.juffrou.xml.serializer.SimpleDateSerializer;
 import net.sf.juffrou.xml.serializer.StringSerializer;
 
 
@@ -82,6 +83,63 @@ public class JuffrouBeanMetadata {
 	public void putBeanClassBinding(BeanClassBinding beanClassBinding) {
 		classToBindingMap.put(beanClassBinding.getBeanClass(), beanClassBinding);
 		xmlElementNameToBindingMap.put(beanClassBinding.getXmlElementName(), beanClassBinding);
+	}
+	
+	/**
+	 * Registers a bean with juffrou serializer and defines the name to use in tags representing this bean
+	 * @param beanClazz the class of the java bean
+	 * @param elementName the xml element name to use
+	 */
+	public void registerRootElement(Class beanClazz, String elementName) {
+		BeanClassBinding beanClassBinding = getBeanClassBindingFromClass(beanClazz);
+		if(beanClassBinding != null) {
+			//remove old registration
+			classToBindingMap.remove(beanClazz);
+			xmlElementNameToBindingMap.remove(beanClassBinding.getXmlElementName());
+		}
+		else {
+			beanClassBinding = new BeanClassBinding(beanClazz);
+			beanClassBinding.setBeanContextCreator(xmlBeanWrapperContextCreator);
+		}
+		beanClassBinding.setXmlElementName(elementName);
+		classToBindingMap.put(beanClazz, beanClassBinding);
+		xmlElementNameToBindingMap.put(elementName, beanClassBinding);
+	}
+	
+	public void registerProperty(Class beanClazz, String beanPropertyName, String elementName, String serializerId) {
+		BeanClassBinding beanClassBinding = getBeanClassBindingFromClass(beanClazz);
+		if(beanClassBinding.isEmpty())
+			beanClassBinding.setAllBeanPropertiesToMarshall();
+
+		BeanPropertyBinding beanPropertyBinding;
+		
+		// test if the beanPropertyName references a nested property
+		int nestedIndex = beanPropertyName.indexOf('.');
+		if(nestedIndex != -1 ) {
+			String thisProperty = beanPropertyName.substring(0, nestedIndex);
+			beanPropertyBinding = beanClassBinding.getBeanPropertyBindingFromPropertyName(thisProperty);
+			if(elementName == null)
+				elementName = beanPropertyBinding.getXmlElementName();
+			beanClassBinding.removeBeanPropertyBinding(beanPropertyBinding);
+			
+			beanPropertyBinding = new BeanPropertyBinding();
+			beanPropertyBinding.setBeanPropertyName(beanPropertyName);
+			beanPropertyBinding.setXmlElementName(elementName);
+			beanPropertyBinding.setPropertyType(ReflectionUtil.getClass(beanClassBinding.getType(beanPropertyName)));
+			beanClassBinding.addBeanPropertyBinding(beanPropertyBinding);
+
+		}
+		else {
+			beanPropertyBinding = beanClassBinding.getBeanPropertyBindingFromPropertyName(beanPropertyName);
+			if(elementName != null && ! elementName.equals(beanPropertyBinding.getXmlElementName()))
+				beanClassBinding.replaceBeanPropertyElementName(beanPropertyBinding, elementName);
+		}
+		if(serializerId != null)
+			beanPropertyBinding.setSerializer(getSerializerWithId(serializerId));
+	}
+
+	public void registerSerializer(String serializerId, Serializer serializer) {
+		serializerRegistry.put(serializerId, serializer);
 	}
 	
 	public Serializer getSerializerForClass(Class<?> clazz) {
@@ -154,7 +212,6 @@ public class JuffrouBeanMetadata {
 		serializerRegistry.put(XmlElementType.BIGINTEGER.xml(), new BigIntegerSerializer());
 		serializerRegistry.put(XmlElementType.BIGDECIMAL.xml(), new BigDecimalSerializer());
 		serializerRegistry.put(XmlElementType.DATE.xml(), new DateSerializer());
-		serializerRegistry.put("simpledate", new SimpleDateSerializer());
 		serializerRegistry.put(XmlElementType.ENUM.xml(), new EnumSerializer());
 		serializerRegistry.put(XmlElementType.LIST.xml(), new ArrayListSerializer(this));
 		serializerRegistry.put(XmlElementType.SET.xml(), new HashSetSerializer(this));

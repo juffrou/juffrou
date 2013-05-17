@@ -53,6 +53,15 @@ public class BeanClassBinding extends BeanWrapperContext {
 		this.beanPropertiesToMarshall.put(beanPropertyBinding.getBeanPropertyName(), beanPropertyBinding);
 		this.xmlElementsToBeanProperties.put(beanPropertyBinding.getXmlElementName(), beanPropertyBinding);
 	}
+	public void replaceBeanPropertyElementName(BeanPropertyBinding beanPropertyBinding, String xmlElementName) {
+		this.xmlElementsToBeanProperties.remove(beanPropertyBinding.getXmlElementName());
+		beanPropertyBinding.setXmlElementName(xmlElementName);
+		this.xmlElementsToBeanProperties.put(xmlElementName, beanPropertyBinding);
+	}
+	public void removeBeanPropertyBinding(BeanPropertyBinding beanPropertyBinding) {
+		this.beanPropertiesToMarshall.remove(beanPropertyBinding.getBeanPropertyName());
+		this.xmlElementsToBeanProperties.remove(beanPropertyBinding.getXmlElementName());
+	}
 	
 	public Collection<BeanPropertyBinding> getPropertyBindings() {
 		return beanPropertiesToMarshall.values();

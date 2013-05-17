@@ -108,6 +108,30 @@ public class BeanWrapperContext {
 	}
 
 	/**
+	 * Gets the type of a property in the wrapped bean. If that property references another bean (a nested bean) Its
+	 * property types can also be obtained by specifying a property path.<br>
+	 * For example <code>getType("pro1.prop2")</code> will get the type of prop2 from the nested bean referenced by
+	 * prop1.<br>
+	 * For each nested bean referenced in this manner, a nested bean wrapper is automatically created. In the previous
+	 * example, a bean wrapper would be created for the bean referenced by property prop1.<br>
+	 * 
+	 * @param propertyName
+	 * @return
+	 */
+	public Type getType(String propertyName) {
+		int nestedIndex = propertyName.indexOf('.');
+		if (nestedIndex == -1) {
+			return getBeanFieldHandler(propertyName).getType();
+		} else {
+			// its a nested property
+			String thisProperty = propertyName.substring(0, nestedIndex);
+			String nestedProperty = propertyName.substring(nestedIndex + 1);
+			BeanWrapperContext nestedContext = getNestedContext(thisProperty);
+			return nestedContext.getType(nestedProperty);
+		}
+	}
+
+	/**
 	 * Get the wrapped bean class
 	 * @return
 	 */

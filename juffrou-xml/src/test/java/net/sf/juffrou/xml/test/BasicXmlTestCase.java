@@ -9,8 +9,10 @@ import java.util.Map;
 import java.util.Set;
 
 import net.sf.juffrou.xml.JuffrouXml;
+import net.sf.juffrou.xml.test.dom.Address;
 import net.sf.juffrou.xml.test.dom.Country;
 import net.sf.juffrou.xml.test.dom.Person;
+import net.sf.juffrou.xml.test.dom.SimpleDateSerializer;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -20,13 +22,10 @@ import com.thoughtworks.xstream.XStream;
 
 public class BasicXmlTestCase {
 	
-	private JuffrouXml juffrouXml;
 	private Country country;
 	
 	@Before
 	public void setup() {
-		
-		juffrouXml = new JuffrouXml();
 		
 		country = new Country();
 		try {
@@ -76,6 +75,8 @@ public class BasicXmlTestCase {
 			e.printStackTrace();
 		}
 
+		JuffrouXml juffrouXml = new JuffrouXml();
+		
 		String xmlString = juffrouXml.toXml(person);
 		System.out.println(xmlString);
 		Object object = juffrouXml.fromXml(xmlString);
@@ -86,7 +87,92 @@ public class BasicXmlTestCase {
 	}
 	
 	@Test
+	public void testTwoClassesRoundTrip() {
+		
+		Person person = new Person();
+		person.setFirstName("Carlos");
+		person.setLastName("Martins");
+		try {
+			person.setBirthDay(new SimpleDateFormat("yyyy-MM-dd").parse("1967-10-01"));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		Address address = new Address();
+		address.setStreet("Bean street, No 1");
+		address.setCity("Lisboa");
+		
+		person.setHome(address);
+		
+		JuffrouXml juffrouXml = new JuffrouXml();
+		
+		String xmlString = juffrouXml.toXml(person);
+		System.out.println(xmlString);
+
+	}
+
+	@Test
+	public void testRegisterElement() {
+		
+		Person person = new Person();
+		person.setFirstName("Carlos");
+		person.setLastName("Martins");
+		try {
+			person.setBirthDay(new SimpleDateFormat("yyyy-MM-dd").parse("1967-10-01"));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		Address address = new Address();
+		address.setStreet("Bean street, No 1");
+		address.setCity("Lisboa");
+		
+		person.setHome(address);
+		
+		JuffrouXml juffrouXml = new JuffrouXml();
+		juffrouXml.registerRootElement(Person.class, "Person");
+		juffrouXml.registerSerializer("simpledate", new SimpleDateSerializer());
+		juffrouXml.registerElement(Person.class, "birthDay", "birthDay", "simpledate");
+		
+		String xmlString = juffrouXml.toXml(person);
+		System.out.println(xmlString);
+
+	}
+
+	@Test
+	public void testNestedProperty() {
+		
+		Person person = new Person();
+		person.setFirstName("Carlos");
+		person.setLastName("Martins");
+		try {
+			person.setBirthDay(new SimpleDateFormat("yyyy-MM-dd").parse("1967-10-01"));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		Address address = new Address();
+		address.setStreet("Bean street, No 1");
+		address.setCity("Lisboa");
+		
+		person.setHome(address);
+		
+		JuffrouXml juffrouXml = new JuffrouXml();
+		juffrouXml.registerRootElement(Person.class, "Person");
+		juffrouXml.registerElement(Person.class, "home.city", "homeTown", null);
+		
+		String xmlString = juffrouXml.toXml(person);
+		System.out.println(xmlString);
+
+	}
+
+	@Test
 	public void testMarshallCountry() {
+		JuffrouXml juffrouXml = new JuffrouXml();
+		
 		String xmlString = juffrouXml.toXml(country);
 		System.out.println(xmlString);
 	}
@@ -102,6 +188,8 @@ public class BasicXmlTestCase {
 	@Test
 	public void unmarshalCountry() {
 
+		JuffrouXml juffrouXml = new JuffrouXml();
+		
 		String xml = juffrouXml.toXml(country);
 		
 		Object object = juffrouXml.fromXml(xml);

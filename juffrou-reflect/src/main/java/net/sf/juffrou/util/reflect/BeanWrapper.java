@@ -243,16 +243,7 @@ public class BeanWrapper {
 	 * @return
 	 */
 	public Type getType(String propertyName) {
-		int nestedIndex = propertyName.indexOf('.');
-		if (nestedIndex == -1) {
-			return context.getBeanFieldHandler(propertyName).getType();
-		} else {
-			// its a nested property
-			String thisProperty = propertyName.substring(0, nestedIndex);
-			String nestedProperty = propertyName.substring(nestedIndex + 1);
-			BeanWrapper nestedWrapper = getNestedWrapper(thisProperty);
-			return nestedWrapper.getType(nestedProperty);
-		}
+		return context.getType(propertyName);
 	}
 
 	/**
