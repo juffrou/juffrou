@@ -8,7 +8,7 @@
 	</parent>
 	<artifactId>juffrou-xml</artifactId>
 	<name>Juffrou XML</name>
-	<description>Juffrou XML is a simple library to Marshall java beans to XML and back.</description>
+	<description>Juffrou XML is simplified marshaling for java beans into XML and back.</description>
 	
 	<dependencies>
 		<dependency>

@@ -7,7 +7,7 @@
 		</links>
 
 		<menu name="Juffrou XML">
-			<item name="Introduction" href="xml-index.html" />
+			<item name="Introduction" href="index.html" />
 			<item name="Three minute tutorial" href="xml-min-tutorial.html" />
 		</menu>
 		<!-- 

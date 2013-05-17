@@ -12,6 +12,7 @@
 	<description>Assemble the files to distribute in sourceforge</description>
 	
 	<build>
+		<finalName>juffrou-${project.version}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

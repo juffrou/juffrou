@@ -136,7 +136,12 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-project-info-reports-plugin</artifactId>
-					<version>2.6</version>
+					<version>2.7</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-changes-plugin</artifactId>
+					<version>2.9</version>
 				</plugin>
 				<plugin>
 					<!-- Configuration for the realease plugin -->
@@ -204,6 +209,7 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 								<resource>
 									<directory>juffrou-reflect/src/site</directory>
 									<excludes>
+										<exclude>**/index.*</exclude>
 										<exclude>site.xml</exclude>
 									</excludes>
 								</resource>
@@ -326,6 +332,11 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 				</dependencies>
 			</plugin>
 
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-changes-plugin</artifactId>
+			</plugin>
+			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-pdf-plugin</artifactId>
