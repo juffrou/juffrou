@@ -6,7 +6,6 @@
 	<serializer id="simpledate" class="net.sf.juffrou.xml.test.dom.SimpleDateSerializer"/>
 	<root-element type="net.sf.juffrou.xml.test.dom.Country">
 		<xml id="Country"/>
-		<serializer class=""/>
 		<element property="founded" xml="founded" type="java.util.Date"/>
 		<element property="name"/>
 		<element property="president"/>

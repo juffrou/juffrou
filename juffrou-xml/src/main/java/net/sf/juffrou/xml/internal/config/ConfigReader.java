@@ -233,7 +233,7 @@ public class ConfigReader {
 		try {
 			clazz = Class.forName(attribute.getNodeValue());
 		} catch (ClassNotFoundException e) {
-			throw new XmlMappingReaderException(e);
+			throw new XmlMappingReaderException("Serializer class not found " + attribute.getNodeValue(), e);
 		}
 		
 		BeanWrapperContext bwContext = new BeanWrapperContext(clazz);

@@ -5,6 +5,8 @@
 		<collectionWithSizeAttribute>true</collectionWithSizeAttribute>
 	</preferences>
 
+	<serializer id="simpledate" class="net.sf.juffrou.xml.test.dom.SimpleDateSerializer"/>
+
 	<root-element type="net.sf.juffrou.xml.test.dom.Country">
 		<xml id="Country" />
 		<element property="founded" xml="founded">

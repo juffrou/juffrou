@@ -70,20 +70,6 @@ public class MappingFileReaderTestCase {
 	}
 
 	@Test
-	public void testUnmarshallXml() {
-		JuffrouXml juffrouXml = new JuffrouXml("classpath:juffrou-xml-mapping.xml");
-		
-		Object object = juffrouXml.fromXml(COUNTRY_XML);
-		Assert.assertTrue(object instanceof Country);
-		Country unmarshalledCountry = (Country) object;
-		Assert.assertEquals(country.getName(), unmarshalledCountry.getName());
-		Assert.assertEquals(country.getFounded(), unmarshalledCountry.getFounded());
-		Assert.assertEquals(country.getPartyLeaders().size(), unmarshalledCountry.getPartyLeaders().size());
-		Assert.assertEquals(country.getPeople().size(), unmarshalledCountry.getPeople().size());
-		Assert.assertEquals(country.getProvinces().size(), unmarshalledCountry.getProvinces().size());
-	}
-	
-	@Test
 	public void testNestedPathsRoundTrip() {
 		JuffrouXml juffrouXml = new JuffrouXml("classpath:nestedpaths-xml-mapping.xml");
 		String xmlString = juffrouXml.toXml(country);

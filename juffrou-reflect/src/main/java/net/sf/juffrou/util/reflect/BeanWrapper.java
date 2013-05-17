@@ -103,7 +103,7 @@ public class BeanWrapper {
 	 * @throws InvalidParameterException if the new bean is not of the same type of the initially wrapped bean.
 	 */
 	public void setBean(Object bean) {
-		if(! context.getBeanClass().equals(bean.getClass())) {
+		if(bean != null && ! context.getBeanClass().equals(bean.getClass())) {
 			throw new InvalidParameterException("Bean must be of type " + context.getBeanClass().getSimpleName());
 		}
 		instance = bean;
