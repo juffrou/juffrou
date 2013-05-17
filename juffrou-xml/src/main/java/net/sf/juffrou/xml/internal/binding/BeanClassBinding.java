@@ -10,10 +10,12 @@ import java.util.Map.Entry;
 import net.sf.juffrou.util.reflect.BeanWrapperContext;
 import net.sf.juffrou.util.reflect.ReflectionUtil;
 import net.sf.juffrou.util.reflect.internal.BeanFieldHandler;
+import net.sf.juffrou.xml.serializer.Serializer;
 
 public class BeanClassBinding extends BeanWrapperContext {
 
 	private String xmlElementName;
+	private Serializer serializer;
 	/**
 	 * Map where keys are bean property names and values are bean property bindings
 	 */
@@ -37,6 +39,12 @@ public class BeanClassBinding extends BeanWrapperContext {
 	}
 	public void setXmlElementName(String xmlElementName) {
 		this.xmlElementName = xmlElementName;
+	}
+	public Serializer getSerializer() {
+		return serializer;
+	}
+	public void setSerializer(Serializer serializer) {
+		this.serializer = serializer;
 	}
 	public Map<String, BeanPropertyBinding> setAllBeanPropertiesToMarshall() {
 		for(Entry<String, BeanFieldHandler> entry : getFields().entrySet()) {

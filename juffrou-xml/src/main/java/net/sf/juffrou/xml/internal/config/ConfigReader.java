@@ -83,6 +83,8 @@ public class ConfigReader {
 			if(currentNode.getNodeType() == Node.ELEMENT_NODE) {
 				if(currentNode.getNodeName().equals(ROOT_ELEMENT_NODENAME))
 					processRootElement(metadata, currentNode);
+				else if(currentNode.getNodeName().equals(SERIALIZER_ELEMENT_NODENAME))
+					processSerializer(metadata, currentNode);
 				else if(currentNode.getNodeName().equals(PREFERENCES_NODENAME))
 					processPreferences(metadata, currentNode);
 			}
@@ -135,8 +137,8 @@ public class ConfigReader {
 					processElement(metadata, xmlBeanWrapperContext, currentNode);
 				else if(currentNode.getNodeName().equals(XML_ELEMENT_NODENAME))
 					processRootElementXml(metadata, xmlBeanWrapperContext, currentNode);
-				/*else if(currentNode.getNodeName().equals(SERIALIZER_ELEMENT_NODENAME))
-					xmlBeanWrapperContext.setSerializer(processSerializer(metadata, currentNode));*/
+				else if(currentNode.getNodeName().equals(SERIALIZER_ELEMENT_NODENAME))
+					xmlBeanWrapperContext.setSerializer(processSerializer(metadata, currentNode));
 			}
 			currentNode = currentNode.getNextSibling();
 		}
@@ -212,11 +214,17 @@ public class ConfigReader {
 
 	private static Serializer processSerializer(JuffrouBeanMetadata metadata, Node currentNode) {
 		// read tag attributes
+		String serializerId = null;
 		NamedNodeMap attributes = currentNode.getAttributes();
+
 		Node attribute = attributes.getNamedItem(REF_ELEMENT_NODENAME);
 		if(attribute != null)
 			return metadata.getSerializerWithId(attribute.getNodeValue());
-		
+
+		attribute = attributes.getNamedItem(ID_ELEMENT_NODENAME);
+		if(attribute != null)
+			serializerId = attribute.getNodeValue();
+
 		attribute = attributes.getNamedItem(CLASS_ELEMENT_NODENAME);
 		if(attribute == null)
 			throw new XmlMappingReaderException("Serializer must have a 'class' or 'ref' atribute");
@@ -241,6 +249,11 @@ public class ConfigReader {
 			currentNode = currentNode.getNextSibling();
 		}
 		
-		return (Serializer) serializerWrapper.getBean();
+		Serializer serializer = (Serializer) serializerWrapper.getBean();
+		
+		if(serializerId != null)
+			metadata.registerSerializer(serializerId, serializer);
+		
+		return serializer;
 	}
 }

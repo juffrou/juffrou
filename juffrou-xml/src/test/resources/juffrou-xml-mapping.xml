@@ -1,32 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mapping>
-
+<mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="file://juffrou-xml.xsd">
 	<preferences>
 		<collectionWithSizeAttribute>true</collectionWithSizeAttribute>
 	</preferences>
-
-	<serializer id="simpledate" class="net.sf.juffrou.xml.test.dom.SimpleDateSerializer" />
-	
+	<serializer id="simpledate" class="net.sf.juffrou.xml.test.dom.SimpleDateSerializer"/>
 	<root-element type="net.sf.juffrou.xml.test.dom.Country">
-		<xml id="Country"></xml>
-		<serializer class="" />
-		<element property="founded" xml="founded" type="java.util.Date" />
-		<element property="name" />
-		<element property="president" />
-		<element property="provinces" />
-		<element property="people" />
-		<element property="partyLeaders" />
+		<xml id="Country"/>
+		<serializer class=""/>
+		<element property="founded" xml="founded" type="java.util.Date"/>
+		<element property="name"/>
+		<element property="president"/>
+		<element property="provinces"/>
+		<element property="people"/>
+		<element property="partyLeaders"/>
 	</root-element>
-	
 	<root-element xml="Person" type="net.sf.juffrou.xml.test.dom.Person">
-		<element property="firstName" />
-		<element property="lastName" />
+		<element property="firstName"/>
+		<element property="lastName"/>
 		<element property="birthDay">
-			<serializer ref="simpledate" />
+			<serializer ref="simpledate"/>
 		</element>
-		<element property="home.city" xml="homeTown" />
+		<element property="home.city" xml="homeTown"/>
 	</root-element>
-	
-	<root-element xml="Person" type="net.sf.juffrou.xml.test.dom.Address" />
-	
+	<root-element xml="Person" type="net.sf.juffrou.xml.test.dom.Address"/>
 </mapping>
