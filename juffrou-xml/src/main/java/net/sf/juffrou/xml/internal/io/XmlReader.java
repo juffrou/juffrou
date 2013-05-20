@@ -2,6 +2,8 @@ package net.sf.juffrou.xml.internal.io;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -9,6 +11,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
@@ -59,6 +62,16 @@ public class XmlReader implements JuffrouReader {
 		currentNode = parentNodes.pop();
 	}
 
+	public Map<String, Object> getAttributes() {
+		Map<String, Object> attributes = new HashMap<String, Object>();
+		NamedNodeMap nodeMap = currentNode.getAttributes();
+		for(int i = 0; i < nodeMap.getLength(); i++) {
+			Node item = nodeMap.item(i);
+			attributes.put(item.getNodeName(), item.getNodeValue());
+		}
+		return attributes;
+	}
+	
 	public String getText() {
 		return currentNode != null ? currentNode.getTextContent() : null;
 	}

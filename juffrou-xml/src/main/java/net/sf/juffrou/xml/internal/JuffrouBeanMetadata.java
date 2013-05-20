@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.Set;
 
 import net.sf.juffrou.util.reflect.ReflectionUtil;
-import net.sf.juffrou.xml.XmlElementType;
 import net.sf.juffrou.xml.error.NoImplementationClassException;
 import net.sf.juffrou.xml.error.NoSerializerException;
 import net.sf.juffrou.xml.error.UnknownXmlElementException;
