@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="file://juffrou-xml.xsd">
+<mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://juffrou.sourceforge.net/juffrou-xml http://juffrou.sourceforge.net/juffrou-xml/schemas/juffrou-xml.xsd">
+
 	<preferences>
 		<collectionWithSizeAttribute>true</collectionWithSizeAttribute>
 	</preferences>

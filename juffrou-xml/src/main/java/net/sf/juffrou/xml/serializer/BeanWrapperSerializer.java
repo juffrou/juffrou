@@ -57,20 +57,24 @@ public class BeanWrapperSerializer implements Serializer {
 			beanClassBinding.setAllBeanPropertiesToMarshall();
 		String xmlElementName = reader.enterNode();
 		while(xmlElementName != null) {
-			BeanPropertyBinding beanPropertyBinding = beanClassBinding.getBeanPropertyBindingFromXmlElement(xmlElementName);
-			if(beanPropertyBinding == null)
-				throw new UnknownXmlElementException("I do not know the element " + xmlElementName + " of the class " + instance.getBeanClass().getSimpleName());
-			Serializer converter = beanPropertyBinding.getSerializer();
-			if(converter == null)
-				converter = xmlBeanMetadata.getSerializerForClass(beanPropertyBinding.getPropertyType());
-			if(converter == null)
-				// treat it as a bean
-				deserialize(reader, instance, beanPropertyBinding.getBeanPropertyName());
-			else
-				converter.deserialize(reader, instance, beanPropertyBinding.getBeanPropertyName());
+			deserializeElement(reader, instance, beanClassBinding, xmlElementName);
 			xmlElementName = reader.next();
 		}
 		reader.exitNode();
+	}
+	
+	public void deserializeElement(JuffrouReader reader, BeanWrapper instance, BeanClassBinding beanClassBinding, String xmlElementName) {
+		BeanPropertyBinding beanPropertyBinding = beanClassBinding.getBeanPropertyBindingFromXmlElement(xmlElementName);
+		if(beanPropertyBinding == null)
+			throw new UnknownXmlElementException("I do not know the element " + xmlElementName + " of the class " + instance.getBeanClass().getSimpleName());
+		Serializer converter = beanPropertyBinding.getSerializer();
+		if(converter == null)
+			converter = xmlBeanMetadata.getSerializerForClass(beanPropertyBinding.getPropertyType());
+		if(converter == null)
+			// treat it as a bean
+			deserialize(reader, instance, beanPropertyBinding.getBeanPropertyName());
+		else
+			converter.deserialize(reader, instance, beanPropertyBinding.getBeanPropertyName());
 	}
 
 }
