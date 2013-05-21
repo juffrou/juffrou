@@ -183,11 +183,10 @@ public class ConfigReader {
 		}
 		
 		attribute = attributes.getNamedItem(NODE_ELEMENT_NODENAME);
-		NodeType nodeType = NodeType.ELEMENT;
 		if(attribute != null) {
-			nodeType = NodeType.valueOf(attribute.getNodeValue().toUpperCase());
+			NodeType nodeType = NodeType.valueOf(attribute.getNodeValue().toUpperCase());
+			propertyBinding.setNodeType(nodeType);
 		}
-		propertyBinding.setNodeType(nodeType);
 
 		// read tag content
 		currentNode = currentNode.getFirstChild();
@@ -211,7 +210,11 @@ public class ConfigReader {
 			Class<?> clazz = bw.getClazz(propertyBinding.getBeanPropertyName());
 			propertyBinding.setPropertyType(clazz);
 		}
-			
+
+		// default node type = ELEMENT
+		if(propertyBinding.getNodeType() == null)
+			propertyBinding.setNodeType(NodeType.ELEMENT);
+		
 		xmlBeanWrapperContext.addBeanPropertyBinding(propertyBinding);
 	}
 
@@ -219,6 +222,12 @@ public class ConfigReader {
 		NamedNodeMap attributes = currentNode.getAttributes();
 		Node attribute = attributes.getNamedItem(ID_ELEMENT_NODENAME);
 		propertyBinding.setXmlElementName(attribute.getNodeValue());
+
+		attribute = attributes.getNamedItem(NODE_ELEMENT_NODENAME);
+		if(attribute != null) {
+			NodeType nodeType = NodeType.valueOf(attribute.getNodeValue().toUpperCase());
+			propertyBinding.setNodeType(nodeType);
+		}
 	}
 
 	private static Serializer processSerializer(JuffrouBeanMetadata metadata, Node currentNode) {

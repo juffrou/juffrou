@@ -38,7 +38,7 @@ public class BeanWrapperSerializer implements Serializer {
 		for(BeanPropertyBinding beanPropertyBinding : propertiesToMarshall) {
 			Object value = bw.getValue(beanPropertyBinding.getBeanPropertyName());
 			if(value != null) {
-				writer.startNode(beanPropertyBinding.getXmlElementName());
+				writer.startNode(beanPropertyBinding.getXmlElementName(), beanPropertyBinding.getNodeType());
 				Serializer converter = beanPropertyBinding.getSerializer();
 				if(converter == null)
 					converter = xmlBeanMetadata.getSerializerForClass(beanPropertyBinding.getPropertyType());

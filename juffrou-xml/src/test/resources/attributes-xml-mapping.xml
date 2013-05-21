@@ -4,25 +4,15 @@
          xsi:schemaLocation="http://juffrou.sourceforge.net/juffrou-xml http://juffrou.sourceforge.net/juffrou-xml/schemas/juffrou-xml.xsd">
 
 	<preferences>
-		<collectionWithSizeAttribute>true</collectionWithSizeAttribute>
+		<collectionWithSizeAttribute>false</collectionWithSizeAttribute>
 	</preferences>
 
 	<serializer id="simpledate" class="net.sf.juffrou.xml.test.dom.SimpleDateSerializer"/>
 
-	<root-element type="net.sf.juffrou.xml.test.dom.Country">
-		<xml id="Country" />
-		<element property="founded" xml="founded">
-			<serializer ref="simpledate" />
-		</element>
-		<element property="name" />
-		<element property="president.firstName" xml="presidentName" />
-		<element property="provinces" />
-		<element property="people" />
-		<element property="partyLeaders" />
-	</root-element>
-	
 	<root-element xml="Person" type="net.sf.juffrou.xml.test.dom.Person">
-		<element property="firstName" />
+		<element property="firstName">
+			<xml id="firstName" node="attribute" />
+		</element>
 		<element property="lastName" />
 		<element property="birthDay">
 			<serializer ref="simpledate" />

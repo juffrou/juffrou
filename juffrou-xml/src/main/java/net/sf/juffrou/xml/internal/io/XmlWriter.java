@@ -14,6 +14,9 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import net.sf.juffrou.xml.internal.NodeType;
+
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -39,11 +42,18 @@ public class XmlWriter implements JuffrouWriter {
 		}
 	}
 	
-	public void startNode(String nodeName) {
-		Element element = doc.createElement(nodeName);
-		parentNode.appendChild(element);
+	public void startNode(String nodeName, NodeType nodeType) {
+		Node node;
+		if(nodeType == NodeType.ELEMENT) {
+			node = doc.createElement(nodeName);
+			parentNode.appendChild(node);
+		}
+		else {
+			node = doc.createAttribute(nodeName);
+			((Element)parentNode).setAttributeNode((Attr) node);
+		}
 		grandParents.push(parentNode);
-		parentNode = element;
+		parentNode = node;
 	}
 	
 	public void endNode() {
@@ -55,7 +65,10 @@ public class XmlWriter implements JuffrouWriter {
 	}
 	
 	public void write(String value) {
-		parentNode.appendChild(doc.createTextNode(value));
+		if(parentNode.getNodeType() == Node.ATTRIBUTE_NODE)
+			parentNode.setNodeValue(value);
+		else
+			parentNode.appendChild(doc.createTextNode(value));
 	}
 	
 	public String toString() {

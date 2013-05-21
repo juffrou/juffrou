@@ -6,6 +6,7 @@ import java.util.Collection;
 import net.sf.juffrou.util.reflect.BeanWrapper;
 import net.sf.juffrou.util.reflect.BeanWrapperContext;
 import net.sf.juffrou.xml.internal.JuffrouBeanMetadata;
+import net.sf.juffrou.xml.internal.NodeType;
 import net.sf.juffrou.xml.internal.ValueHolder;
 import net.sf.juffrou.xml.internal.binding.BeanClassBinding;
 import net.sf.juffrou.xml.internal.io.JuffrouReader;
@@ -39,7 +40,7 @@ public abstract class AbstractCollectionSerializer implements Serializer {
 		BeanWrapper valueHolderWrapper = new BeanWrapper(valueHolderWrapperContext);
 		for(Object object : collection) {
 			valueHolderWrapper.setValue("value", object);
-			writer.startNode(elementName);
+			writer.startNode(elementName, NodeType.ELEMENT);
 			serializer.serialize(writer, valueHolderWrapper, "value");
 			writer.endNode();
 		}
@@ -51,7 +52,7 @@ public abstract class AbstractCollectionSerializer implements Serializer {
 		BeanWrapper bw = new BeanWrapper(beanClassBinding);
 		for(Object object : collection) {
 			bw.setBean(object);
-			writer.startNode(beanClassBinding.getXmlElementName());
+			writer.startNode(beanClassBinding.getXmlElementName(), NodeType.ELEMENT);
 			xmlBeanMetadata.getDefaultSerializer().serializeBeanProperties(writer, bw);
 			writer.endNode();
 		}

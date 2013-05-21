@@ -9,6 +9,7 @@ import net.sf.juffrou.util.reflect.BeanWrapper;
 import net.sf.juffrou.util.reflect.BeanWrapperContext;
 import net.sf.juffrou.xml.error.NonParameterizedGenericType;
 import net.sf.juffrou.xml.internal.JuffrouBeanMetadata;
+import net.sf.juffrou.xml.internal.NodeType;
 import net.sf.juffrou.xml.internal.ValueHolder;
 import net.sf.juffrou.xml.internal.binding.BeanClassBinding;
 import net.sf.juffrou.xml.internal.io.JuffrouReader;
@@ -57,30 +58,30 @@ public class HashMapSerializer implements Serializer {
 		}
 		// write everything
 		for(Entry<?,?> entry : map.entrySet()) {
-			writer.startNode("entry");
+			writer.startNode("entry", NodeType.ELEMENT);
 			// write the key
 			if(isSimpleKey) {
 				keyWrapper.setValue("value", entry.getKey());
-				writer.startNode(firstEntry.getKey().getClass().getSimpleName().toLowerCase());
+				writer.startNode(firstEntry.getKey().getClass().getSimpleName().toLowerCase(), NodeType.ELEMENT);
 				keySerializer.serialize(writer, keyWrapper, "value");
 				writer.endNode();
 			}
 			else {
 				keyWrapper.setBean(entry.getKey());
-				writer.startNode(keyClassBinding.getXmlElementName());
+				writer.startNode(keyClassBinding.getXmlElementName(), NodeType.ELEMENT);
 				xmlBeanMetadata.getDefaultSerializer().serializeBeanProperties(writer, keyWrapper);
 				writer.endNode();
 			}
 			// write the value
 			if(isSimpleValue) {
 				valueWrapper.setValue("value", entry.getValue());
-				writer.startNode(firstEntry.getValue().getClass().getSimpleName().toLowerCase());
+				writer.startNode(firstEntry.getValue().getClass().getSimpleName().toLowerCase(), NodeType.ELEMENT);
 				valueSerializer.serialize(writer, valueWrapper, "value");
 				writer.endNode();
 			}
 			else {
 				valueWrapper.setBean(entry.getValue());
-				writer.startNode(valueClassBinding.getXmlElementName());
+				writer.startNode(valueClassBinding.getXmlElementName(), NodeType.ELEMENT);
 				xmlBeanMetadata.getDefaultSerializer().serializeBeanProperties(writer, valueWrapper);
 				writer.endNode();
 			}

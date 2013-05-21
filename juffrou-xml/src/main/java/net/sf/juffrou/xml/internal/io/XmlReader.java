@@ -78,6 +78,7 @@ public class XmlReader implements JuffrouReader {
 	}
 
 	public void exitNode() {
+		attributeNodes.clear();
 		currentNode = parentNodes.pop();
 	}
 

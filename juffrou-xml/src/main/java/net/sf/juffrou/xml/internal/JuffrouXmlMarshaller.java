@@ -47,7 +47,7 @@ public class JuffrouXmlMarshaller {
 		BeanClassBinding beanClassBinding = xmlBeanMetadata.getXmlBeanWrapperContextCreator().newBeanWrapperContext(bean.getClass());
 
 		BeanWrapper bw = new BeanWrapper(beanClassBinding, bean);
-		writer.startNode(beanClassBinding.getXmlElementName());
+		writer.startNode(beanClassBinding.getXmlElementName(), NodeType.ELEMENT);
 		xmlBeanMetadata.getDefaultSerializer().serializeBeanProperties(writer, bw);
 		writer.endNode();
 	}

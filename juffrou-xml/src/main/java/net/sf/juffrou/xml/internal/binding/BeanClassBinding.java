@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import net.sf.juffrou.util.reflect.BeanWrapperContext;
 import net.sf.juffrou.util.reflect.ReflectionUtil;
 import net.sf.juffrou.util.reflect.internal.BeanFieldHandler;
+import net.sf.juffrou.xml.internal.NodeType;
 import net.sf.juffrou.xml.serializer.Serializer;
 
 public class BeanClassBinding extends BeanWrapperContext {
@@ -52,6 +53,7 @@ public class BeanClassBinding extends BeanWrapperContext {
 			BeanPropertyBinding beanPropertyBinding = new BeanPropertyBinding();
 			beanPropertyBinding.setBeanPropertyName(propertyName);
 			beanPropertyBinding.setXmlElementName(propertyName);
+			beanPropertyBinding.setNodeType(NodeType.ELEMENT);
 			beanPropertyBinding.setPropertyType(ReflectionUtil.getClass(entry.getValue().getType()));
 			addBeanPropertyBinding(beanPropertyBinding);
 		}
