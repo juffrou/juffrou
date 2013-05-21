@@ -2,7 +2,7 @@ package net.sf.juffrou.xml.internal.config;
 
 public class JuffrouXmlPreferences {
 
-	private boolean collectionWithSizeAttribute = true;
+	private boolean collectionWithSizeAttribute = false;
 
 	public boolean isCollectionWithSizeAttribute() {
 		return collectionWithSizeAttribute;

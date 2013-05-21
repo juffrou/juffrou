@@ -20,7 +20,7 @@ public class XmlReader implements JuffrouReader {
 	private Document doc;
 	private Node currentNode = null;
 	private Stack<Node> parentNodes = new Stack<Node>();
-	private Deque<Node> attributeNodes = new ArrayDeque<Node>();
+	private Deque<Node> parentAttributes = new ArrayDeque<Node>();
 	
 	public XmlReader(InputStream xml) {
         
@@ -42,43 +42,44 @@ public class XmlReader implements JuffrouReader {
 	}
 	
 	public String next() {
-		if(currentNode == null)
-			return null;
-		if( ! attributeNodes.isEmpty()) {
-			return attributeNodes.removeFirst().getNodeName();
-		}
-		
-		currentNode = currentNode.getNextSibling();
-		while(currentNode != null && currentNode.getNodeType() != Node.ELEMENT_NODE && currentNode.getNodeType() != Node.ATTRIBUTE_NODE)
-			currentNode = currentNode.getNextSibling();
-
-		if(currentNode != null) {
-			NamedNodeMap attributes = currentNode.getAttributes();
-			for(int i=0; i < attributes.getLength(); i++)
-				attributeNodes.add(attributes.item(i));
-			
+		if( ! parentAttributes.isEmpty()) {
+			currentNode = parentAttributes.removeFirst();
 			return currentNode.getNodeName();
 		}
-		
-		return null;
+
+		if(currentNode == null)
+			return null;
+
+		currentNode = currentNode.getNextSibling();
+		while(currentNode != null && currentNode.getNodeType() != Node.ELEMENT_NODE)
+			currentNode = currentNode.getNextSibling();
+
+		return currentNode == null ? null : currentNode.getNodeName();
 	}
 	
 	public String enterNode() {
+		parentAttributes.clear();
+		NamedNodeMap attributes = currentNode.getAttributes();
+		if(attributes != null)
+			for(int i=0; i < attributes.getLength(); i++)
+				parentAttributes.add(attributes.item(i));
+
 		parentNodes.push(currentNode);
 		currentNode = currentNode.getFirstChild();
 		while(currentNode != null && currentNode.getNodeType() != Node.ELEMENT_NODE)
 			currentNode = currentNode.getNextSibling();
-		attributeNodes.clear();
-		if(currentNode != null) {
-			NamedNodeMap attributes = currentNode.getAttributes();
-			for(int i=0; i < attributes.getLength(); i++)
-				attributeNodes.add(attributes.item(i));
+
+		if(parentAttributes.isEmpty())
+			return currentNode != null ? currentNode.getNodeName() : null;
+		else {
+			parentAttributes.add(currentNode);
+			currentNode = parentAttributes.removeFirst();
+			return currentNode.getNodeName();
 		}
-		return currentNode != null ? currentNode.getNodeName() : null;
 	}
 
 	public void exitNode() {
-		attributeNodes.clear();
+		parentAttributes.clear();
 		currentNode = parentNodes.pop();
 	}
 

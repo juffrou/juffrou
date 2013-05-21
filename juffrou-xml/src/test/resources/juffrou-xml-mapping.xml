@@ -3,9 +3,6 @@
 		 xmlns="http://juffrou.sourceforge.net/juffrou-xml"
          xsi:schemaLocation="http://juffrou.sourceforge.net/juffrou-xml http://juffrou.sourceforge.net/juffrou-xml/schemas/juffrou-xml.xsd">
 
-	<preferences>
-		<collectionWithSizeAttribute>true</collectionWithSizeAttribute>
-	</preferences>
 	<serializer id="simpledate" class="net.sf.juffrou.xml.test.dom.SimpleDateSerializer"/>
 	<root-element type="net.sf.juffrou.xml.test.dom.Country">
 		<xml id="Country"/>
