@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		 xmlns="http://juffrou.sourceforge.net/juffrou-xml"
          xsi:schemaLocation="http://juffrou.sourceforge.net/juffrou-xml http://juffrou.sourceforge.net/juffrou-xml/schemas/juffrou-xml.xsd">
 
 	<preferences>
@@ -19,9 +20,11 @@
 		<element property="firstName"/>
 		<element property="lastName"/>
 		<element property="birthDay">
+			<xml id="bithday" node="attribute" />
 			<serializer ref="simpledate"/>
 		</element>
 		<element property="home.city" xml="homeTown"/>
 	</root-element>
 	<root-element xml="Person" type="net.sf.juffrou.xml.test.dom.Address"/>
+	
 </mapping>
