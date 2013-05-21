@@ -12,7 +12,7 @@
 
 	<name>Juffrou</name>
 	<description>Juffrou stands for Java Utilities Framework For the Rest Of Us and is a collection of useful classes or mini frameworks to help the java developer.
-Checkout the juffrou-reflect module if you are into performant java bean handling.</description>
+Checkout the juffrou-reflect module if you are into performant java bean handling. There is also an xml marshaller / unmarshaller which is easy to use and has cool features like the Simplified Marshalling of nested beans.</description>
 	<url>http://juffrou.sf.net</url>
 
 	<inceptionYear>2011</inceptionYear>

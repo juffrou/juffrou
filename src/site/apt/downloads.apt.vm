@@ -13,7 +13,7 @@ Maven Artifacts
 
  Juffrou artifacts released to the {{{http://nexus.sonatype.org/oss-repository-hosting.html}Sonatype OSS Repository}}
  
- Releases and Snapshots can be downloaded from {{https://oss.sonatype.org/content/groups/public/com/googlecode/juffrou}}
+ Releases and Snapshots can be downloaded from {{https://oss.sonatype.org/content/groups/public/net/sf/juffrou}}
  
  If you have a maven project, you can add the dependency to your project:
  
