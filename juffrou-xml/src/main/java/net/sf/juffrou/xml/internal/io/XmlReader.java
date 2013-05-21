@@ -2,8 +2,8 @@ package net.sf.juffrou.xml.internal.io;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Stack;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -20,6 +20,7 @@ public class XmlReader implements JuffrouReader {
 	private Document doc;
 	private Node currentNode = null;
 	private Stack<Node> parentNodes = new Stack<Node>();
+	private Deque<Node> attributeNodes = new ArrayDeque<Node>();
 	
 	public XmlReader(InputStream xml) {
         
@@ -43,18 +44,36 @@ public class XmlReader implements JuffrouReader {
 	public String next() {
 		if(currentNode == null)
 			return null;
+		if( ! attributeNodes.isEmpty()) {
+			return attributeNodes.removeFirst().getNodeName();
+		}
+		
 		currentNode = currentNode.getNextSibling();
-		while(currentNode != null && currentNode.getNodeType() != Node.ELEMENT_NODE)
+		while(currentNode != null && currentNode.getNodeType() != Node.ELEMENT_NODE && currentNode.getNodeType() != Node.ATTRIBUTE_NODE)
 			currentNode = currentNode.getNextSibling();
-		return currentNode != null ? currentNode.getNodeName() : null;
+
+		if(currentNode != null) {
+			NamedNodeMap attributes = currentNode.getAttributes();
+			for(int i=0; i < attributes.getLength(); i++)
+				attributeNodes.add(attributes.item(i));
+			
+			return currentNode.getNodeName();
+		}
+		
+		return null;
 	}
 	
 	public String enterNode() {
 		parentNodes.push(currentNode);
-		currentNode.getNodeType();
 		currentNode = currentNode.getFirstChild();
 		while(currentNode != null && currentNode.getNodeType() != Node.ELEMENT_NODE)
 			currentNode = currentNode.getNextSibling();
+		attributeNodes.clear();
+		if(currentNode != null) {
+			NamedNodeMap attributes = currentNode.getAttributes();
+			for(int i=0; i < attributes.getLength(); i++)
+				attributeNodes.add(attributes.item(i));
+		}
 		return currentNode != null ? currentNode.getNodeName() : null;
 	}
 
@@ -62,18 +81,16 @@ public class XmlReader implements JuffrouReader {
 		currentNode = parentNodes.pop();
 	}
 
-	public Map<String, Object> getAttributes() {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-		NamedNodeMap nodeMap = currentNode.getAttributes();
-		for(int i = 0; i < nodeMap.getLength(); i++) {
-			Node item = nodeMap.item(i);
-			attributes.put(item.getNodeName(), item.getNodeValue());
-		}
-		return attributes;
-	}
-	
 	public String getText() {
-		return currentNode != null ? currentNode.getTextContent() : null;
+		if(currentNode == null)
+			return null;
+		if(currentNode.getNodeType() == Node.ELEMENT_NODE)
+			return currentNode.getTextContent();
+		else if(currentNode.getNodeType() == Node.ATTRIBUTE_NODE) {
+			return currentNode.getNodeValue();
+		}
+		else
+			return null;
 	}
 	
 	@Override

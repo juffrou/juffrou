@@ -15,6 +15,7 @@ import net.sf.juffrou.util.reflect.BeanWrapperContext;
 import net.sf.juffrou.xml.error.JuffrouXmlException;
 import net.sf.juffrou.xml.error.XmlMappingReaderException;
 import net.sf.juffrou.xml.internal.JuffrouBeanMetadata;
+import net.sf.juffrou.xml.internal.NodeType;
 import net.sf.juffrou.xml.internal.binding.BeanClassBinding;
 import net.sf.juffrou.xml.internal.binding.BeanPropertyBinding;
 import net.sf.juffrou.xml.internal.config.protocols.classpath.Handler;
@@ -42,6 +43,7 @@ public class ConfigReader {
 	private static String CLASS_ELEMENT_NODENAME = "class";
 	private static String ID_ELEMENT_NODENAME = "id";
 	private static String PROPERTY_ELEMENT_NODENAME = "property";
+	private static String NODE_ELEMENT_NODENAME = "node";
 
 	public static void readConfigFile(JuffrouBeanMetadata metadata, String urlSpec) {
 		try {
@@ -179,6 +181,13 @@ public class ConfigReader {
 			}
 			propertyBinding.setPropertyType(clazz);
 		}
+		
+		attribute = attributes.getNamedItem(NODE_ELEMENT_NODENAME);
+		NodeType nodeType = NodeType.ELEMENT;
+		if(attribute != null) {
+			nodeType = NodeType.valueOf(attribute.getNodeValue().toUpperCase());
+		}
+		propertyBinding.setNodeType(nodeType);
 
 		// read tag content
 		currentNode = currentNode.getFirstChild();
