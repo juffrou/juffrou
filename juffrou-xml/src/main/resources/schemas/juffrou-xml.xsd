@@ -88,6 +88,14 @@
 					<xs:restriction base="xs:string"/>
 				</xs:simpleType>
 			</xs:attribute>
+			<xs:attribute name="node">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="element"/>
+						<xs:enumeration value="attribute"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
 			<xs:attribute name="type">
 				<xs:simpleType>
 					<xs:restriction base="xs:string"/>

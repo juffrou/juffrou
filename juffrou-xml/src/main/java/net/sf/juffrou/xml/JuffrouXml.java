@@ -27,6 +27,10 @@ public class JuffrouXml {
 	public String toXml(Object object) {
 		return xmlMarshaller.toXml(object);
 	}
+
+	public JuffrouXmlMarshaller getXmlMarshaller() {
+		return xmlMarshaller;
+	}
 	
 	public Object fromXml(String xml) {
 		return xmlMarshaller.fromXml(xml);

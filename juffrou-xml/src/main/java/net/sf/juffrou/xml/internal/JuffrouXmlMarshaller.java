@@ -14,7 +14,7 @@ import net.sf.juffrou.xml.internal.io.XmlWriter;
 
 public class JuffrouXmlMarshaller {
 	
-	private JuffrouBeanMetadata xmlBeanMetadata;
+	private final JuffrouBeanMetadata xmlBeanMetadata;
 	
 	public JuffrouXmlMarshaller(JuffrouBeanMetadata xmlBeanMetadata) {
 		this.xmlBeanMetadata = xmlBeanMetadata;
@@ -43,7 +43,7 @@ public class JuffrouXmlMarshaller {
 		}
 	}
 
-	private void marshallBean(JuffrouWriter writer, Object bean) {
+	public void marshallBean(JuffrouWriter writer, Object bean) {
 		BeanClassBinding beanClassBinding = xmlBeanMetadata.getXmlBeanWrapperContextCreator().newBeanWrapperContext(bean.getClass());
 
 		BeanWrapper bw = new BeanWrapper(beanClassBinding, bean);

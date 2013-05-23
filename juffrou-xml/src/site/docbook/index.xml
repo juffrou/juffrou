@@ -13,7 +13,7 @@
 <section><title>Features</title>
 <itemizedlist mark="disc">
 <listitem>Ease of use - can start using without any configuration</listitem>
-<listitem override="circle">Simplified marshalling - reference nested properties easily</listitem>
+<listitem override="circle">Simplified marshalling - easily marshall nested beans into flat XML and back</listitem>
 <listitem>Tweaks and configuration can be done by mapping file and programatically</listitem>
 <listitem>Highly configurable - custom serializers are easy to implement</listitem>
 </itemizedlist>

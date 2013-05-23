@@ -20,6 +20,9 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.ProcessingInstruction;
+import org.w3c.dom.Text;
+import org.xml.sax.SAXException;
 
 public class XmlWriter implements JuffrouWriter {
 	
@@ -41,16 +44,26 @@ public class XmlWriter implements JuffrouWriter {
 			pce.printStackTrace();
 		}
 	}
-	
-	public void startNode(String nodeName, NodeType nodeType) {
-		Node node;
-		if(nodeType == NodeType.ELEMENT) {
-			node = doc.createElement(nodeName);
-			parentNode.appendChild(node);
+
+	public XmlWriter(Node node) {
+		this.parentNode = node;
+		if (node instanceof Document) {
+			doc = (Document) node;
 		}
 		else {
+			doc = node.getOwnerDocument();
+		}
+	}
+
+	public void startNode(String nodeName, NodeType nodeType) {
+		Node node;
+		if(nodeType == NodeType.ATTRIBUTE) {
 			node = doc.createAttribute(nodeName);
 			((Element)parentNode).setAttributeNode((Attr) node);
+		}
+		else {
+			node = doc.createElement(nodeName);
+			parentNode.appendChild(node);
 		}
 		grandParents.push(parentNode);
 		parentNode = node;
@@ -64,26 +77,47 @@ public class XmlWriter implements JuffrouWriter {
 		((Element)parentNode).setAttribute(attributeName, value);
 	}
 	
+	public void setProcessingInstruction(String target, String data) throws SAXException {
+		ProcessingInstruction pi = doc.createProcessingInstruction(target, data);
+		parentNode.appendChild(pi);
+	}
+
 	public void write(String value) {
-		if(parentNode.getNodeType() == Node.ATTRIBUTE_NODE)
+		
+		Node lastChild = parentNode.getLastChild();
+		if (lastChild != null && lastChild.getNodeType() == Node.TEXT_NODE)
+			((Text) lastChild).appendData(value);
+		else if(parentNode.getNodeType() == Node.ATTRIBUTE_NODE)
 			parentNode.setNodeValue(value);
 		else
 			parentNode.appendChild(doc.createTextNode(value));
 	}
 	
+	public Transformer getTransformer() {
+
+		try {
+			TransformerFactory transformerFactory = TransformerFactory.newInstance();
+			Transformer transformer;
+			transformer = transformerFactory.newTransformer();
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+			return transformer;
+		} catch (TransformerConfigurationException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 	public String toString() {
 		try {
 		// write the content into xml file
-		TransformerFactory transformerFactory = TransformerFactory.newInstance();
-		Transformer transformer;
-		transformer = transformerFactory.newTransformer();
-		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-		transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
-		DOMSource source = new DOMSource(doc);
-
-		StreamResult result = new StreamResult(new StringWriter());
-		transformer.transform(source, result);
-		return result.getWriter().toString();
+			Transformer transformer = getTransformer();
+			DOMSource source = new DOMSource(doc);
+	
+			StreamResult result = new StreamResult(new StringWriter());
+			transformer.transform(source, result);
+			return result.getWriter().toString();
+			
 		} catch (TransformerConfigurationException e) {
 			e.printStackTrace();
 		} catch (TransformerException e) {
@@ -91,4 +125,11 @@ public class XmlWriter implements JuffrouWriter {
 		}
 		return null;
 	}
+	
+	public DOMSource getSource() {
+		
+		DOMSource source = new DOMSource(doc);
+		return source;
+	}
+	
 }

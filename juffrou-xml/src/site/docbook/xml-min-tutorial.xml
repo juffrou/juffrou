@@ -118,7 +118,7 @@ and just register the corresponding bean property:</para>
 </section>
 
 <section><title>Simplified marshalling</title>
-<para>Simplified marshalling is this: imagine that you don't want the whole home address marshalled for this person. You only want his home city 
+<para>Simplified marshalling is the possibility of marshalling nested beans into a "flat" XML structure like this: imagine that you don't want the whole home address marshalled for this person. You only want his home city 
 and you want it displayed as it were a simple property of person.</para>
 <para>Easy! All you have to do is this:</para>
 <programlisting>
