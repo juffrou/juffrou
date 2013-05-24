@@ -13,6 +13,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 public class XmlReader implements JuffrouReader {
@@ -38,6 +39,35 @@ public class XmlReader implements JuffrouReader {
 		} catch (ParserConfigurationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+
+	public XmlReader(InputSource xml) {
+        
+		try {
+			DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+			doc = docBuilder.parse(xml);
+	        // normalize text representation
+			doc.getDocumentElement ().normalize();
+			currentNode = doc;
+		} catch (SAXException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ParserConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public XmlReader(Node node) {
+		this.currentNode = node;
+		if (node instanceof Document) {
+			doc = (Document) node;
+		}
+		else {
+			doc = node.getOwnerDocument();
 		}
 	}
 	

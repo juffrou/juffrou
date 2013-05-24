@@ -20,8 +20,15 @@ public class JuffrouXml {
 	 */
 	public JuffrouXml(String mappingUrlSpec) {
 		this.xmlBeanMetadata = new JuffrouBeanMetadata();
-		ConfigReader.readConfigFile(this.xmlBeanMetadata, mappingUrlSpec);
+		readConfigFile(mappingUrlSpec);
 		this.xmlMarshaller = new JuffrouXmlMarshaller(this.xmlBeanMetadata);
+	}
+	
+	/**
+	 * @param mappingUrlSpec (example "classpath:juffrou-xml-mapping.xml")
+	 */
+	public void readConfigFile(String mappingUrlSpec) {
+		ConfigReader.readConfigFile(this.xmlBeanMetadata, mappingUrlSpec);
 	}
 	
 	public String toXml(Object object) {
