@@ -52,7 +52,7 @@ public class JuffrouXmlMarshaller {
 		writer.endNode();
 	}
 	
-	private Object unmarshallBean(JuffrouReader reader) {
+	public Object unmarshallBean(JuffrouReader reader) {
 		
 		String next = reader.enterNode();
 		BeanClassBinding beanClassBinding = xmlBeanMetadata.getBeanClassBindingFromXmlElement(next);
