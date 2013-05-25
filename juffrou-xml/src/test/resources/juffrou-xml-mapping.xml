@@ -16,10 +16,9 @@
 	<root-element xml="Person" type="net.sf.juffrou.xml.test.dom.Person">
 		<element property="firstName"/>
 		<element property="lastName"/>
-		<element property="birthDay">
-			<xml id="bithday" node="attribute" />
+		<attribute property="birthDay">
 			<serializer ref="simpledate"/>
-		</element>
+		</attribute>
 		<element property="home.city" xml="homeTown"/>
 	</root-element>
 	<root-element xml="Person" type="net.sf.juffrou.xml.test.dom.Address"/>

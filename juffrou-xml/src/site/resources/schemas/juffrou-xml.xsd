@@ -7,29 +7,21 @@
 					<xs:restriction base="xs:string"/>
 				</xs:simpleType>
 			</xs:attribute>
-			<xs:attribute name="node">
-				<xs:simpleType>
-					<xs:restriction base="xs:string">
-						<xs:enumeration value="element"/>
-						<xs:enumeration value="attribute"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:attribute>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="serializer">
 		<xs:complexType>
-			<xs:attribute name="ref">
-				<xs:simpleType>
-					<xs:restriction base="xs:string"/>
-				</xs:simpleType>
-			</xs:attribute>
 			<xs:attribute name="id">
 				<xs:simpleType>
 					<xs:restriction base="xs:string"/>
 				</xs:simpleType>
 			</xs:attribute>
 			<xs:attribute name="class">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="ref">
 				<xs:simpleType>
 					<xs:restriction base="xs:string"/>
 				</xs:simpleType>
@@ -41,6 +33,7 @@
 			<xs:sequence minOccurs="0">
 				<xs:element ref="xml" minOccurs="0"/>
 				<xs:element ref="serializer" minOccurs="0"/>
+				<xs:element ref="attribute" minOccurs="0" maxOccurs="unbounded"/>
 				<xs:element ref="element" minOccurs="0" maxOccurs="unbounded"/>
 			</xs:sequence>
 			<xs:attribute name="xml">
@@ -77,23 +70,20 @@
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
-	<xs:element name="element">
+	<xs:element name="attribute">
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element ref="xml" minOccurs="0"/>
 				<xs:element ref="serializer" minOccurs="0"/>
 			</xs:sequence>
-			<xs:attribute name="xml">
+			<xs:attribute name="property" use="required">
 				<xs:simpleType>
 					<xs:restriction base="xs:string"/>
 				</xs:simpleType>
 			</xs:attribute>
-			<xs:attribute name="node">
+			<xs:attribute name="xml">
 				<xs:simpleType>
-					<xs:restriction base="xs:string">
-						<xs:enumeration value="element"/>
-						<xs:enumeration value="attribute"/>
-					</xs:restriction>
+					<xs:restriction base="xs:string"/>
 				</xs:simpleType>
 			</xs:attribute>
 			<xs:attribute name="type">
@@ -101,7 +91,25 @@
 					<xs:restriction base="xs:string"/>
 				</xs:simpleType>
 			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="element">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="xml" minOccurs="0"/>
+				<xs:element ref="serializer" minOccurs="0"/>
+			</xs:sequence>
 			<xs:attribute name="property" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="xml">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="type">
 				<xs:simpleType>
 					<xs:restriction base="xs:string"/>
 				</xs:simpleType>

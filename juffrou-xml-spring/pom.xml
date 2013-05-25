@@ -23,5 +23,48 @@
 			<optional>true</optional>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<!-- Also generate a jar for the source files when deploying -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-javadoc</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<javadocExecutable>${javadoc-executable-path}</javadocExecutable>
+					<charset>${project.build.sourceEncoding}</charset>
+					<encoding>${project.build.sourceEncoding}</encoding>
+					<docencoding>${project.build.sourceEncoding}</docencoding>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

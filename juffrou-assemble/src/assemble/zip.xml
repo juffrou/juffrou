@@ -13,22 +13,32 @@
 	
 	<moduleSets>
 		<moduleSet>
-			<!-- Enable access to all projects in the current multimodule build! -->
+			<!-- Collect JAR libraries -->
 			<useAllReactorProjects>true</useAllReactorProjects>
 			<binaries>
 				<includeDependencies>true</includeDependencies>
 				<outputDirectory>/</outputDirectory>
 				<unpack>false</unpack>
-				<dependencySets>
-					<dependencySet>
-						<outputDirectory>/</outputDirectory>
-						<unpack>false</unpack>
-						<useStrictFiltering>false</useStrictFiltering>
-						<includes>
-							<include>*:*:jar:sources</include>
-						</includes>
-					</dependencySet>
-				</dependencySets>
+			</binaries>
+		</moduleSet>
+		<moduleSet>
+			<!-- Collect sources libraries -->
+			<useAllReactorProjects>true</useAllReactorProjects>
+			<binaries>
+				<includeDependencies>true</includeDependencies>
+				<attachmentClassifier>sources</attachmentClassifier>
+				<outputDirectory>/</outputDirectory>
+				<unpack>false</unpack>
+			</binaries>
+		</moduleSet>
+		<moduleSet>
+			<!-- Collect sources libraries -->
+			<useAllReactorProjects>true</useAllReactorProjects>
+			<binaries>
+				<includeDependencies>true</includeDependencies>
+				<attachmentClassifier>javadoc</attachmentClassifier>
+				<outputDirectory>/</outputDirectory>
+				<unpack>false</unpack>
 			</binaries>
 		</moduleSet>
 	</moduleSets>

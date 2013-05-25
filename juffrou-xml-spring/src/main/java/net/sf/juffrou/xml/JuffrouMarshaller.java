@@ -36,7 +36,7 @@ public class JuffrouMarshaller extends AbstractMarshaller {
 
 	public static final String DEFAULT_ENCODING = "UTF-8";
 
-	private JuffrouXml juffrouXml;
+	private final JuffrouXml juffrouXml = new JuffrouXml();
 	
 	private String encoding = DEFAULT_ENCODING;
 	

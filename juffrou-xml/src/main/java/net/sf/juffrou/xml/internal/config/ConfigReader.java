@@ -35,6 +35,7 @@ public class ConfigReader {
 	
 	private static String PREFERENCES_NODENAME = "preferences";
 	private static String ROOT_ELEMENT_NODENAME = "root-element";
+	private static String ATTRIBUTE_ELEMENT_NODENAME = "attribute";
 	private static String ELEMENT_ELEMENT_NODENAME = "element";
 	private static String SERIALIZER_ELEMENT_NODENAME = "serializer";
 	private static String TYPE_ELEMENT_NODENAME = "type";
@@ -43,7 +44,6 @@ public class ConfigReader {
 	private static String CLASS_ELEMENT_NODENAME = "class";
 	private static String ID_ELEMENT_NODENAME = "id";
 	private static String PROPERTY_ELEMENT_NODENAME = "property";
-	private static String NODE_ELEMENT_NODENAME = "node";
 
 	public static void readConfigFile(JuffrouBeanMetadata metadata, String urlSpec) {
 		try {
@@ -136,7 +136,9 @@ public class ConfigReader {
 		while(currentNode != null) {
 			if(currentNode.getNodeType() == Node.ELEMENT_NODE) {
 				if(currentNode.getNodeName().equals(ELEMENT_ELEMENT_NODENAME))
-					processElement(metadata, xmlBeanWrapperContext, currentNode);
+					processElement(metadata, xmlBeanWrapperContext, currentNode, NodeType.ELEMENT);
+				else if(currentNode.getNodeName().equals(ATTRIBUTE_ELEMENT_NODENAME))
+					processElement(metadata, xmlBeanWrapperContext, currentNode, NodeType.ATTRIBUTE);
 				else if(currentNode.getNodeName().equals(XML_ELEMENT_NODENAME))
 					processRootElementXml(metadata, xmlBeanWrapperContext, currentNode);
 				else if(currentNode.getNodeName().equals(SERIALIZER_ELEMENT_NODENAME))
@@ -160,10 +162,12 @@ public class ConfigReader {
 	 * @param xmlBeanWrapperContext
 	 * @param currentNode
 	 */
-	private static void processElement(JuffrouBeanMetadata metadata, BeanClassBinding xmlBeanWrapperContext, Node currentNode) {
+	private static void processElement(JuffrouBeanMetadata metadata, BeanClassBinding xmlBeanWrapperContext, Node currentNode, NodeType nodeType) {
 		
 		// read tag attributes
 		BeanPropertyBinding propertyBinding = new BeanPropertyBinding();
+		propertyBinding.setNodeType(nodeType);
+		
 		NamedNodeMap attributes = currentNode.getAttributes();
 		Node attribute = attributes.getNamedItem(PROPERTY_ELEMENT_NODENAME);
 		propertyBinding.setBeanPropertyName(attribute.getNodeValue());
@@ -182,12 +186,6 @@ public class ConfigReader {
 			propertyBinding.setPropertyType(clazz);
 		}
 		
-		attribute = attributes.getNamedItem(NODE_ELEMENT_NODENAME);
-		if(attribute != null) {
-			NodeType nodeType = NodeType.valueOf(attribute.getNodeValue().toUpperCase());
-			propertyBinding.setNodeType(nodeType);
-		}
-
 		// read tag content
 		currentNode = currentNode.getFirstChild();
 		while(currentNode != null) {
@@ -211,10 +209,6 @@ public class ConfigReader {
 			propertyBinding.setPropertyType(clazz);
 		}
 
-		// default node type = ELEMENT
-		if(propertyBinding.getNodeType() == null)
-			propertyBinding.setNodeType(NodeType.ELEMENT);
-		
 		xmlBeanWrapperContext.addBeanPropertyBinding(propertyBinding);
 	}
 
@@ -222,12 +216,6 @@ public class ConfigReader {
 		NamedNodeMap attributes = currentNode.getAttributes();
 		Node attribute = attributes.getNamedItem(ID_ELEMENT_NODENAME);
 		propertyBinding.setXmlElementName(attribute.getNodeValue());
-
-		attribute = attributes.getNamedItem(NODE_ELEMENT_NODENAME);
-		if(attribute != null) {
-			NodeType nodeType = NodeType.valueOf(attribute.getNodeValue().toUpperCase());
-			propertyBinding.setNodeType(nodeType);
-		}
 	}
 
 	private static Serializer processSerializer(JuffrouBeanMetadata metadata, Node currentNode) {

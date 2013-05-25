@@ -10,9 +10,7 @@
 	<serializer id="simpledate" class="net.sf.juffrou.xml.test.dom.SimpleDateSerializer"/>
 
 	<root-element xml="Person" type="net.sf.juffrou.xml.test.dom.Person">
-		<element property="firstName">
-			<xml id="firstName" node="attribute" />
-		</element>
+		<attribute property="firstName" />
 		<element property="lastName" />
 		<element property="birthDay">
 			<serializer ref="simpledate" />

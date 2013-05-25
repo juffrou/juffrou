@@ -37,8 +37,8 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 	<modules>
 		<module>juffrou-reflect</module>
 		<module>juffrou-xml</module>
-		<module>juffrou-assemble</module>
 		<module>juffrou-xml-spring</module>
+		<module>juffrou-assemble</module>
 	</modules>
 
 	<scm>
@@ -173,7 +173,7 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 					<version>1.0-beta-4</version>
 					<configuration>
 						<fromDir>${project.build.directory}</fromDir>
-						<includes>*.jar</includes>
+						<includes>*.jar,*.zip,*.pdf</includes>
 						<excludes>pom.xml</excludes>
 						<optimize>true</optimize>
 						<url>scp://shell.sourceforge.net</url>
@@ -345,8 +345,18 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-pdf-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>build reference PDF</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>pdf</goal>
+						</goals>
+					</execution>
+				</executions>
 				<configuration>
 					<siteDirectory>${reference.aggregate.dir}</siteDirectory>
+					<outputDirectory>${project.build.directory}</outputDirectory>
 				</configuration>
 			</plugin>
 
@@ -375,6 +385,19 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 				</configuration>
 			</plugin>
 			 -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>wagon-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>upload-to-sourceforge</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>upload</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 
