@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<article xmlns="http://docbook.org/ns/docbook" version="5.0">
+<articleinfo>
+		<title>Introduction</title>
+		<author>
+			<firstname>Carlos</firstname>
+			<surname>Martins</surname>
+		</author>
+</articleinfo>
+<section><title>Introduction</title>
+<para>Juffrou-XML-Spring integrates juffrou-xml with spring-oxm. This allows the use of juffrou-xml marshalling and unmarshalling capabilities inside the world of spring.</para>
+<section><title>Use cases</title>
+<itemizedlist mark="disc">
+<listitem>spring-integration - marshalling and unmarshalling of XML message payloads</listitem>
+<listitem>spring-ws - webservices</listitem>
+<listitem>Configuration</listitem>
+</itemizedlist>
+</section>
+</section>
+</article>

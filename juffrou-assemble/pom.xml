@@ -33,6 +33,7 @@
 					<skip>true</skip>
 				</configuration>
 			</plugin>
+			<!-- 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
@@ -41,6 +42,7 @@
 					<skipDeploy>true</skipDeploy>
 				</configuration>
 			</plugin>
+			 -->
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<executions>
@@ -66,10 +68,14 @@
 						<id>upload-to-sourceforge</id>
 						<phase>deploy</phase>
 						<goals>
-							<goal>upload</goal>
+							<goal>upload-single</goal>
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<fromFile>${project.build.directory}/juffrou-${project.version}-bundle.zip</fromFile>
+					<url>${sf.url}${sf.downloads.dir}</url>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

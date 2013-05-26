@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<book xmlns="http://docbook.org/ns/docbook" version="5.0">
+<book xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xi="http://www.w3.org/2001/XInclude">
 	<info>
 		<title>Juffrou Reference Documentation</title>
 		<author>
@@ -25,6 +25,9 @@
 				<holder>Juffrou</holder>
 			</copyright>
 		</articleinfo>
+		
+		<xi:include href="../../../juffrou-xml/src/site/docbook/xml-intro.xml" xpointer="element(/1/1)"/>
+     
 		<section>
 			<title>A Section</title>
 			<para>...</para>

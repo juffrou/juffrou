@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<article xmlns="http://docbook.org/ns/docbook" version="5.0">
+<articleinfo>
+		<title>Introduction</title>
+		<author>
+			<firstname>Carlos</firstname>
+			<surname>Martins</surname>
+		</author>
+</articleinfo>
+<section><title>Introduction</title>
+<para>Juffrou Assemble is basically a utility module that serves only to assemble and distribute juffrou generated artifacts.</para>
+</section>
+</article>

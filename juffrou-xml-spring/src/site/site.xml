@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Juffrou Reflect">
+<project name="Juffrou XML Spring">
 	<body>
 		<links>
 			<item name="Sourceforge" href="http://sourceforge.net/p/juffrou/wiki/Home" />
@@ -7,10 +7,11 @@
 		</links>
 
 		<menu ref="parent" />
-		
-		<menu name="Juffrou Reflect">
+
+		<menu name="Juffrou XML Spring">
 			<item name="Introduction" href="index.html" />
 		</menu>
+
 		<menu name="Project Documentation">
 			<item name="Javadocs" href="apidocs/index.html" />
 		</menu>
