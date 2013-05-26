@@ -13,71 +13,13 @@
 			<holder>Juffrou</holder>
 		</copyright>
 	</info>
-	<article>
-		<articleinfo>
-			<title>An Example Article</title>
-			<author>
-				<firstname>Carlos</firstname>
-				<surname>Martins</surname>
-			</author>
-			<copyright>
-				<year>2013</year>
-				<holder>Juffrou</holder>
-			</copyright>
-		</articleinfo>
-		
+	<chapter id="xml">
+		<title>Juffrou XML</title>
 		<xi:include href="../../../juffrou-xml/src/site/docbook/xml-intro.xml" xpointer="element(/1/1)"/>
-     
-		<section>
-			<title>A Section</title>
-			<para>...</para>
-		</section>
-		<appendix>
-			<title>An Appendix</title>
-			<para>...</para>
-		</appendix>
-	</article>
-
-	<refentry>
-		<refmeta>
-			<refentrytitle>getpwnam</refentrytitle>
-			<manvolnum>3</manvolnum>
-		</refmeta>
-
-		<refnamediv>
-			<refname>getpwnam</refname>
-			<refname>getpwuid</refname>
-			<refpurpose>get password file entry</refpurpose>
-		</refnamediv>
-
-		<refsynopsisdiv>
-			<title>Synopsis</title>
-			<synopsis>
-				#include &lt;pwd.h>
-				#include &lt;sys/types.h>
-
-				struct passwd *getpwnam(const char * name);
-
-				struct passwd *getpwuid(uid_t uid);
-			</synopsis>
-		</refsynopsisdiv>
-
-		<refsect1>
-			<title>Description</title>
-			<para>
-				The
-				<function>getpwnam</function>
-				function
-				returns a pointer to a structure containing the
-				broken out fields of a line from
-				<filename>/etc/passwd</filename>
-				for
-				the entry that matches the user name
-				<parameter>name</parameter>
-				.
-			</para>
-			<!--... -->
-		</refsect1>
-		<!--... -->
-	</refentry>
+		<xi:include href="../../../juffrou-xml/src/site/docbook/xml-min-tutorial.xml" xpointer="element(/1/2)"/>
+	</chapter>
+	<chapter id="reflect">
+		<title>Juffrou Reflection</title>
+		<para>This is a temporary placeholder while the documentation on Juffrou Reflection is being prepared.</para>
+	</chapter>
 </book>

@@ -191,6 +191,18 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 							<type>zip</type>
 							<scope>runtime</scope>
 						</dependency>
+						<dependency>
+							<groupId>net.sf.xslthl</groupId>
+							<artifactId>xslthl</artifactId>
+							<version>2.1.0</version>
+							<scope>runtime</scope>
+						</dependency>
+						<dependency>
+							<groupId>net.sf.offo</groupId>
+							<artifactId>fop-hyph</artifactId>
+							<version>1.2</version>
+							<scope>runtime</scope>
+						</dependency>
 					</dependencies>
 				</plugin>
 			</plugins>
@@ -243,7 +255,7 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 					</resources>
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>com.agilejava.docbkx</groupId>
 				<artifactId>docbkx-maven-plugin</artifactId>
@@ -254,10 +266,12 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 					<xincludeSupported>true</xincludeSupported>
 					<generatedSourceDirectory>${project.build.directory}/reference-aggregate/docbook</generatedSourceDirectory>
 					<generateToc>false</generateToc>
+					<highlightSource>1</highlightSource>
+					<foCustomization>src/docbkx/docbook-fo.xsl</foCustomization>
 				</configuration>
 			</plugin>
-			
-			
+
+
 			<plugin>
 				<!-- GENERATE THE SITE -->
 				<groupId>org.apache.maven.plugins</groupId>
@@ -324,13 +338,8 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 					</reportPlugins>
 				</configuration>
 				<dependencies>
-					<!-- 
-					<dependency>
-						<groupId>org.apache.maven.doxia</groupId>
-						<artifactId>doxia-module-docbook-simple</artifactId>
-						<version>1.4</version>
-					</dependency>
-					 -->
+					<!-- <dependency> <groupId>org.apache.maven.doxia</groupId> <artifactId>doxia-module-docbook-simple</artifactId> 
+						<version>1.4</version> </dependency> -->
 					<dependency>
 						<groupId>org.apache.maven.wagon</groupId>
 						<artifactId>wagon-scm</artifactId>
@@ -364,30 +373,12 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 				</dependencies>
 			</plugin>
 
-			<!-- 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-changes-plugin</artifactId>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-pdf-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>build reference PDF</id>
-						<phase>deploy</phase>
-						<goals>
-							<goal>pdf</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<siteDirectory>${reference.aggregate.dir}</siteDirectory>
-					<outputDirectory>${project.build.directory}</outputDirectory>
-				</configuration>
-			</plugin>
-			 -->
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-changes-plugin</artifactId> 
+				</plugin> <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-pdf-plugin</artifactId> 
+				<executions> <execution> <id>build reference PDF</id> <phase>deploy</phase> 
+				<goals> <goal>pdf</goal> </goals> </execution> </executions> <configuration> 
+				<siteDirectory>${reference.aggregate.dir}</siteDirectory> <outputDirectory>${project.build.directory}</outputDirectory> 
+				</configuration> </plugin> -->
 			<!-- The SNAPSHOT version impedes the deployment of juffrou <plugin> <groupId>org.apache.maven.doxia</groupId> 
 				<artifactId>doxia-maven-plugin</artifactId> <version>1.3-SNAPSHOT</version> 
 				</plugin> <plugin> <groupId>org.apache.maven.doxia</groupId> <artifactId>doxia-book-maven-plugin</artifactId> 
