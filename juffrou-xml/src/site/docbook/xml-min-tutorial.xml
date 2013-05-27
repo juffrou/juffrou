@@ -28,12 +28,12 @@
 	person.setHome(address);
 </programlisting>
 			<para>Then instantiate Juffrou-xml and marshal the java bean</para>
-<programlisting>
+<programlisting language="java">
 	JuffrouXml juffrouXml = new JuffrouXml();
 	String xmlString = juffrouXml.toXml(person);
 </programlisting>
 			<para>The output will be the following XML:</para>
-<programlisting><![CDATA[
+<programlisting language="xml"><![CDATA[
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <net.sf.juffrou.xml.test.dom.Person>
   <firstName>Carlos</firstName>
@@ -46,21 +46,21 @@
 </net.sf.juffrou.xml.test.dom.Person>
 ]]></programlisting>
 <para>To unmarshal an object back from XML is also straight forward:</para>
-<programlisting>
+<programlisting language="java">
 	Person person = (Person) juffrouXml.fromXml(xmlString);
 </programlisting>
 </section>
 <section><title>Adjusting the output</title>
 
 <para>Registering the person bean will allow you to also define its xml element name</para>
-<programlisting>
+<programlisting language="java">
 	JuffrouXml juffrouXml = new JuffrouXml();
 	juffrouXml.registerRootElement(Person.class, "Person");
 	
 	String xmlString = juffrouXml.toXml(person);
 </programlisting>
 <para>The output will now be:</para>
-<programlisting><![CDATA[
+<programlisting language="xml"><![CDATA[
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Person>
   <firstName>Carlos</firstName>
@@ -74,7 +74,7 @@
 ]]></programlisting>
 
 <para>To have the birth day date displayed in simple date format, create a custom serializer:
-<programlisting>
+<programlisting language="java">
 public class SimpleDateSerializer implements Serializer {
 
 	private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -94,7 +94,7 @@ public class SimpleDateSerializer implements Serializer {
 	}
 }</programlisting>
 and just register the corresponding bean property:</para>
-<programlisting>
+<programlisting language="java">
 	JuffrouXml juffrouXml = new JuffrouXml();
 	juffrouXml.registerRootElement(Person.class, "Person");
 	juffrouXml.registerSerializer("simpledate", new SimpleDateSerializer());
@@ -103,7 +103,7 @@ and just register the corresponding bean property:</para>
 	String xmlString = juffrouXml.toXml(person);
 </programlisting>
 <para>The output will now be:</para>
-<programlisting><![CDATA[
+<programlisting language="xml"><![CDATA[
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Person>
   <firstName>Carlos</firstName>
@@ -121,14 +121,14 @@ and just register the corresponding bean property:</para>
 <para>Simplified marshalling is the possibility of marshalling nested beans into a "flat" XML structure like this: imagine that you don't want the whole home address marshalled for this person. You only want his home city 
 and you want it displayed as it were a simple property of person.</para>
 <para>Easy! All you have to do is this:</para>
-<programlisting>
+<programlisting language="java">
 	JuffrouXml juffrouXml = new JuffrouXml();
 	juffrouXml.registerRootElement(Person.class, "Person");
 	juffrouXml.registerElement(Person.class, "home.city", "homeTown", null);
 	String xmlString = juffrouXml.toXml(person);
 </programlisting>
 <para>The output will now be:</para>
-<programlisting><![CDATA[
+<programlisting language="xml"><![CDATA[
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Person>
   <firstName>Carlos</firstName>
@@ -145,7 +145,7 @@ and you want it displayed as it were a simple property of person.</para>
 Juffrou-XML can also be configured using mapping files.</para>
 <para>To demonstrate lets do the equivalent configuration of the prior examples. Create a file called<filename>juffrou-xml-mapping.xml</filename>
 with the following contents:
-<programlisting><![CDATA[
+<programlisting language="xml"><![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
 <mapping>
 
@@ -166,10 +166,10 @@ with the following contents:
 <caption>By not specifying any of the Address' properties to marshal, all will be marshalled</caption>
 </para>
 <para>To instantiate Juffrou-xml now we use another constructor:</para>
-<programlisting>
+<programlisting language="java"><![CDATA[
 	JuffrouXml juffrouXml = new JuffrouXml("classpath:juffrou-xml-mapping.xml");
 	String xmlString = juffrouXml.toXml(person);
-</programlisting>
+]]></programlisting>
 		</section>
 	</section>
 </article>

@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<book xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xi="http://www.w3.org/2001/XInclude">
+<book xmlns="http://docbook.org/ns/docbook" version="5.0"
+	xmlns:xi="http://www.w3.org/2001/XInclude">
+	<title>Juffrou Reference Documentation</title>
 	<info>
-		<title>Juffrou Reference Documentation</title>
+		<legalnotice>
+			<para>
+				Version <?eval ${project.version}?>
+			</para>
+		</legalnotice>
 		<author>
 			<personname>
 				<firstname>Carlos</firstname>
@@ -12,14 +18,31 @@
 			<year>2013</year>
 			<holder>Juffrou</holder>
 		</copyright>
+		<revhistory>
+
+			<revision>
+				<revnumber><?eval ${project.version}?>
+				</revnumber>
+				<date>28 May 2013</date>
+				<authorinitials>carlos.mfa.martins@gmail.com</authorinitials>
+				<revremarks>
+					First draft, incomplete
+				</revremarks>
+			</revision>
+		</revhistory>
+
 	</info>
 	<chapter id="xml">
 		<title>Juffrou XML</title>
-		<xi:include href="../../../juffrou-xml/src/site/docbook/xml-intro.xml" xpointer="element(/1/1)"/>
-		<xi:include href="../../../juffrou-xml/src/site/docbook/xml-min-tutorial.xml" xpointer="element(/1/2)"/>
+		<xi:include href="../../../juffrou-xml/src/site/docbook/xml-intro.xml"
+			xpointer="element(/1/1)" />
+		<xi:include
+			href="../../../juffrou-xml/src/site/docbook/xml-min-tutorial.xml"
+			xpointer="element(/1/2)" />
 	</chapter>
 	<chapter id="reflect">
 		<title>Juffrou Reflection</title>
-		<para>This is a temporary placeholder while the documentation on Juffrou Reflection is being prepared.</para>
+		<para>This is a temporary placeholder while the documentation on
+			Juffrou Reflection is being prepared.</para>
 	</chapter>
 </book>
