@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<book xmlns="http://docbook.org/ns/docbook" version="5.0"
+	xmlns:xi="http://www.w3.org/2001/XInclude">
+	<title><?eval ${project.name}?> Reference Documentation</title>
+	<subtitle><?eval ${project.version}?></subtitle>
+	<info>
+	<releaseinfo>This document refers to version <?eval ${project.version}?> of the <?eval ${project.name}?>.</releaseinfo>
+<legalnotice><para>Copies of this document may be made for your own use and for distribution to others, provided
+that you do not charge any fee for such copies and further provided that each copy contains this
+Copyright Notice, whether distributed in print or electronically.</para></legalnotice>
+		<author>
+			<personname>
+				<firstname>Carlos</firstname>
+				<surname>Martins</surname>
+			</personname>
+		</author>
+	</info>
+	<chapter>
+		<title>Getting Started</title>
+		<section>
+			<title>Introduction</title>
+			<para></para>
+		</section>
+		<section>
+			<title>Installing</title>
+			<para></para>
+		</section>
+		<section>
+			<title>Configuring</title>
+			<para></para>
+		</section>
+	</chapter>
+	<chapter>
+		<title>Using</title>
+		<section>
+			<title>Introduction</title>
+			<para></para>
+		</section>
+		<section>
+			<title>Installing</title>
+			<para></para>
+		</section>
+		<section>
+			<title>Configuring</title>
+			<para></para>
+		</section>
+	</chapter>
+</book>

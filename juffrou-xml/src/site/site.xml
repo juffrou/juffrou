@@ -11,6 +11,7 @@
 		<menu name="Juffrou XML">
 			<item name="Introduction" href="index.html" />
 			<item name="Three minute tutorial" href="xml-min-tutorial.html" />
+			<item name="Reference" href="xml-reference.html" />
 		</menu>
 		<!-- 
 		<menu name="My Inherited Menu" inherit="top">

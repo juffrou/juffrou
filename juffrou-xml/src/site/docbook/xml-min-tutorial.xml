@@ -16,15 +16,14 @@
 			<para>First create a couple of java beans and fill up some of their properties
 			</para>
 <programlisting language="java">
-	Person person = new Person();
-	person.setFirstName("Carlos");
-	person.setLastName("Martins");
-	person.setBirthDay(new SimpleDateFormat("yyyy-MM-dd").parse("1967-10-01"));
-	
 	Address address = new Address();
 	address.setStreet("Bean street, No 1");
 	address.setCity("Lisboa");
 
+	Person person = new Person();
+	person.setFirstName("Carlos");
+	person.setLastName("Martins");
+	person.setBirthDay(new SimpleDateFormat("yyyy-MM-dd").parse("1967-10-01"));
 	person.setHome(address);
 </programlisting>
 			<para>Then instantiate Juffrou-xml and marshal the java bean</para>
