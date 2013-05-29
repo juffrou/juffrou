@@ -89,7 +89,7 @@ public class JuffrouBeanMetadata {
 	 * @param beanClazz the class of the java bean
 	 * @param elementName the xml element name to use
 	 */
-	public void registerRootElement(Class beanClazz, String elementName) {
+	public void registerRootElement(Class beanClazz, String elementName, String serializerId) {
 		BeanClassBinding beanClassBinding = getBeanClassBindingFromClass(beanClazz);
 		if(beanClassBinding != null) {
 			//remove old registration
@@ -103,9 +103,11 @@ public class JuffrouBeanMetadata {
 		beanClassBinding.setXmlElementName(elementName);
 		classToBindingMap.put(beanClazz, beanClassBinding);
 		xmlElementNameToBindingMap.put(elementName, beanClassBinding);
+		if(serializerId != null)
+			beanClassBinding.setSerializer(getSerializerWithId(serializerId));
 	}
 	
-	public void registerProperty(Class beanClazz, String beanPropertyName, String elementName, String serializerId) {
+	public void registerProperty(Class beanClazz, String beanPropertyName, String elementName, String serializerId, NodeType nodeType) {
 		BeanClassBinding beanClassBinding = getBeanClassBindingFromClass(beanClazz);
 		if(beanClassBinding.isEmpty())
 			beanClassBinding.setAllBeanPropertiesToMarshall();
@@ -133,6 +135,7 @@ public class JuffrouBeanMetadata {
 			if(elementName != null && ! elementName.equals(beanPropertyBinding.getXmlElementName()))
 				beanClassBinding.replaceBeanPropertyElementName(beanPropertyBinding, elementName);
 		}
+		beanPropertyBinding.setNodeType(nodeType);
 		if(serializerId != null)
 			beanPropertyBinding.setSerializer(getSerializerWithId(serializerId));
 	}

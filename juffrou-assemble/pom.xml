@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>net.sf.juffrou</groupId>
@@ -9,7 +10,7 @@
 	<packaging>pom</packaging>
 	<name>Juffrou Assemble</name>
 	<description>Assemble the files to distribute in sourceforge</description>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>net.sf.juffrou</groupId>
@@ -22,7 +23,7 @@
 			<version>2.0.3-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
-	
+
 	<build>
 		<finalName>juffrou-${project.version}</finalName>
 		<plugins>
@@ -33,17 +34,10 @@
 					<skip>true</skip>
 				</configuration>
 			</plugin>
-			<!-- 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-site-plugin</artifactId>
-				<configuration>
-					<skip>true</skip>
-					<skipDeploy>true</skipDeploy>
-				</configuration>
-			</plugin>
-			 -->
-			 
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-site-plugin</artifactId> 
+				<configuration> <skip>true</skip> <skipDeploy>true</skipDeploy> </configuration> 
+				</plugin> -->
+
 			<plugin>
 				<groupId>com.agilejava.docbkx</groupId>
 				<artifactId>docbkx-fop-support</artifactId>
@@ -90,9 +84,7 @@
 							<generateToc>true</generateToc>
 							<targetDirectory>${project.build.directory}</targetDirectory>
 							<foCustomization>${basedir}/src/site/docbkx-config/docbook-fo.xsl</foCustomization>
-							<!--  
-							<bodyFontFamily>Kaffeesatz</bodyFontFamily>
-							-->
+							<!-- <bodyFontFamily>Kaffeesatz</bodyFontFamily> -->
 							<fonts>
 								<font>
 									<name>Kaffeesatz</name>
@@ -119,7 +111,26 @@
 					<!-- // DEFAULT HTML CONFIG -->
 				</configuration>
 			</plugin>
-			 
+
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>site</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<failOnError>true</failOnError>
+					<target>
+						<copy file="${project.build.directory}/reference-manual.pdf"
+							toDir="${project.build.directory}/site" />
+					</target>
+				</configuration>
+			</plugin>
+
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<executions>
@@ -137,6 +148,7 @@
 					</descriptors>
 				</configuration>
 			</plugin>
+
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>wagon-maven-plugin</artifactId>
@@ -155,6 +167,7 @@
 					<url>${sf.url}${sf.downloads.dir}</url>
 				</configuration>
 			</plugin>
+
 		</plugins>
 	</build>
 </project>

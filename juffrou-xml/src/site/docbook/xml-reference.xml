@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE book [
+<!ENTITY nbsp " ">
 <!ENTITY juffrou.site.url "http://juffrou.sourceforge.net">
 ]>
 <book xmlns="http://docbook.org/ns/docbook" version="5.0"
 	xmlns:xi="http://www.w3.org/2001/XInclude">
-	<title><?eval ${project.name}?> Reference Documentation</title>
+	<title>Juffrou-XML Reference Documentation</title>
 	<subtitle><?eval ${project.version}?></subtitle>
 	<info>
-	<releaseinfo>This document refers to version <?eval ${project.version}?> of the <?eval ${project.name}?>.</releaseinfo>
+		<releaseinfo>This document refers to version <?eval ${project.version}?> of the Juffrou-XML.</releaseinfo>
 <legalnotice><para>Copies of this document may be made for your own use and for distribution to others, provided
 that you do not charge any fee for such copies and further provided that each copy contains this
 Copyright Notice, whether distributed in print or electronically.</para></legalnotice>
@@ -31,13 +32,13 @@ Copyright Notice, whether distributed in print or electronically.</para></legaln
 			<title>Installing</title>
 			<section>
 				<title>Maven projects</title>
-				<para>To start using <?eval ${project.name}?> in you maven project just add the following dependency:
+				<para>To start using Juffrou-XML in you maven project just add the following dependency:
 <programlisting language="xml"><![CDATA[
-	<dependency>
-	&nbsp;&nbsp;<groupId>net.sf.juffrou</groupId>
-	&nbsp;&nbsp;<artifactId>juffrou-xml</artifactId>
-	&nbsp;&nbsp;<version>]]><?eval ${project.version}?><![CDATA[</version>
-	</dependency>]]>
+<dependency>
+	<groupId>net.sf.juffrou</groupId>
+	<artifactId>juffrou-xml</artifactId>
+	<version>]]><?eval ${project.version}?><![CDATA[</version>
+</dependency>]]>
 </programlisting>
 This will allow you access the source code of the library as well as the javadoc files, if you have checked the options "download artifact sources" and "download atifact javadoc in your IDE."
 				</para>
@@ -47,10 +48,49 @@ This will allow you access the source code of the library as well as the javadoc
 					<para>Download the file <filename>juffrou-<?eval ${project.version}?>-bundle.zip</filename> from the <ulink url="http://juffrou.sourceforge.net"><citetitle>website</citetitle></ulink> ans extract it's contents to a temporary directory.</para>
 					<para>Add <filename>juffrou-reflect-<?eval ${project.version}?>.jar</filename> and <filename>juffrou-xml-<?eval ${project.version}?>.jar</filename> to the classpath of your project and you are good to go.</para>
 			</section>
+			<para>With these libraries in your classpath you can start using juffrou-XML right away:</para>
+<example><title>Marshalling a java bean:</title>
+<programlisting language="java">
+	Address address = new Address();
+	address.setStreet("Bean street, No 1");
+	address.setCity("Lisboa");
+
+	Person person = new Person();
+	person.setFirstName("Carlos");
+	person.setLastName("Martins");
+	person.setBirthDay(new SimpleDateFormat("yyyy-MM-dd").parse("1967-10-01"));
+	person.setHome(address);
+
+	JuffrouXml juffrouXml = new JuffrouXml();
+	String xmlString = juffrouXml.toXml(person);
+</programlisting>
+<para>The output will be the following XML:</para>
+<programlisting language="xml"><![CDATA[
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<net.sf.juffrou.xml.test.dom.Person>
+	<firstName>Carlos</firstName>
+	<lastName>Martins</lastName>
+	<birthDay>10/1/67 12:00 AM</birthDay>
+	<home>
+		<street>Bean street, No 1</street>
+		<city>Lisboa</city>
+	</home>
+</net.sf.juffrou.xml.test.dom.Person>
+]]></programlisting>
+</example>
+<para>Without configuration, the names of root elements will be the class name of the corresponding bean, all its 
+properties will be marshalled and the names of the child elements will be the names of the corresponding property.
+Juffrou-XML is also able to unmarshall the XML text back to a person bean as long as the classes in the 
+root elements are in the program classpath like in the following example:</para>
+<example><title>Unmarshalling from XML to Person:</title>
+<programlisting language="java">
+	Person person = (Person) juffrouXml.fromXml(xmlString);
+</programlisting></example>
+			
 		</section>
 		<section>
 			<title>Configuring</title>
-				<para></para>
+				<para>If you want to change the element names of the beans or how those beans are marshalled / unmarshalled, then you need configuration. Configuration can be done either through direct coding or by means of an XML file.</para>
 		</section>
 	</chapter>
 	<chapter>

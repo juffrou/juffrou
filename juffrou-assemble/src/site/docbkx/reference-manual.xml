@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<book xmlns="http://docbook.org/ns/docbook" version="5.0"
-	xmlns:xi="http://www.w3.org/2001/XInclude">
+<book xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xi="http://www.w3.org/2001/XInclude">
 	<title>Juffrou Reference Documentation</title>
 	<subtitle><?eval ${project.version}?></subtitle>
 	<info>
-	<releaseinfo>This document refers to version <?eval ${project.version}?> of the Juffrou group of libraries.</releaseinfo>
+		<releaseinfo>This document refers to version <?eval ${project.version}?> of the Juffrou group of libraries.</releaseinfo>
 <legalnotice><para>Copies of this document may be made for your own use and for distribution to others, provided
 that you do not charge any fee for such copies and further provided that each copy contains this
 Copyright Notice, whether distributed in print or electronically.</para></legalnotice>
@@ -20,14 +19,22 @@ Copyright Notice, whether distributed in print or electronically.</para></legaln
 		</copyright>
 
 	</info>
+	<part>
+	<title>Juffrou XML</title>
+	<xi:include
+			href="../../../../juffrou-xml/src/site/docbook/xml-reference.xml"
+			xpointer="element(/1/4)" />
+	</part>
+	<!-- 
 	<chapter id="xml">
 		<title>Juffrou XML</title>
 		<xi:include href="../../../../juffrou-xml/src/site/docbook/xml-intro.xml"
 			xpointer="element(/1/1)" />
 		<xi:include
-			href="../../../../juffrou-xml/src/site/docbook/xml-min-tutorial.xml"
-			xpointer="element(/1/2)" />
+			href="../../../../juffrou-xml/src/site/docbook/xml-reference.xml"
+			xpointer="element(/1/5)" />
 	</chapter>
+	 -->
 	<chapter id="reflect">
 		<title>Juffrou Reflection</title>
 		<para>This is a temporary placeholder while the documentation on

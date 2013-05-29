@@ -185,6 +185,12 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 					<version>2.4</version>
 				</plugin>
 				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-antrun-plugin</artifactId>
+					<version>1.7</version>
+				</plugin>
+				
+				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>wagon-maven-plugin</artifactId>
 					<version>1.0-beta-4</version>

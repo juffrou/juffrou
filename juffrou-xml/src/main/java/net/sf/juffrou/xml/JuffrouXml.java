@@ -2,6 +2,7 @@ package net.sf.juffrou.xml;
 
 import net.sf.juffrou.xml.internal.JuffrouBeanMetadata;
 import net.sf.juffrou.xml.internal.JuffrouXmlMarshaller;
+import net.sf.juffrou.xml.internal.NodeType;
 import net.sf.juffrou.xml.internal.config.ConfigReader;
 import net.sf.juffrou.xml.serializer.Serializer;
 
@@ -42,22 +43,38 @@ public class JuffrouXml {
 	public Object fromXml(String xml) {
 		return xmlMarshaller.fromXml(xml);
 	}
-	
-	/**
-	 * Registers a bean with juffrou serializer and defines the name to use in tags representing this bean
-	 * @param beanClazz the class of the java bean
-	 * @param elementName the xml element name to use
-	 */
-	public void registerRootElement(Class beanClazz, String elementName) {
-		xmlBeanMetadata.registerRootElement(beanClazz, elementName);
-	}
-	
-	public void registerElement(Class beanClazz, String beanPropertyName, String elementName, String serializerId) {
-		xmlBeanMetadata.registerProperty(beanClazz, beanPropertyName, elementName, serializerId);
-	}
-	
+
 	public void registerSerializer(String serializerId, Serializer serializer) {
 		xmlBeanMetadata.registerSerializer(serializerId, serializer);
 	}
 
+	/**
+	 * Defines the name that the root element corresponding to the bean class will have
+	 * @param beanClazz the class of the java bean
+	 * @param elementName the xml element name to use
+	 */
+	public void registerRootElement(Class beanClazz, String elementName) {
+		xmlBeanMetadata.registerRootElement(beanClazz, elementName, null);
+	}
+
+	public void registerRootElement(Class beanClazz, String elementName, String serializerId) {
+		xmlBeanMetadata.registerRootElement(beanClazz, elementName, serializerId);
+	}
+
+	public void registerElement(Class beanClazz, String beanPropertyName, String elementName) {
+		xmlBeanMetadata.registerProperty(beanClazz, beanPropertyName, elementName, null, NodeType.ELEMENT);
+	}
+
+	public void registerElement(Class beanClazz, String beanPropertyName, String elementName, String serializerId) {
+		xmlBeanMetadata.registerProperty(beanClazz, beanPropertyName, elementName, serializerId, NodeType.ELEMENT);
+	}
+
+	public void registerAttribute(Class beanClazz, String beanPropertyName, String elementName) {
+		xmlBeanMetadata.registerProperty(beanClazz, beanPropertyName, elementName, null, NodeType.ATTRIBUTE);
+	}
+
+	public void registerAttribute(Class beanClazz, String beanPropertyName, String elementName, String serializerId) {
+		xmlBeanMetadata.registerProperty(beanClazz, beanPropertyName, elementName, serializerId, NodeType.ATTRIBUTE);
+	}
+	
 }

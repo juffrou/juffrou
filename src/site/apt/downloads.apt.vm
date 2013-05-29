@@ -1,6 +1,10 @@
 Latest Release
 
- You can download the latest release artifacts from the sourceforge downloads {{{http://sourceforge.net/projects/juffrou/files}page}}.
+ Get the latest {{{./juffrou-assemble/reference-manual.pdf}reference manual}} PDF.
+
+ Click {{{http://sourceforge.net/projects/juffrou/files/juffrou-${project.version}-bundle.zip/download}here}} for the last release bundle.
+
+ You can also download the latest and earlier releases from the sourceforge downloads {{{http://sourceforge.net/projects/juffrou/files}page}}.
  
 Source Code
 
@@ -8,6 +12,8 @@ Source Code
  The source code is kept under a Git repository and can be checked out with the command
  
  <<<git clone git://git.code.sf.net/p/juffrou/code juffrou-code>>>
+ 
+ You can browse the online source repository {{{https://sourceforge.net/p/juffrou/code/ci/master/tree}here}}.
 
 Maven Artifacts
 
