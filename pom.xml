@@ -188,9 +188,9 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>wagon-maven-plugin</artifactId>
 					<version>1.0-beta-4</version>
-					<!-- <configuration> <fromDir>${project.build.directory}</fromDir> <includes>*.jar,*.zip,*.pdf</includes> 
-						<excludes>pom.xml</excludes> <optimize>true</optimize> <url>${sf.url}</url> 
-						<toDir>${sf.downloads.dir}</toDir> </configuration> -->
+					<configuration>
+						<url>${sf.url}${sf.downloads.dir}</url>
+					</configuration>
 				</plugin>
 				<plugin>
 					<groupId>com.agilejava.docbkx</groupId>
@@ -219,6 +219,11 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 						</dependency>
 					</dependencies>
 				</plugin>
+				<plugin>
+					<groupId>com.agilejava.docbkx</groupId>
+					<artifactId>docbkx-fop-support</artifactId>
+					<version>2.0.14</version>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 		<plugins>
@@ -231,51 +236,6 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 					<target>1.6</target>
 				</configuration>
 			</plugin>
-
-			<plugin>
-				<groupId>com.agilejava.docbkx</groupId>
-				<artifactId>docbkx-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>docbook-HTML</id>
-						<phase>pre-site</phase>
-						<goals>
-							<goal>generate-html</goal>
-						</goals>
-						<configuration>
-							<generateToc>false</generateToc>
-							<targetDirectory>${project.build.directory}/site</targetDirectory>
-							<htmlCustomization>src/site/docbkx-config/docbook-html.xsl</htmlCustomization>
-							<htmlStylesheet>css/apache-maven-fluido-1.3.0.min.css</htmlStylesheet>
-						</configuration>
-					</execution>
-					<execution>
-						<id>docbook-PDF</id>
-						<phase>pre-site</phase>
-						<goals>
-							<goal>generate-pdf</goal>
-						</goals>
-						<configuration>
-							<generateToc>true</generateToc>
-							<targetDirectory>${project.build.directory}</targetDirectory>
-							<foCustomization>src/site/docbkx-config/docbook-fo.xsl</foCustomization>
-						</configuration>
-					</execution>
-				</executions>
-				<configuration>
-					<sourceDirectory>${basedir}/src/site/docbkx</sourceDirectory>
-					<includes>*.xml</includes>
-					<xincludeSupported>true</xincludeSupported>
-					<generatedSourceDirectory>${project.build.directory}/site</generatedSourceDirectory>
-					<highlightSource>1</highlightSource>
-					<!-- DEFAULT HTML CONFIG -->
-					<targetDirectory>${project.build.directory}/site</targetDirectory>
-					<htmlCustomization>src/site/docbook-config/docbook-html.xsl</htmlCustomization>
-					<htmlStylesheet>css/apache-maven-fluido-1.3.0.min.css</htmlStylesheet>
-					<!-- // DEFAULT HTML CONFIG -->
-				</configuration>
-			</plugin>
-
 
 			<plugin>
 				<!-- GENERATE THE SITE -->
@@ -381,23 +341,6 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 				</dependencies>
 			</plugin>
 
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>wagon-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>upload-to-sourceforge</id>
-						<phase>deploy</phase>
-						<goals>
-							<goal>upload-single</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<fromFile>${project.build.directory}/juffrou-reference-${project.version}.pdf</fromFile>
-					<url>${sf.url}${sf.downloads.dir}</url>
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
 

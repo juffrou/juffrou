@@ -43,6 +43,83 @@
 				</configuration>
 			</plugin>
 			 -->
+			 
+			<plugin>
+				<groupId>com.agilejava.docbkx</groupId>
+				<artifactId>docbkx-fop-support</artifactId>
+				<executions>
+					<execution>
+						<phase>pre-site</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<ansi>true</ansi>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>com.agilejava.docbkx</groupId>
+				<artifactId>docbkx-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>docbook-HTML</id>
+						<phase>pre-site</phase>
+						<goals>
+							<goal>generate-html</goal>
+						</goals>
+						<!-- HTML configuration -->
+						<configuration>
+							<generateToc>false</generateToc>
+							<targetDirectory>${project.build.directory}/site</targetDirectory>
+							<htmlCustomization>${basedir}/src/site/docbkx-config/docbook-html.xsl</htmlCustomization>
+							<htmlStylesheet>./css/apache-maven-fluido-1.3.0.min.css</htmlStylesheet>
+							<chunkedOutput>false</chunkedOutput>
+						</configuration>
+					</execution>
+					<execution>
+						<id>docbook-PDF</id>
+						<phase>pre-site</phase>
+						<goals>
+							<goal>generate-pdf</goal>
+						</goals>
+						<!-- PDF configuration -->
+						<configuration>
+							<generateToc>true</generateToc>
+							<targetDirectory>${project.build.directory}</targetDirectory>
+							<foCustomization>${basedir}/src/site/docbkx-config/docbook-fo.xsl</foCustomization>
+							<!--  
+							<bodyFontFamily>Kaffeesatz</bodyFontFamily>
+							-->
+							<fonts>
+								<font>
+									<name>Kaffeesatz</name>
+									<style>normal</style>
+									<weight>normal</weight>
+									<embedFile>${basedir}/src/fonts/YanoneKaffeesatz-Regular.ttf</embedFile>
+									<metricsFile>${basedir}/target/fonts/YanoneKaffeesatz-Regular-metrics.xml</metricsFile>
+								</font>
+							</fonts>
+						</configuration>
+					</execution>
+				</executions>
+				<!-- Shared configuration -->
+				<configuration>
+					<sourceDirectory>${basedir}/src/site/docbkx</sourceDirectory>
+					<includes>*.xml</includes>
+					<xincludeSupported>true</xincludeSupported>
+					<generatedSourceDirectory>${project.build.directory}/site</generatedSourceDirectory>
+					<highlightSource>1</highlightSource>
+					<!-- DEFAULT HTML CONFIG -->
+					<targetDirectory>${project.build.directory}/site</targetDirectory>
+					<htmlCustomization>src/site/docbook-config/docbook-html.xsl</htmlCustomization>
+					<htmlStylesheet>css/apache-maven-fluido-1.3.0.min.css</htmlStylesheet>
+					<!-- // DEFAULT HTML CONFIG -->
+				</configuration>
+			</plugin>
+			 
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<executions>
@@ -68,12 +145,13 @@
 						<id>upload-to-sourceforge</id>
 						<phase>deploy</phase>
 						<goals>
-							<goal>upload-single</goal>
+							<goal>upload</goal>
 						</goals>
 					</execution>
 				</executions>
 				<configuration>
-					<fromFile>${project.build.directory}/juffrou-${project.version}-bundle.zip</fromFile>
+					<fromDir>${project.build.directory}</fromDir>
+					<includes>juffrou-${project.version}-bundle.zip,reference-manual.pdf</includes>
 					<url>${sf.url}${sf.downloads.dir}</url>
 				</configuration>
 			</plugin>

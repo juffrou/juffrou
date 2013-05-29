@@ -22,10 +22,10 @@ Copyright Notice, whether distributed in print or electronically.</para></legaln
 	</info>
 	<chapter id="xml">
 		<title>Juffrou XML</title>
-		<xi:include href="../../../juffrou-xml/src/site/docbook/xml-intro.xml"
+		<xi:include href="../../../../juffrou-xml/src/site/docbook/xml-intro.xml"
 			xpointer="element(/1/1)" />
 		<xi:include
-			href="../../../juffrou-xml/src/site/docbook/xml-min-tutorial.xml"
+			href="../../../../juffrou-xml/src/site/docbook/xml-min-tutorial.xml"
 			xpointer="element(/1/2)" />
 	</chapter>
 	<chapter id="reflect">
