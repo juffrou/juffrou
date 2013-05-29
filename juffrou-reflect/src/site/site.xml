@@ -10,7 +10,7 @@
 		
 		<menu name="Juffrou Reflect">
 			<item name="Introduction" href="index.html" />
-			<item name="Reference" href="xml-reference.html" />
+			<item name="Reference" href="reflect-reference.html" />
 		</menu>
 		<menu name="Project Documentation">
 			<item name="Javadocs" href="apidocs/index.html" />
