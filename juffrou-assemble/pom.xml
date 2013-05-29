@@ -1,10 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>net.sf.juffrou</groupId>
 		<artifactId>juffrou</artifactId>
-		<version>2.0.3-SNAPSHOT</version>
+		<version>2.0.3</version>
 	</parent>
 	<artifactId>juffrou-assemble</artifactId>
 	<packaging>pom</packaging>
@@ -15,12 +14,12 @@
 		<dependency>
 			<groupId>net.sf.juffrou</groupId>
 			<artifactId>juffrou-reflect</artifactId>
-			<version>2.0.3-SNAPSHOT</version>
+			<version>2.0.3</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.juffrou</groupId>
 			<artifactId>juffrou-xml</artifactId>
-			<version>2.0.3-SNAPSHOT</version>
+			<version>2.0.3</version>
 		</dependency>
 	</dependencies>
 
@@ -125,8 +124,7 @@
 				<configuration>
 					<failOnError>true</failOnError>
 					<target>
-						<copy file="${project.build.directory}/reference-manual.pdf"
-							toDir="${project.build.directory}/site" />
+						<copy file="${project.build.directory}/reference-manual.pdf" toDir="${project.build.directory}/site" />
 					</target>
 				</configuration>
 			</plugin>
