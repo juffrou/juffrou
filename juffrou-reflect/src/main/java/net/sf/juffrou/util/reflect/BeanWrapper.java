@@ -30,6 +30,8 @@ import net.sf.juffrou.util.reflect.internal.BeanFieldHandler;
 public class BeanWrapper {
 
 	private final BeanWrapperContext context;
+	private BeanWrapper parentBeanWrapper = null;
+	private String parentBeanProperty = null;
 	private Object instance;
 	private boolean isInitialized;
 	private final Map<String, BeanWrapper> nestedWrappers = new HashMap<String, BeanWrapper>();
@@ -99,7 +101,7 @@ public class BeanWrapper {
 	 */
 	public Object getBean() {
 		if(instance == null && !isInitialized)
-			instance = context.newBeanInstance();
+			createInstance();
 		return instance;
 	}
 	
@@ -109,10 +111,12 @@ public class BeanWrapper {
 	 * @throws InvalidParameterException if the new bean is not of the same type of the initially wrapped bean.
 	 */
 	public void setBean(Object bean) {
-		isInitialized = true;
 		if(bean == null)
 			reset();
 		else {
+			if( !isInitialized && parentBeanWrapper != null )
+				parentBeanWrapper.setValue(parentBeanProperty, bean);
+			isInitialized = true;
 			if(bean != null && ! context.getBeanClass().isAssignableFrom(bean.getClass()))
 				throw new InvalidParameterException("Bean must be of type " + context.getBeanClass().getSimpleName());
 			instance = bean;
@@ -123,6 +127,11 @@ public class BeanWrapper {
 		}
 	}
 	
+	public void setBeanSilently(Object bean) {
+		isInitialized = true;
+		instance = bean;
+	}
+
 	/**
 	 * Get the wrapped bean class
 	 * @return
@@ -324,7 +333,7 @@ public class BeanWrapper {
 	 */
 	public void setValueOfString(String propertyName, String value) {
 		if(instance == null)
-			instance = context.newBeanInstance();
+			createInstance();
 		int nestedIndex = propertyName.indexOf('.');
 		if (nestedIndex == -1) {
 			// not a nested property
@@ -376,7 +385,7 @@ public class BeanWrapper {
 	 */
 	public void setValue(String propertyName, Object value) {
 		if(instance == null)
-			instance = context.newBeanInstance();
+			createInstance();
 		int nestedIndex = propertyName.indexOf('.');
 		if (nestedIndex == -1) {
 			// not a nested property
@@ -402,15 +411,48 @@ public class BeanWrapper {
 
 			BeanWrapperContext bwc = context.getNestedContext(thisProperty, value);
 			
-			if (value != null)
+			if (value != null) {
 				nestedWrapper = new BeanWrapper(bwc, value);
+				setValue(thisProperty, nestedWrapper.getBean());
+			}
 			else
 				nestedWrapper = new BeanWrapper(bwc);
 			
+			nestedWrapper.setParentBeanWrapper(this);
+			nestedWrapper.setParentBeanProperty(thisProperty);
 			nestedWrappers.put(thisProperty, nestedWrapper);
-			setValue(thisProperty, nestedWrapper.getBean());
 		}
 		return nestedWrapper;
 	}
-	
+
+	protected BeanWrapper getParentBeanWrapper() {
+		return parentBeanWrapper;
+	}
+
+	protected void setParentBeanWrapper(BeanWrapper parentBeanWrapper) {
+		this.parentBeanWrapper = parentBeanWrapper;
+	}
+
+	protected String getParentBeanProperty() {
+		return parentBeanProperty;
+	}
+
+	protected void setParentBeanProperty(String parentBeanProperty) {
+		this.parentBeanProperty = parentBeanProperty;
+	}
+
+	protected boolean isInitialized() {
+		return isInitialized;
+	}
+
+	protected void setInitialized(boolean isInitialized) {
+		this.isInitialized = isInitialized;
+	}
+
+	private void createInstance() {
+		isInitialized = true;
+		instance = context.newBeanInstance();
+		if( parentBeanWrapper != null )
+			parentBeanWrapper.setValue(parentBeanProperty, instance);
+	}
 }
