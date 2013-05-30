@@ -23,6 +23,7 @@
 		solid black</xsl:attribute> <xsl:attribute name="padding-top">6pt</xsl:attribute> 
 		<xsl:attribute name="padding-bottom">3pt</xsl:attribute> </xsl:attribute-set> -->
 
+<!-- 
 	<xsl:template match="xslthl:keyword" mode="xslthl">
 		<strong class="hl-keyword" style="color:#950055">
 			<xsl:apply-templates mode="xslthl" />
@@ -33,6 +34,6 @@
 				<xsl:apply-templates mode="xslthl" />
 			</span>
 	</xsl:template>
-
+ -->
 
 </xsl:stylesheet>

@@ -32,7 +32,7 @@ Copyright Notice, whether distributed in print or electronically.</para></legaln
 			<title>Installing</title>
 			<section>
 				<title>Maven projects</title>
-				<para>To start using Juffrou-XML in you maven project just add the following dependency:
+				<para>To start using Juffrou-XML in your maven project just add the following dependency:
 <programlisting language="xml"><![CDATA[
 <dependency>
 	<groupId>net.sf.juffrou</groupId>
@@ -45,21 +45,16 @@ This will allow you access the source code of the library as well as the javadoc
 			</section>
 			<section>
 				<title>Non maven projects</title>
-					<para>Download the file <filename>juffrou-<?eval ${project.version}?>-bundle.zip</filename> from the <ulink url="http://juffrou.sourceforge.net"><citetitle>website</citetitle></ulink> ans extract it's contents to a temporary directory.</para>
+					<para>Download the file <filename>juffrou-<?eval ${project.version}?>-bundle.zip</filename> from the <ulink url="http://juffrou.sourceforge.net"><citetitle>website</citetitle></ulink> and extract it's contents to a temporary directory.</para>
 					<para>Add <filename>juffrou-reflect-<?eval ${project.version}?>.jar</filename> and <filename>juffrou-xml-<?eval ${project.version}?>.jar</filename> to the classpath of your project and you are good to go.</para>
 			</section>
 			<para>With these libraries in your classpath you can start using juffrou-XML right away:</para>
 <example><title>Marshalling a java bean:</title>
 <programlisting language="java">
-	Address address = new Address();
-	address.setStreet("Bean street, No 1");
-	address.setCity("Lisboa");
-
 	Person person = new Person();
 	person.setFirstName("Carlos");
 	person.setLastName("Martins");
 	person.setBirthDay(new SimpleDateFormat("yyyy-MM-dd").parse("1967-10-01"));
-	person.setHome(address);
 
 	JuffrouXml juffrouXml = new JuffrouXml();
 	String xmlString = juffrouXml.toXml(person);
@@ -71,10 +66,6 @@ This will allow you access the source code of the library as well as the javadoc
 	<firstName>Carlos</firstName>
 	<lastName>Martins</lastName>
 	<birthDay>10/1/67 12:00 AM</birthDay>
-	<home>
-		<street>Bean street, No 1</street>
-		<city>Lisboa</city>
-	</home>
 </net.sf.juffrou.xml.test.dom.Person>
 ]]></programlisting>
 </example>
@@ -86,11 +77,109 @@ root elements are in the program classpath like in the following example:</para>
 <programlisting language="java">
 	Person person = (Person) juffrouXml.fromXml(xmlString);
 </programlisting></example>
-			
 		</section>
 		<section>
 			<title>Configuring</title>
 				<para>If you want to change the element names of the beans or how those beans are marshalled / unmarshalled, then you need configuration. Configuration can be done either through direct coding or by means of an XML file.</para>
+				<para>To configure by file you can instantiate Juffrou-XML and pass the file name in the constructor, or you can instantiate Juffrou-XML with the default constructor and then call the readConfigFile method.</para>
+				<example><title>Configuring Juffrou-XML:</title>
+<programlisting language="java"><![CDATA[
+	JuffrouXml juffrouXml = new JuffrouXml("classpath:juffrou-config.xml");
+	
+	JuffrouXml juffrouXml = new JuffrouXml();
+	juffrouXml.readConfigFile("classpath:config-file-one.xml");
+	juffrouXml.readConfigFile("file:/etc/config-file-two.xml");]]>
+</programlisting></example>
+		<section><title>Defining root element names</title>
+		<example><title>define root element names through code</title>
+<programlisting language="java"><![CDATA[
+	JuffrouXml juffrouXml = new JuffrouXml();
+	juffrouXml.registerRootElement(Person.class, "Person");]]>
+</programlisting>
+		</example>
+		<example><title>Defining root element in configuration file</title>
+<programlisting language="xml"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping>
+
+	<root-element xml="Person" type="net.sf.juffrou.xml.test.dom.Person" />
+	
+</mapping>]]></programlisting>
+		</example>
+		<para>The corresponding XML now looks like this:</para>
+<programlisting language="xml"><![CDATA[
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Person>
+	<firstName>Carlos</firstName>
+	<lastName>Martins</lastName>
+	<birthDay>10/1/67 12:00 AM</birthDay>
+</Person>
+]]></programlisting>
+		</section>
+		
+		<section><title>Defining element names</title>
+		<example><title>define element names through code</title>
+<programlisting language="java"><![CDATA[
+	JuffrouXml juffrouXml = new JuffrouXml();
+	juffrouXml.registerElement(Person.class, "lastName", "Surname");]]>
+</programlisting>
+		</example>
+		<example><title>Defining element names in configuration file</title>
+<programlisting language="xml"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping>
+
+	<root-element xml="Person" type="net.sf.juffrou.xml.test.dom.Person">
+		<element property="firstName" />
+		<element property="lastName" xml="Surname" />
+		<element property="birthDay" />
+	</root-element>
+	
+</mapping>]]></programlisting>
+		</example>
+		<para>The corresponding XML now looks like this:</para>
+<programlisting language="xml"><![CDATA[
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Person>
+	<firstName>Carlos</firstName>
+	<Surname>Martins</Surname>
+	<birthDay>10/1/67 12:00 AM</birthDay>
+</Person>
+]]></programlisting>
+		
+		</section>
+
+		<section><title>Defining attributes</title>
+		<example><title>define attributes through code</title>
+<programlisting language="java"><![CDATA[
+	JuffrouXml juffrouXml = new JuffrouXml();
+	juffrouXml.registerAttribute(Person.class, "firstName", "name");]]>
+</programlisting>
+		</example>
+		<example><title>Defining attributes in configuration file</title>
+<programlisting language="xml"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping>
+
+	<root-element xml="Person" type="net.sf.juffrou.xml.test.dom.Person">
+		<attribute property="firstName" xml="name" />
+		<element property="lastName" xml="Surname" />
+		<element property="birthDay" />
+	</root-element>
+	
+</mapping>]]></programlisting>
+		</example>
+		<para>The corresponding XML now looks like this:</para>
+<programlisting language="xml"><![CDATA[
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Person name="Carlos">
+	<Surname>Martins</Surname>
+	<birthDay>10/1/67 12:00 AM</birthDay>
+</Person>
+]]></programlisting>
+
+		</section>
+		
 		</section>
 	</chapter>
 	<chapter>

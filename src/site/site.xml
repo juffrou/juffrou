@@ -48,7 +48,7 @@
 		</head>
 		<links>
 			<item name="Sourceforge" href="http://sourceforge.net/p/juffrou/wiki/Home" />
-			<item name="Releases" href="https://oss.sonatype.org/content/groups/public/com/googlecode/juffrou" />
+			<item name="Releases" href="https://oss.sonatype.org/content/groups/public/net/sf/juffrou" />
 		</links>
 
 		<menu name="Juffrou">

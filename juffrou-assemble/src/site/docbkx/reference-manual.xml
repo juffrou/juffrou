@@ -35,9 +35,11 @@ Copyright Notice, whether distributed in print or electronically.</para></legaln
 			xpointer="element(/1/5)" />
 	</chapter>
 	 -->
+	<part>
 	<chapter id="reflect">
 		<title>Juffrou Reflection</title>
 		<para>This is a temporary placeholder while the documentation on
 			Juffrou Reflection is being prepared.</para>
 	</chapter>
+	</part>
 </book>
