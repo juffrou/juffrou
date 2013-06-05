@@ -162,13 +162,13 @@ with the following contents:
 	<root-element xml="Person" type="net.sf.juffrou.xml.test.dom.Address" />
 	
 </mapping>]]></programlisting>
-<caption>By not specifying any of the Address' properties to marshal, all will be marshalled</caption>
+<remark>By not specifying any of the Address' properties to marshal, all will be marshalled</remark>
 </para>
 <para>To instantiate Juffrou-xml now we use another constructor:</para>
-<programlisting language="java"><![CDATA[
-	JuffrouXml juffrouXml = new JuffrouXml("classpath:juffrou-xml-mapping.xml");
+<programlisting language="java">
+	JuffrouXml juffrouXml = new JuffrouXml("<replaceable>classpath:juffrou-xml-mapping.xml</replaceable>");
 	String xmlString = juffrouXml.toXml(person);
-]]></programlisting>
+</programlisting>
 		</section>
 	</section>
 </article>

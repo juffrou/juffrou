@@ -15,7 +15,7 @@ Copyright Notice, whether distributed in print or electronically.</para></legaln
 			</personname>
 		</author>
 	</info>
-	<chapter>
+	<chapter xml:id="reflect_ref_chpt_01">
 		<title>Getting Started</title>
 		<section>
 			<title>Introduction</title>
@@ -43,15 +43,23 @@ This will allow you access the source code of the library as well as the javadoc
 			</section>
 		</section>
 	</chapter>
-	<chapter>
+	<chapter xml:id="reflect_ref_chpt_02">
 		<title>Using</title>
 		<section>
 			<title>BeanWrapper</title>
-			<para>BeanWrapper is the object that wraps around your beans and allows you to inspect them through the names of their properties.</para>
+			<para>BeanWrapper is the object that wraps around your beans and allows you to inspect them through the names of their properties. you can access to the wrapped bean's properties and also to the properties of beans referenced by them.</para>
+			<figure><title>Example class diagram</title>
+			<mediaobject>
+				<imageobject>
+					<imagedata fileref="images/ClassDiagram.png" format="PNG" />
+				</imageobject>
+			</mediaobject>
+			</figure>
 		</section>
 		<section>
-			<title>Installing</title>
-			<para></para>
+			<title>BeanWrapperContext</title>
+			<para>The BeanWrapperContext is the object that holds metadata for a BeanWrapper. This metadata is composed by data collected through class introspection.</para>
+			<para>If you instantiate a BeanWrapper using the default constructor, it will create a new BeanWrapperContext. But if you instantiate a BeanWrapper by passing a BeanWrapperContext, no introspection overhead is needed.</para>
 		</section>
 		<section>
 			<title>Configuring</title>

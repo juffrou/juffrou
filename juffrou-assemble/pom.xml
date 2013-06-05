@@ -81,6 +81,7 @@
 						<!-- PDF configuration -->
 						<configuration>
 							<generateToc>true</generateToc>
+							<imgSrcPath>file:///${basedir}/src/site/resources/</imgSrcPath>
 							<targetDirectory>${project.build.directory}</targetDirectory>
 							<foCustomization>${basedir}/src/site/docbkx-config/docbook-fo.xsl</foCustomization>
 							<!-- <bodyFontFamily>Kaffeesatz</bodyFontFamily> -->
