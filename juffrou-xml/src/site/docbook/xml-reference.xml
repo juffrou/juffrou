@@ -100,7 +100,10 @@ root elements are in the program classpath like in the following example:</para>
 		<example><title>Defining root element in configuration file</title>
 <programlisting language="xml"><![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
-<mapping>
+<mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns="http://juffrou.sourceforge.net/juffrou-xml"
+	xsi:schemaLocation="http://juffrou.sourceforge.net/juffrou-xml 
+	http://juffrou.sourceforge.net/juffrou-xml/schemas/juffrou-xml.xsd">
 
 	<root-element xml="Person" type="net.sf.juffrou.xml.test.dom.Person" />
 	
@@ -127,7 +130,10 @@ root elements are in the program classpath like in the following example:</para>
 		<example><title>Defining element names in configuration file</title>
 <programlisting language="xml"><![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
-<mapping>
+<mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns="http://juffrou.sourceforge.net/juffrou-xml"
+	xsi:schemaLocation="http://juffrou.sourceforge.net/juffrou-xml 
+	http://juffrou.sourceforge.net/juffrou-xml/schemas/juffrou-xml.xsd">
 
 	<root-element xml="Person" type="net.sf.juffrou.xml.test.dom.Person">
 		<element property="firstName" />
@@ -159,7 +165,10 @@ root elements are in the program classpath like in the following example:</para>
 		<example><title>Defining attributes in configuration file</title>
 <programlisting language="xml"><![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
-<mapping>
+<mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns="http://juffrou.sourceforge.net/juffrou-xml"
+	xsi:schemaLocation="http://juffrou.sourceforge.net/juffrou-xml 
+	http://juffrou.sourceforge.net/juffrou-xml/schemas/juffrou-xml.xsd">
 
 	<root-element xml="Person" type="net.sf.juffrou.xml.test.dom.Person">
 		<attribute property="firstName" xml="name" />
@@ -179,21 +188,60 @@ root elements are in the program classpath like in the following example:</para>
 ]]></programlisting>
 
 		</section>
-		
+
 		</section>
 	</chapter>
-	<chapter>
-		<title>Using</title>
+	<chapter xml:id="xml_ref_chpt_02">
+		<title>More Advanced Stuff</title>
 		<section>
-			<title>Introduction</title>
-			<para></para>
+			<title>Serializers</title>
+			<para>Serializers are the java classes responsible for translating java objects to XML and back.</para>
+			<para>Currently there are serializers for the basic java types:
+<itemizedlist mark="disc">
+<listitem>ArrayList</listitem>
+<listitem>BigDecimal</listitem>
+<listitem>BigInteger</listitem>
+<listitem>Boolean</listitem>
+<listitem>Byte</listitem>
+<listitem>Character</listitem>
+<listitem>Date</listitem>
+<listitem>Double</listitem>
+<listitem>Enum</listitem>
+<listitem>Float</listitem>
+<listitem>HashMap</listitem>
+<listitem>HashSet</listitem>
+<listitem>Integer</listitem>
+<listitem>Long</listitem>
+<listitem>Short</listitem>
+<listitem>String</listitem>
+</itemizedlist>
+			</para>
+			<para>Creating your own serializers is simple. Just implement the <command>Serializer</command> interface like in the following example:</para>
+<programlisting language="java">
+public class SimpleDateSerializer implements Serializer {
+
+	private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+	
+	@Override
+	public void serialize(JuffrouWriter writer, BeanWrapper valueOwner, 
+			String valuePropertyName) {
+		writer.write(formatter.format((Date)valueOwner.getValue(valuePropertyName)));
+	}
+
+	@Override
+	public void deserialize(JuffrouReader reader, BeanWrapper valueOwner, 
+			String valuePropertyName) {
+		String value = reader.getText();
+		try {
+			valueOwner.setValue(valuePropertyName, formatter.parse(value));
+		} catch (ParseException e) {
+		}
+	}
+}</programlisting>
+			
 		</section>
 		<section>
-			<title>Installing</title>
-			<para></para>
-		</section>
-		<section>
-			<title>Configuring</title>
+			<title>Simplified Marshalling</title>
 			<para></para>
 		</section>
 	</chapter>

@@ -62,6 +62,10 @@
 		<xi:include
 			href="../../../../juffrou-xml/src/site/docbook/xml-reference.xml"
 			xpointer="element(/1/4)" />
+		<xi:include
+			href="../../../../juffrou-xml/src/site/docbook/xml-reference.xml"
+			xpointer="element(xml_ref_chpt_02)" />
+			
 	</part>
 	<!-- <chapter id="xml"> <title>Juffrou XML</title> <xi:include href="../../../../juffrou-xml/src/site/docbook/xml-intro.xml" 
 		xpointer="element(/1/1)" /> <xi:include href="../../../../juffrou-xml/src/site/docbook/xml-reference.xml" 

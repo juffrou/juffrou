@@ -82,6 +82,7 @@
 						<configuration>
 							<generateToc>true</generateToc>
 							<imgSrcPath>file:///${basedir}/src/site/resources/</imgSrcPath>
+							<calloutGraphicsPath>file:///${basedir}/src/site/resources/images/callouts</calloutGraphicsPath>
 							<targetDirectory>${project.build.directory}</targetDirectory>
 							<foCustomization>${basedir}/src/site/docbkx-config/docbook-fo.xsl</foCustomization>
 							<!-- <bodyFontFamily>Kaffeesatz</bodyFontFamily> -->
@@ -104,6 +105,7 @@
 					<xincludeSupported>true</xincludeSupported>
 					<generatedSourceDirectory>${project.build.directory}/site</generatedSourceDirectory>
 					<highlightSource>1</highlightSource>
+					<calloutGraphics>true</calloutGraphics>
 					<!-- DEFAULT HTML CONFIG -->
 					<targetDirectory>${project.build.directory}/site</targetDirectory>
 					<htmlCustomization>src/site/docbook-config/docbook-html.xsl</htmlCustomization>

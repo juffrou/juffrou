@@ -53,7 +53,8 @@
 
 		<menu name="Juffrou">
 			<item name="Introduction" href="index.html" />
-			<item name="Reference" href="juffrou-assemble/reference-manual.html" target="_top" />
+			<item name="HTML Reference" href="juffrou-assemble/reference-manual.html" target="_blank" />
+			<item name="PDF Reference" href="juffrou-assemble/reference-manual.pdf" target="_blank" />
 			<item name="Downloads" href="downloads.html" />
 			<item name="Release Notes" href="release-notes.html" />
 		</menu>
