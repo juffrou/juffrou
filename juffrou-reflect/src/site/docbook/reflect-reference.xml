@@ -27,12 +27,13 @@ Copyright Notice, whether distributed in print or electronically.</para></legaln
 				<title>Maven projects</title>
 				<para>To start using Juffrou-XML in your maven project just add the following dependency:
 <programlisting language="xml"><![CDATA[
-<dependency>
-	<groupId>net.sf.juffrou</groupId>
-	<artifactId>juffrou-reflect</artifactId>
-	<version>]]><?eval ${project.version}?><![CDATA[</version>
-</dependency>]]>
-</programlisting>
+	<dependency>
+		<groupId>net.sf.juffrou</groupId>
+		<artifactId>juffrou-reflect</artifactId>
+		<version>]]><?eval ${project.version}?><![CDATA[</version>
+	</dependency>
+
+]]></programlisting>
 This will allow you access the source code of the library as well as the javadoc files, if you have checked the options "download artifact sources" and "download atifact javadoc in your IDE."
 				</para>
 			</section>
@@ -63,7 +64,7 @@ This will allow you access the source code of the library as well as the javadoc
 			bw.setValue("firstName", "Carlos"); <co xml:id="firstname_co"  linkends="firstname" />
 			bw.setValue("home.city", "Lisboa"); <co xml:id="city_co"  linkends="city" />
 			</programlisting>
-			<calloutlist>
+<calloutlist>
   <callout arearefs="inst_co" xml:id="inst" >
     <para>Instantiate BeanWrapper around a Person class</para>
   </callout>

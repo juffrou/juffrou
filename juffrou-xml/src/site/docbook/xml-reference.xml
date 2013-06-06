@@ -38,8 +38,8 @@ Copyright Notice, whether distributed in print or electronically.</para></legaln
 	<groupId>net.sf.juffrou</groupId>
 	<artifactId>juffrou-xml</artifactId>
 	<version>]]><?eval ${project.version}?><![CDATA[</version>
-</dependency>]]>
-</programlisting>
+</dependency>
+]]></programlisting>
 This will allow you access the source code of the library as well as the javadoc files, if you have checked the options "download artifact sources" and "download atifact javadoc in your IDE."
 				</para>
 			</section>
@@ -50,7 +50,7 @@ This will allow you access the source code of the library as well as the javadoc
 			</section>
 			<para>With these libraries in your classpath you can start using juffrou-XML right away:</para>
 <example><title>Marshalling a java bean:</title>
-<programlisting language="java">
+	<programlisting language="java">
 	Person person = new Person();
 	person.setFirstName("Carlos");
 	person.setLastName("Martins");
@@ -58,7 +58,7 @@ This will allow you access the source code of the library as well as the javadoc
 
 	JuffrouXml juffrouXml = new JuffrouXml();
 	String xmlString = juffrouXml.toXml(person);
-</programlisting>
+	</programlisting>
 <para>The output will be the following XML:</para>
 <programlisting language="xml"><![CDATA[
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -88,14 +88,14 @@ root elements are in the program classpath like in the following example:</para>
 	
 	JuffrouXml juffrouXml = new JuffrouXml();
 	juffrouXml.readConfigFile("classpath:config-file-one.xml");
-	juffrouXml.readConfigFile("file:/etc/config-file-two.xml");]]>
-</programlisting></example>
+	juffrouXml.readConfigFile("file:/etc/config-file-two.xml");
+]]></programlisting></example>
 		<section><title>Defining root element names</title>
 		<example><title>define root element names through code</title>
 <programlisting language="java"><![CDATA[
 	JuffrouXml juffrouXml = new JuffrouXml();
-	juffrouXml.registerRootElement(Person.class, "Person");]]>
-</programlisting>
+	juffrouXml.registerRootElement(Person.class, "Person");
+]]></programlisting>
 		</example>
 		<example><title>Defining root element in configuration file</title>
 <programlisting language="xml"><![CDATA[
@@ -107,7 +107,8 @@ root elements are in the program classpath like in the following example:</para>
 
 	<root-element xml="Person" type="net.sf.juffrou.xml.test.dom.Person" />
 	
-</mapping>]]></programlisting>
+</mapping>
+]]></programlisting>
 		</example>
 		<para>The corresponding XML now looks like this:</para>
 <programlisting language="xml"><![CDATA[
@@ -124,8 +125,8 @@ root elements are in the program classpath like in the following example:</para>
 		<example><title>define element names through code</title>
 <programlisting language="java"><![CDATA[
 	JuffrouXml juffrouXml = new JuffrouXml();
-	juffrouXml.registerElement(Person.class, "lastName", "Surname");]]>
-</programlisting>
+	juffrouXml.registerElement(Person.class, "lastName", "Surname");
+]]></programlisting>
 		</example>
 		<example><title>Defining element names in configuration file</title>
 <programlisting language="xml"><![CDATA[
@@ -141,7 +142,8 @@ root elements are in the program classpath like in the following example:</para>
 		<element property="birthDay" />
 	</root-element>
 	
-</mapping>]]></programlisting>
+</mapping>
+]]></programlisting>
 		</example>
 		<para>The corresponding XML now looks like this:</para>
 <programlisting language="xml"><![CDATA[
@@ -159,8 +161,8 @@ root elements are in the program classpath like in the following example:</para>
 		<example><title>define attributes through code</title>
 <programlisting language="java"><![CDATA[
 	JuffrouXml juffrouXml = new JuffrouXml();
-	juffrouXml.registerAttribute(Person.class, "firstName", "name");]]>
-</programlisting>
+	juffrouXml.registerAttribute(Person.class, "firstName", "name");
+]]></programlisting>
 		</example>
 		<example><title>Defining attributes in configuration file</title>
 <programlisting language="xml"><![CDATA[
@@ -176,7 +178,8 @@ root elements are in the program classpath like in the following example:</para>
 		<element property="birthDay" />
 	</root-element>
 	
-</mapping>]]></programlisting>
+</mapping>
+]]></programlisting>
 		</example>
 		<para>The corresponding XML now looks like this:</para>
 <programlisting language="xml"><![CDATA[
@@ -237,7 +240,8 @@ public class SimpleDateSerializer implements Serializer {
 		} catch (ParseException e) {
 		}
 	}
-}</programlisting>
+}
+</programlisting>
 			
 		</section>
 		<section>

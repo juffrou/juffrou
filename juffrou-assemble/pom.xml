@@ -82,10 +82,16 @@
 						<configuration>
 							<generateToc>true</generateToc>
 							<imgSrcPath>file:///${basedir}/src/site/resources/</imgSrcPath>
-							<calloutGraphicsPath>file:///${basedir}/src/site/resources/images/callouts</calloutGraphicsPath>
+							<calloutGraphicsPath>file:///${basedir}/src/site/resources/images/callouts/</calloutGraphicsPath>
+							<calloutGraphicsExtension>.svg</calloutGraphicsExtension>
+							<calloutGraphicsNumberLimit>30</calloutGraphicsNumberLimit>
+							<calloutIconSize>6</calloutIconSize>
+							<shadeVerbatim>true</shadeVerbatim>
 							<targetDirectory>${project.build.directory}</targetDirectory>
 							<foCustomization>${basedir}/src/site/docbkx-config/docbook-fo.xsl</foCustomization>
-							<!-- <bodyFontFamily>Kaffeesatz</bodyFontFamily> -->
+							<!-- <bodyFontFamily>Kaffeesatz</bodyFontFamily>
+							 -->
+							<monospaceFontFamily>LiberationMono</monospaceFontFamily>
 							<fonts>
 								<font>
 									<name>Kaffeesatz</name>
@@ -93,6 +99,20 @@
 									<weight>normal</weight>
 									<embedFile>${basedir}/src/fonts/YanoneKaffeesatz-Regular.ttf</embedFile>
 									<metricsFile>${basedir}/target/fonts/YanoneKaffeesatz-Regular-metrics.xml</metricsFile>
+								</font>
+								<font>
+									<name>LiberationMono</name>
+									<style>normal</style>
+									<weight>normal</weight>
+									<embedFile>${basedir}/src/fonts/LiberationMono-Regular.ttf</embedFile>
+									<metricsFile>${basedir}/target/fonts/LiberationMono-Regular-metrics.xml</metricsFile>
+								</font>
+								<font>
+									<name>VeraMono</name>
+									<style>normal</style>
+									<weight>normal</weight>
+									<embedFile>${basedir}/src/fonts/VeraMono.ttf</embedFile>
+									<metricsFile>${basedir}/target/fonts/VeraMono-metrics.xml</metricsFile>
 								</font>
 							</fonts>
 						</configuration>

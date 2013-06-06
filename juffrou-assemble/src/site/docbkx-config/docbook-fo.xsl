@@ -8,32 +8,49 @@
 		highlightSource=1 parameter is not sufficient -->
 	<xsl:import href="urn:docbkx:stylesheet/highlight.xsl" />
 
+    <xsl:attribute-set name="monospace.properties">
+        <xsl:attribute name="font-family">
+            <xsl:value-of select="$monospace.font.family"/>
+        </xsl:attribute>
+        <xsl:attribute name="font-size">0.6em</xsl:attribute>
+    </xsl:attribute-set>
+
+<!--###################################################
+                        Programlistings
+      ################################################### -->
+<!-- Verbatim text formatting (programlistings) -->
+	<!-- 
+    <xsl:attribute-set name="monospace.verbatim.properties">
+        <xsl:attribute name="font-size">
+            <xsl:value-of select="$body.font.small * 1.0"/>
+            <xsl:text>pt</xsl:text>
+        </xsl:attribute>
+    </xsl:attribute-set>
+     -->
+    <xsl:attribute-set name="verbatim.properties">
+        <xsl:attribute name="space-before.minimum">1em</xsl:attribute>
+        <xsl:attribute name="space-before.optimum">1em</xsl:attribute>
+        <xsl:attribute name="space-before.maximum">1em</xsl:attribute>
+        <xsl:attribute name="border-color">#444444</xsl:attribute>
+        <xsl:attribute name="border-style">solid</xsl:attribute>
+        <xsl:attribute name="border-width">0.1pt</xsl:attribute>
+        <xsl:attribute name="padding-top">0.5em</xsl:attribute>
+        <xsl:attribute name="padding-left">0.5em</xsl:attribute>
+        <xsl:attribute name="padding-right">0.5em</xsl:attribute>
+        <xsl:attribute name="padding-bottom">0.5em</xsl:attribute>
+        <xsl:attribute name="margin-left">0.5em</xsl:attribute>
+        <xsl:attribute name="margin-right">0.5em</xsl:attribute>
+    </xsl:attribute-set>
+<!-- Shade (background) programlistings -->
+    <xsl:param name="shade.verbatim">1</xsl:param>
+    <xsl:attribute-set name="shade.verbatim.style">
+        <xsl:attribute name="background-color">#F0F0F0</xsl:attribute>
+    </xsl:attribute-set>
+
 	<xsl:template match="xslthl:comment">
 		<i class="hl-comment">
 			<xsl:apply-templates />
 		</i>
 	</xsl:template>
-
-	<!-- CUSTOMIZATION
-	     BASED ON THE FILE (docbook-xsl-ns-1.78.1)/html/highlight.xsl
-	     (basically copy some entries of that file to this file and then change some properties) -->
-	
-	<!-- <xsl:attribute-set name="section.title.level1.properties"> <xsl:attribute 
-		name="border-top">0.5pt solid black</xsl:attribute> <xsl:attribute name="border-bottom">0.5pt 
-		solid black</xsl:attribute> <xsl:attribute name="padding-top">6pt</xsl:attribute> 
-		<xsl:attribute name="padding-bottom">3pt</xsl:attribute> </xsl:attribute-set> -->
-
-<!-- 
-	<xsl:template match="xslthl:keyword" mode="xslthl">
-		<strong class="hl-keyword" style="color:#950055">
-			<xsl:apply-templates mode="xslthl" />
-		</strong>
-	</xsl:template>
-	<xsl:template match="xslthl:string" mode="xslthl">
-			<span class="hl-string" style="color:blue">
-				<xsl:apply-templates mode="xslthl" />
-			</span>
-	</xsl:template>
- -->
 
 </xsl:stylesheet>
