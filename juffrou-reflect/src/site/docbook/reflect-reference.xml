@@ -74,6 +74,9 @@ This will allow you access the source code of the library as well as the javadoc
   <callout arearefs="city_co" xml:id="city">
     <para>Set the home property of Person with a new instance of an Address class and set the city property of Address to the value "Lisboa".</para>
   </callout>
+  <remark>Note: you can create a BeanWrapper around a class or around an object instance.</remark>
+  <para>When the program executes <command>bw.setValue("firstName", "Carlos");</command> the bean wrapper creates an instance of Person. And when it
+  executes <command>bw.setValue("home.city", "Lisboa");</command> it will instantiate an Address class, set the value of the property "home" in Person to the Address object and set the value of the property "city" in Address to "Lisboa".</para>
 </calloutlist>
 		</section>
 		

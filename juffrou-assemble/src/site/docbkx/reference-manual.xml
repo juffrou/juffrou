@@ -38,15 +38,18 @@
 		</copyright>
 
 	</info>
-	<part>
-		<title>Juffrou Reflect</title>
-		<chapter><title>Blabla</title>
+	<chapter><title>Introduction</title>
+		<para>Juffrou stands for Java Utilities Framework For the Rest Of Us and is a collection of useful classes or mini frameworks to help the java developer.</para>
+		<para>
 			<mediaobject>
 				<imageobject>
-					<imagedata fileref="images/juffrou_text_new.jpg" format="JPEG" />
+					<imagedata fileref="images/GraphToXml.png" format="PNG" />
 				</imageobject>
 			</mediaobject>
-		</chapter>
+		</para>
+	</chapter>
+	<part>
+		<title>Juffrou Reflect</title>
 		<xi:include
 			href="../../../../juffrou-reflect/src/site/docbook/reflect-reference.xml"
 			xpointer="element(reflect_ref_chpt_01)" />
