@@ -56,7 +56,7 @@ This will allow you access the source code of the library as well as the javadoc
 				</imageobject>
 			</mediaobject>
 			</figure>
-			<para>Figure <xref linkend="ClassDiagram" /> shows one class Person which has 3 simple attributes and one attribute of type Address. The Address class is also shown and has two simple attributes.
+			<para><xref linkend="ClassDiagram" /> shows one class Person which has 3 simple attributes and one attribute of type Address. The Address class is also shown and has two simple attributes.
 			</para>
 			A tipical use of BeanWrapper could be:
 			<programlisting language="java">
@@ -75,15 +75,34 @@ This will allow you access the source code of the library as well as the javadoc
     <para>Set the home property of Person with a new instance of an Address class and set the city property of Address to the value "Lisboa".</para>
   </callout>
   <remark>Note: you can create a BeanWrapper around a class or around an object instance.</remark>
-  <para>When the program executes <command>bw.setValue("firstName", "Carlos");</command> the bean wrapper creates an instance of Person. And when it
-  executes <command>bw.setValue("home.city", "Lisboa");</command> it will instantiate an Address class, set the value of the property "home" in Person to the Address object and set the value of the property "city" in Address to "Lisboa".</para>
+  <para>When the program executes <computeroutput>bw.setValue("firstName", "Carlos");</computeroutput> the bean wrapper creates an instance of Person. And when it
+  executes <computeroutput>bw.setValue("home.city", "Lisboa");</computeroutput> it will instantiate an Address class, set the value of the property <userinput>home</userinput> in Person to the Address object and set the value of the property <userinput>city</userinput> in Address to "Lisboa".</para>
+  <para>Sometimes you want to have control over bean instantiation and would like to set some "preferences" over how BeanWrapper behaves. This is where the BeanWrapperContext comes in.</para>
 </calloutlist>
 		</section>
 		
 		<section>
 			<title>BeanWrapperContext</title>
-			<para>The BeanWrapperContext is the object that holds metadata for a BeanWrapper. This metadata is composed by data collected through class introspection.</para>
+			<para>The BeanWrapperContext is the object that holds metadata for a BeanWrapper. This metadata is composed by data collected through class introspection and by preferences that the programmer defines.</para>
 			<para>If you instantiate a BeanWrapper using the default constructor, it will create a new BeanWrapperContext. But if you instantiate a BeanWrapper by passing a BeanWrapperContext, no introspection overhead is needed.</para>
+			<para>With BeanWrapperContext you can define a class that will be called to instantiate the wrapped class. To do this, first create a class that implements the interface <computeroutput>BeanInstanceCreator</computeroutput>. See the following example:</para>
+			<programlisting language="java">
+		BeanInstanceCreator iCreator = new BeanInstanceCreator() {
+			@Override
+			public Object newBeanInstance() throws BeanInstanceCreatorException {
+				Programmer programmer = new Programmer();
+				programmer.setLastName("Smith");
+				return programmer;
+			}
+		};
+		BeanWrapperContext context = new BeanWrapperContext(Programmer.class);
+		context.setBeanInstanceCreator(iCreator);
+		BeanWrapper bw = new BeanWrapper(context);
+		bw.setValue("firstName", "John");
+		Programmer programmer = (Programmer) bw.getBean();
+		Assert.assertEquals("John", programmer.getFirstName());
+		Assert.assertEquals("Smith", programmer.getLastName());
+			</programlisting>
 		</section>
 		<section>
 			<title>BeanConverter</title>

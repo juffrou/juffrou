@@ -40,10 +40,7 @@ public class BeanWrapper {
 	 */
 	public BeanWrapper(BeanWrapperContext context) {
 		this.context = context;
-		if(context.isEagerInstatiation())
-			this.instance = context.newBeanInstance();
-		else
-			this.instance = null;
+		this.instance = null;
 	}
 
 	/**
@@ -76,10 +73,7 @@ public class BeanWrapper {
 	 */
 	public BeanWrapper(Class<?> clazz) {
 		this.context = new BeanWrapperContext(clazz);
-		if(context.isEagerInstatiation())
-			this.instance = context.newBeanInstance();
-		else
-			this.instance = null;
+		this.instance = null;
 	}
 
 	public BeanWrapperContext getContext() {
@@ -138,10 +132,7 @@ public class BeanWrapper {
 		for(BeanWrapper bw : nestedWrappers.values()) {
 			bw.reset();
 		}
-		if(context.isEagerInstatiation())
-			this.instance = context.newBeanInstance();
-		else
-			this.instance = null;
+		this.instance = null;
 	}
 	
 	/**
@@ -378,7 +369,6 @@ public class BeanWrapper {
 	public BeanWrapper getNestedWrapper(String thisProperty) {
 		BeanWrapper nestedWrapper = nestedWrappers.get(thisProperty);
 		if (nestedWrapper == null) {
-			Type propertyType = getType(thisProperty);
 			BeanWrapperContext bwc = context.getNestedContext(thisProperty);
 			
 			Object value = getValue(thisProperty);

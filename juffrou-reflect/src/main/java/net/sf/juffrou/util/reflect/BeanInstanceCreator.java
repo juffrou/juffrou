@@ -10,5 +10,6 @@ import net.sf.juffrou.error.BeanInstanceCreatorException;
  */
 public interface BeanInstanceCreator {
 
-	public Object newBeanInstance() throws BeanInstanceCreatorException ;
+	@SuppressWarnings("rawtypes")
+	public Object newBeanInstance(Class clazz) throws BeanInstanceCreatorException ;
 }

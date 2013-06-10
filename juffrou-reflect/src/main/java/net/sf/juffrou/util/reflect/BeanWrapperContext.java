@@ -31,12 +31,7 @@ public class BeanWrapperContext {
 	private final Map<TypeVariable<?>, Type> typeArgumentsMap;
 	private final Map<String, BeanFieldHandler> fields;
 	private final Map<String, BeanWrapperContext> nestedContexts;
-
-	// preferences info
-	private BeanInstanceCreator beanInstanceCreator;
-	private BeanContextCreator<? extends BeanWrapperContext> beanContextCreator;
-	private boolean eagerInstatiation;
-
+	private BeanWrapperContextHierarchy hierarchyContext = null;
 
 	@SuppressWarnings("unchecked")
 	public BeanWrapperContext(Class clazz) {
@@ -63,9 +58,6 @@ public class BeanWrapperContext {
 		initFieldInfo(this.clazz, this.fields);
 		this.nestedContexts = new HashMap<String, BeanWrapperContext>();
 		
-		beanInstanceCreator = new DefaultBeanInstanceCreator();
-		beanContextCreator = new DefaultBeanContextCreator();
-		eagerInstatiation = false;
 	}
 
 	private void initFieldInfo(Class<?> clazz, Map<String, BeanFieldHandler> fs) {
@@ -88,12 +80,17 @@ public class BeanWrapperContext {
 		BeanWrapperContext nestedContext = nestedContexts.get(thisProperty);
 		if (nestedContext == null) {
 			Type propertyType = getBeanFieldHandler(thisProperty).getType();
-			if(propertyType instanceof ParameterizedType)
-				nestedContext = beanContextCreator.newBeanWrapperContext((Class<?>)((ParameterizedType) propertyType).getRawType(), ((ParameterizedType) propertyType).getActualTypeArguments());
-			else
-				nestedContext = beanContextCreator.newBeanWrapperContext((Class<?>) propertyType);
-			
-			nestedContexts.put(thisProperty, nestedContext);
+			BeanWrapperContextHierarchy hierarchyCtx = getHierarchyContext();
+			nestedContext = hierarchyCtx.getTypeContext(propertyType);
+			if(nestedContext == null) {
+				if(propertyType instanceof ParameterizedType)
+					nestedContext = hierarchyCtx.getBeanContextCreator().newBeanWrapperContext((Class<?>)((ParameterizedType) propertyType).getRawType(), ((ParameterizedType) propertyType).getActualTypeArguments());
+				else
+					nestedContext = hierarchyCtx.getBeanContextCreator().newBeanWrapperContext((Class<?>) propertyType);
+				nestedContext.setHierarchyContext(hierarchyCtx);
+				hierarchyCtx.addTypeContext(propertyType, nestedContext);
+				nestedContexts.put(thisProperty, nestedContext);
+			}
 		}
 		return nestedContext;
 	}
@@ -141,7 +138,7 @@ public class BeanWrapperContext {
 	
 	public Object newBeanInstance() {
 		try {
-			return beanInstanceCreator.newBeanInstance();
+			return getHierarchyContext().getBeanInstanceCreator().newBeanInstance(clazz);
 		} catch (BeanInstanceCreatorException e) {
 			throw new ReflectionException(e);
 		}
@@ -154,62 +151,35 @@ public class BeanWrapperContext {
 		return typeArgumentsMap;
 	}
 
+	public BeanWrapperContextHierarchy getHierarchyContext() {
+		if(hierarchyContext == null) {
+			hierarchyContext = new BeanWrapperContextHierarchy();
+			hierarchyContext.addTypeContext(clazz, this);
+		}
+		return hierarchyContext;
+	}
+
+	public void setHierarchyContext(BeanWrapperContextHierarchy hierarchyContext) {
+		this.hierarchyContext = hierarchyContext;
+	}
+
+	public BeanInstanceCreator getBeanInstanceCreator() {
+		return getHierarchyContext().getBeanInstanceCreator();
+	}
+
 	/**
 	 * The bean wrapper creates new instances using Class.newIntance(). You can use this this if you want to create class instances yourself.  
 	 * @param beanInstanceCreator
 	 */
 	public void setBeanInstanceCreator(BeanInstanceCreator beanInstanceCreator) {
-		this.beanInstanceCreator = beanInstanceCreator;
+		getHierarchyContext().setBeanInstanceCreator(beanInstanceCreator);
 	}
 	
 	public BeanContextCreator<? extends BeanWrapperContext> getBeanContextCreator() {
-		return beanContextCreator;
+		return getHierarchyContext().getBeanContextCreator();
 	}
-	public void setBeanContextCreator(
-			BeanContextCreator<? extends BeanWrapperContext> beanContextCreator) {
-		this.beanContextCreator = beanContextCreator;
-	}
-
-	public boolean isEagerInstatiation() {
-		return eagerInstatiation;
-	}
-	/**
-	 * Defines when a new instance is created.<br>If eager is true, a new instance is created when the BeanWrapper is created and reset. If eager is false, a new instance will only be created when setting a property value.<br>Default is false.
-	 * @param eagerInstatiation
-	 */
-	public void setEagerInstatiation(boolean eager) {
-		this.eagerInstatiation = eager;
+	public void setBeanContextCreator(BeanContextCreator<? extends BeanWrapperContext> beanContextCreator) {
+		getHierarchyContext().setBeanContextCreator(beanContextCreator);
 	}
 
-
-
-	private class DefaultBeanInstanceCreator implements BeanInstanceCreator {
-		@Override
-		public Object newBeanInstance() throws BeanInstanceCreatorException {
-			Object instance;
-			try {
-				instance = clazz.newInstance();
-			} catch (InstantiationException e) {
-				throw new BeanInstanceCreatorException(e);
-			} catch (IllegalAccessException e) {
-				throw new BeanInstanceCreatorException(e);
-			}
-			return instance;
-		}
-	}
-	
-	private class DefaultBeanContextCreator implements BeanContextCreator<BeanWrapperContext> {
-
-		@Override
-		public BeanWrapperContext newBeanWrapperContext(Class clazz) {
-			return new BeanWrapperContext(clazz);
-		}
-
-		@Override
-		public BeanWrapperContext newBeanWrapperContext(Class clazz, Type... types) {
-			return new BeanWrapperContext(clazz, types);
-		}
-		
-	}
-	
 }

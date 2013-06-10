@@ -243,7 +243,7 @@ public class ConfigReader {
 		}
 		
 		BeanWrapperContext bwContext = new BeanWrapperContext(clazz);
-		bwContext.setEagerInstatiation(true);
+//		bwContext.setEagerInstatiation(true);
 		BeanWrapper serializerWrapper = new BeanWrapper(bwContext);
 
 		// read tag content

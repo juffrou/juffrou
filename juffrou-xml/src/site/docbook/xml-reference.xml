@@ -246,7 +246,26 @@ public class SimpleDateSerializer implements Serializer {
 		</section>
 		<section>
 			<title>Simplified Marshalling</title>
-			<para></para>
+<para>Simplified marshalling is the possibility of marshalling nested beans into a "flat" XML structure like this: imagine that you don't want the whole home address marshalled for this person. You only want his home city 
+and you want it displayed as it were a simple property of person.</para>
+<para>Easy! All you have to do is this:</para>
+<programlisting language="java">
+	JuffrouXml juffrouXml = new JuffrouXml();
+	juffrouXml.registerRootElement(Person.class, "Person");
+	juffrouXml.registerElement(Person.class, "home.city", "homeTown", null);
+	String xmlString = juffrouXml.toXml(person);
+</programlisting>
+<para>The output will now be:</para>
+<programlisting language="xml"><![CDATA[
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Person>
+  <firstName>Carlos</firstName>
+  <lastName>Martins</lastName>
+  <birthDay>1967-10-01</birthDay>
+  <homeTown>Lisboa</homeTown>
+</Person>
+]]></programlisting>
+<para>Of course this XML will also be unmarshalled back to a person object. That person object will have a home with city Lisboa.</para>
 		</section>
 	</chapter>
 </book>

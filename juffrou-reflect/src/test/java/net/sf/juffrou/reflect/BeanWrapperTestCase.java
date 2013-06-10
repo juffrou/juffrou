@@ -59,7 +59,7 @@ public class BeanWrapperTestCase {
 	public void testCustomInstanceCreator() {
 		BeanInstanceCreator iCreator = new BeanInstanceCreator() {
 			@Override
-			public Object newBeanInstance() throws BeanInstanceCreatorException {
+			public Object newBeanInstance(Class clazz) throws BeanInstanceCreatorException {
 				Programmer programmer = new Programmer();
 				programmer.setLastName("Smith");
 				return programmer;
@@ -80,5 +80,21 @@ public class BeanWrapperTestCase {
 		BeanWrapper bw = new BeanWrapper(context);
 		bw.setValue("programmer.specialization", null);
 		bw.setValue("president.genericProperty", null);
+	}
+	
+	@Test
+	public void testCircularReferences() {
+		BeanWrapperContext context = new BeanWrapperContext(PersonCircular.class);
+		
+		PersonCircular person = new PersonCircular();
+		person.setFirstName("Carlos");
+		person.setLastName("Martins");
+		
+		BeanWrapper bw = new BeanWrapper(context, person);
+		
+		bw.setValue("address.street", "Bean street");
+		String value = (String) bw.getValue("address.person.lastName");
+		
+		Assert.assertEquals("Martins", value);
 	}
 }
