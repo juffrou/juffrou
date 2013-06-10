@@ -41,7 +41,7 @@ public class HashMapSerializer implements Serializer {
 			keyWrapper = new BeanWrapper(valueHolderWrapperContext);
 		}
 		else {
-			keyClassBinding = xmlBeanMetadata.getXmlBeanWrapperContextCreator().newBeanWrapperContext(firstEntry.getKey().getClass());
+			keyClassBinding = xmlBeanMetadata.getXmlBeanWrapperContextCreator().newBeanWrapperContext(valueHolderWrapperContext.getHierarchyContext(), firstEntry.getKey().getClass());
 
 			keyWrapper = new BeanWrapper(keyClassBinding);
 		}

@@ -7,7 +7,7 @@ import java.util.Map;
 import net.sf.juffrou.error.BeanInstanceCreatorException;
 
 /**
- * This class holds data that is common to a whole hierarchy of BeanWrapperContexts.<p>
+ * This class holds data that is common to a whole hierarchy of BeanWrapperContexts (ie to a complete graph of wrapped nested beans).<p>
  * The top BeanWrapperContext creates an instance of this class and all nested wrapper share the same instance
  * @author cemartins
  */
@@ -71,13 +71,13 @@ public class BeanWrapperContextHierarchy {
 	private static class DefaultBeanContextCreator implements BeanContextCreator<BeanWrapperContext> {
 
 		@Override
-		public BeanWrapperContext newBeanWrapperContext(Class clazz) {
-			return new BeanWrapperContext(clazz);
+		public BeanWrapperContext newBeanWrapperContext(BeanWrapperContextHierarchy hierarchyContext, Class clazz) {
+			return new BeanWrapperContext(hierarchyContext, clazz);
 		}
 
 		@Override
-		public BeanWrapperContext newBeanWrapperContext(Class clazz, Type... types) {
-			return new BeanWrapperContext(clazz, types);
+		public BeanWrapperContext newBeanWrapperContext(BeanWrapperContextHierarchy hierarchyContext, Class clazz, Type... types) {
+			return new BeanWrapperContext(hierarchyContext, clazz, types);
 		}
 		
 	}

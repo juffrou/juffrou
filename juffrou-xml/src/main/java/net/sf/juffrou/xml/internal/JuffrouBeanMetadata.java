@@ -71,7 +71,7 @@ public class JuffrouBeanMetadata {
 		if(beanClassBinding == null) {
 			try {
 				Class<?> beanClass = Class.forName(xmlElement);
-				beanClassBinding = xmlBeanWrapperContextCreator.newBeanWrapperContext(beanClass);
+				beanClassBinding = xmlBeanWrapperContextCreator.newBeanWrapperContext(null, beanClass);
 			} catch (ClassNotFoundException e) {
 				throw new UnknownXmlElementException("The element '" + xmlElement + "' has not been registered");
 			}

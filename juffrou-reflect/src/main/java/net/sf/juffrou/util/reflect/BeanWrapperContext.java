@@ -30,16 +30,27 @@ public class BeanWrapperContext {
 	private final Class clazz;
 	private final Map<TypeVariable<?>, Type> typeArgumentsMap;
 	private final Map<String, BeanFieldHandler> fields;
-	private final Map<String, BeanWrapperContext> nestedContexts;
-	private BeanWrapperContextHierarchy hierarchyContext = null;
+	private final BeanWrapperContextHierarchy hierarchyContext;
 
 	@SuppressWarnings("unchecked")
 	public BeanWrapperContext(Class clazz) {
-		this(clazz, null);
+		this(null, clazz, null);
+	}
+
+	public BeanWrapperContext(BeanWrapperContextHierarchy hierarchy, Class clazz) {
+		this(hierarchy, clazz, null);
 	}
 
 	public BeanWrapperContext(Class clazz, Type...types) {
+		this(null, clazz, types);
+	}
+
+	public BeanWrapperContext(BeanWrapperContextHierarchy hierarchy, Class clazz, Type...types) {
+		if(hierarchy == null)
+			hierarchy = new BeanWrapperContextHierarchy();
+		this.hierarchyContext = hierarchy;
 		this.typeArgumentsMap = new HashMap<TypeVariable<?>, Type>();
+		hierarchy.addTypeContext(clazz, this);
 		if(types != null) {
 			TypeVariable<?>[] typeParameters = clazz.getTypeParameters();
 			for(int i = 0; i < types.length; i++) {
@@ -56,8 +67,6 @@ public class BeanWrapperContext {
 		}
 		this.fields = new LinkedHashMap<String, BeanFieldHandler>();
 		initFieldInfo(this.clazz, this.fields);
-		this.nestedContexts = new HashMap<String, BeanWrapperContext>();
-		
 	}
 
 	private void initFieldInfo(Class<?> clazz, Map<String, BeanFieldHandler> fs) {
@@ -77,20 +86,13 @@ public class BeanWrapperContext {
 	 * @return
 	 */
 	public BeanWrapperContext getNestedContext(String thisProperty) {
-		BeanWrapperContext nestedContext = nestedContexts.get(thisProperty);
-		if (nestedContext == null) {
-			Type propertyType = getBeanFieldHandler(thisProperty).getType();
-			BeanWrapperContextHierarchy hierarchyCtx = getHierarchyContext();
-			nestedContext = hierarchyCtx.getTypeContext(propertyType);
-			if(nestedContext == null) {
-				if(propertyType instanceof ParameterizedType)
-					nestedContext = hierarchyCtx.getBeanContextCreator().newBeanWrapperContext((Class<?>)((ParameterizedType) propertyType).getRawType(), ((ParameterizedType) propertyType).getActualTypeArguments());
-				else
-					nestedContext = hierarchyCtx.getBeanContextCreator().newBeanWrapperContext((Class<?>) propertyType);
-				nestedContext.setHierarchyContext(hierarchyCtx);
-				hierarchyCtx.addTypeContext(propertyType, nestedContext);
-				nestedContexts.put(thisProperty, nestedContext);
-			}
+		Type propertyType = getBeanFieldHandler(thisProperty).getType();
+		BeanWrapperContext nestedContext = hierarchyContext.getTypeContext(propertyType);
+		if(nestedContext == null) {
+			if(propertyType instanceof ParameterizedType)
+				nestedContext = hierarchyContext.getBeanContextCreator().newBeanWrapperContext(hierarchyContext, (Class<?>)((ParameterizedType) propertyType).getRawType(), ((ParameterizedType) propertyType).getActualTypeArguments());
+			else
+				nestedContext = hierarchyContext.getBeanContextCreator().newBeanWrapperContext(hierarchyContext, (Class<?>) propertyType);
 		}
 		return nestedContext;
 	}
@@ -138,7 +140,7 @@ public class BeanWrapperContext {
 	
 	public Object newBeanInstance() {
 		try {
-			return getHierarchyContext().getBeanInstanceCreator().newBeanInstance(clazz);
+			return hierarchyContext.getBeanInstanceCreator().newBeanInstance(clazz);
 		} catch (BeanInstanceCreatorException e) {
 			throw new ReflectionException(e);
 		}
@@ -152,19 +154,11 @@ public class BeanWrapperContext {
 	}
 
 	public BeanWrapperContextHierarchy getHierarchyContext() {
-		if(hierarchyContext == null) {
-			hierarchyContext = new BeanWrapperContextHierarchy();
-			hierarchyContext.addTypeContext(clazz, this);
-		}
 		return hierarchyContext;
 	}
 
-	public void setHierarchyContext(BeanWrapperContextHierarchy hierarchyContext) {
-		this.hierarchyContext = hierarchyContext;
-	}
-
 	public BeanInstanceCreator getBeanInstanceCreator() {
-		return getHierarchyContext().getBeanInstanceCreator();
+		return hierarchyContext.getBeanInstanceCreator();
 	}
 
 	/**
@@ -172,14 +166,14 @@ public class BeanWrapperContext {
 	 * @param beanInstanceCreator
 	 */
 	public void setBeanInstanceCreator(BeanInstanceCreator beanInstanceCreator) {
-		getHierarchyContext().setBeanInstanceCreator(beanInstanceCreator);
+		hierarchyContext.setBeanInstanceCreator(beanInstanceCreator);
 	}
 	
 	public BeanContextCreator<? extends BeanWrapperContext> getBeanContextCreator() {
-		return getHierarchyContext().getBeanContextCreator();
+		return hierarchyContext.getBeanContextCreator();
 	}
 	public void setBeanContextCreator(BeanContextCreator<? extends BeanWrapperContext> beanContextCreator) {
-		getHierarchyContext().setBeanContextCreator(beanContextCreator);
+		hierarchyContext.setBeanContextCreator(beanContextCreator);
 	}
 
 }
