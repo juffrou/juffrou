@@ -15,6 +15,10 @@
         <xsl:attribute name="font-size">0.6em</xsl:attribute>
     </xsl:attribute-set>
 
+	<xsl:template match="processing-instruction('hard-pagebreak')">
+	   <fo:block break-after='page'/>
+	</xsl:template>
+
 <!--###################################################
                         Programlistings
       ################################################### -->

@@ -52,7 +52,7 @@ This will allow you access the source code of the library as well as the javadoc
 			<figure xml:id="ClassDiagram"><title>Example class diagram</title>
 			<mediaobject>
 				<imageobject>
-					<imagedata fileref="images/ClassDiagram.jpg" format="JPEG" />
+					<imagedata fileref="images/ClassDiagram.PNG" format="PNG" />
 				</imageobject>
 			</mediaobject>
 			</figure>
@@ -81,6 +81,7 @@ This will allow you access the source code of the library as well as the javadoc
 </calloutlist>
 		</section>
 		
+		<?hard-pagebreak?>
 		<section>
 			<title>BeanWrapperContext</title>
 			<para>The BeanWrapperContext is the object that holds metadata for a BeanWrapper. This metadata is composed by data collected through class introspection and by preferences that the programmer defines.</para>

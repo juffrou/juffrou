@@ -81,6 +81,7 @@
 						<!-- PDF configuration -->
 						<configuration>
 							<generateToc>true</generateToc>
+							<paperType>A4</paperType>
 							<imgSrcPath>file:///${basedir}/src/site/resources/</imgSrcPath>
 							<calloutGraphicsPath>file:///${basedir}/src/site/resources/images/callouts/</calloutGraphicsPath>
 							<calloutGraphicsExtension>.svg</calloutGraphicsExtension>

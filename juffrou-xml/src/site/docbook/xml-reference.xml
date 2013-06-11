@@ -200,6 +200,7 @@ root elements are in the program classpath like in the following example:</para>
 			<title>Serializers</title>
 			<para>Serializers are the java classes responsible for translating java objects to XML and back.</para>
 			<para>Currently there are serializers for the basic java types:
+			<computeroutput>
 <itemizedlist mark="disc">
 <listitem>ArrayList</listitem>
 <listitem>BigDecimal</listitem>
@@ -218,6 +219,7 @@ root elements are in the program classpath like in the following example:</para>
 <listitem>Short</listitem>
 <listitem>String</listitem>
 </itemizedlist>
+			</computeroutput>
 			</para>
 			<para>Creating your own serializers is simple. Just implement the <command>Serializer</command> interface like in the following example:</para>
 <programlisting language="java">
