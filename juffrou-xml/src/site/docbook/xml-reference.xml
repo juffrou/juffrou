@@ -20,7 +20,7 @@ Copyright Notice, whether distributed in print or electronically.</para></legaln
 		</author>
 	</info>
 	<chapter>
-		<title>Getting Started</title>
+		<title>Getting Started with Juffrou-XML</title>
 		<section>
 			<title>Introduction</title>
 			<para>Juffrou-XML is an open source java library to marshall beans to xml and back. The objective is to make this simple, logical and flexible.</para>
@@ -79,7 +79,7 @@ root elements are in the program classpath like in the following example:</para>
 </programlisting></example>
 		</section>
 		<section>
-			<title>Configuring</title>
+			<title>Configuring Juffrou-XML</title>
 				<para>If you want to change the element names of the beans or how those beans are marshalled / unmarshalled, then you need configuration. Configuration can be done either through direct coding or by means of an XML file.</para>
 				<para>To configure by file you can instantiate Juffrou-XML and pass the file name in the constructor, or you can instantiate Juffrou-XML with the default constructor and then call the readConfigFile method.</para>
 				<example><title>Configuring Juffrou-XML:</title>

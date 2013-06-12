@@ -53,8 +53,10 @@
 		<para>I wanted something focused on marshalling java beans. Easy to configure with a choice for mapping file configuration or configuration through code. I wanted it to be easy to use, flexible - easy to extend and something that would handle the marshalling of nested beans into flat XML and back without pain.</para>
 		<para>Juffrou-XML is a first in that. So yes - we need this XML marshalling / unmarshalling framework.</para>
 	</chapter>
+	<!-- 
 	<part>
 		<title>Juffrou Reflect</title>
+		 -->
 		<xi:include
 			href="../../../../juffrou-reflect/src/site/docbook/reflect-reference.xml"
 			xpointer="element(reflect_ref_chpt_01)" />
@@ -64,17 +66,20 @@
 		<!-- <chapter id="reflect"> <title>Juffrou Reflection</title> <para>This 
 			is a temporary placeholder while the documentation on Juffrou Reflection 
 			is being prepared.</para> </chapter> -->
+	<!-- 
 	</part>
 	<part>
 		<title>Juffrou XML</title>
+	 -->
 		<xi:include
 			href="../../../../juffrou-xml/src/site/docbook/xml-reference.xml"
 			xpointer="element(/1/4)" />
 		<xi:include
 			href="../../../../juffrou-xml/src/site/docbook/xml-reference.xml"
 			xpointer="element(xml_ref_chpt_02)" />
-			
+	<!-- 			
 	</part>
+	 -->
 	<!-- <chapter id="xml"> <title>Juffrou XML</title> <xi:include href="../../../../juffrou-xml/src/site/docbook/xml-intro.xml" 
 		xpointer="element(/1/1)" /> <xi:include href="../../../../juffrou-xml/src/site/docbook/xml-reference.xml" 
 		xpointer="element(/1/5)" /> </chapter> -->

@@ -16,10 +16,10 @@ Copyright Notice, whether distributed in print or electronically.</para></legaln
 		</author>
 	</info>
 	<chapter xml:id="reflect_ref_chpt_01">
-		<title>Getting Started</title>
+		<title>Getting Started with Juffrou-reflect</title>
 		<section>
 			<title>Introduction</title>
-			<para>Juffrou-reflect is focused on reflection, bean introspection and manipulation through property names.</para>
+			<para>Juffrou-reflect is focused on reflection, and offers a very performant bean wrapper allowing bean introspection and manipulation through property names.</para>
 		</section>
 		<section>
 			<title>Installing</title>
@@ -45,7 +45,7 @@ This will allow you access the source code of the library as well as the javadoc
 		</section>
 	</chapter>
 	<chapter xml:id="reflect_ref_chpt_02">
-		<title>Using</title>
+		<title>Using Juffrou-reflect</title>
 		<section>
 			<title>BeanWrapper</title>
 			<para>BeanWrapper is the object that wraps around your beans and allows you to inspect them through the names of their properties. You can access the wrapped bean's properties and also the properties of beans referenced by them.</para>
@@ -64,6 +64,7 @@ This will allow you access the source code of the library as well as the javadoc
 			bw.setValue("firstName", "Carlos"); <co xml:id="firstname_co"  linkends="firstname" />
 			bw.setValue("home.city", "Lisboa"); <co xml:id="city_co"  linkends="city" />
 			</programlisting>
+<remark>Note: you can create a BeanWrapper around a class or around an object instance.</remark>
 <calloutlist>
   <callout arearefs="inst_co" xml:id="inst" >
     <para>Instantiate BeanWrapper around a Person class</para>
@@ -74,19 +75,50 @@ This will allow you access the source code of the library as well as the javadoc
   <callout arearefs="city_co" xml:id="city">
     <para>Set the home property of Person with a new instance of an Address class and set the city property of Address to the value "Lisboa".</para>
   </callout>
-  <remark>Note: you can create a BeanWrapper around a class or around an object instance.</remark>
+</calloutlist>
   <para>When the program executes <computeroutput>bw.setValue("firstName", "Carlos");</computeroutput> the bean wrapper creates an instance of Person. And when it
   executes <computeroutput>bw.setValue("home.city", "Lisboa");</computeroutput> it will instantiate an Address class, set the value of the property <userinput>home</userinput> in Person to the Address object and set the value of the property <userinput>city</userinput> in Address to "Lisboa".</para>
+  <section><title>Nested BeanWrappers</title>
+  	<para>When you access a nested property (i.e. a property of a nested bean), like in the case of <computeroutput>bw.setValue("home.city", "Lisboa")</computeroutput>, the BeanWraper automatically creates another BeanWrapper around the nested bean. In this case around an Address bean. This is called a nested bean wrapper.</para>
+  	<para>Nested Beans are created only when referenced by <computeroutput>beanWrapper.getValue</computeroutput>, <computeroutput>beanWrapper.setValue</computeroutput>, <computeroutput>beanWrapper.getType</computeroutput>, <computeroutput>beanWrapper.getClass</computeroutput> or <computeroutput>beanWrapper.getNestedWrapper</computeroutput>.</para>
+  	<para>You can get a specific nested bean wrapper with the method <computeroutput>beanWrapper.getNestedWrapper("home")</computeroutput> and you can get all current nested bean wrappers with the method <computeroutput>beanWrapper.getNestedWrappers()</computeroutput>.</para>
+  </section>
+  <?dbfo-need height="4cm" ?> <!-- Conditional page break -->
+  <para>In case you don't know the details of the Wrapped object, you can inquire the BeanWrapper:</para>
+<example><title>Inquiring the BeanWrapper:</title>
+	<programlisting language="java">
+		BeanWrapperContext context = new BeanWrapperContext(Programmer.class);
+		BeanWrapper beanWrapper = new BeanWrapper(context);
+		for(String propertyName : beanWrapper.getPropertyNames()) {
+			Type type = beanWrapper.getType(propertyName);
+			Object value = beanWrapper.getValue(propertyName);
+			System.out.println(type + ": " + value);
+		}
+	</programlisting>
+</example>
+  
   <para>Sometimes you want to have control over bean instantiation and would like to set some "preferences" over how BeanWrapper behaves. This is where the BeanWrapperContext comes in.</para>
-</calloutlist>
-		</section>
-		
-		<?hard-pagebreak?>
+		<!-- <?hard-pagebreak?>  --> <!-- Conditional page break -->
 		<section>
 			<title>BeanWrapperContext</title>
 			<para>The BeanWrapperContext is the object that holds metadata for a BeanWrapper. This metadata is composed by data collected through class introspection and by preferences that the programmer defines.</para>
 			<para>If you instantiate a BeanWrapper using the default constructor, it will create a new BeanWrapperContext. But if you instantiate a BeanWrapper by passing a BeanWrapperContext, no introspection overhead is needed.</para>
-			<para>With BeanWrapperContext you can define a class that will be called to instantiate the wrapped class. To do this, first create a class that implements the interface <computeroutput>BeanInstanceCreator</computeroutput>. See the following example:</para>
+			<table><title>time in milliseconds to instantiate 10.000 BeanWrapers</title>
+				<tgroup cols='2' align='left' colsep='1' rowsep='1'>
+				<tbody>
+					<row>
+						<entry>Spring Framework's BeanWrapperImpl</entry><entry>168</entry>
+					</row>
+					<row>
+						<entry>Juffrou BeanWrapper</entry><entry>56</entry>
+					</row>
+					<row>
+						<entry>Juffrou BeanWrapper with BeanWrapperContext</entry><entry>1</entry>
+					</row>
+				</tbody>
+				</tgroup>
+			</table>
+			<para>With BeanWrapperContext you can define a class that will be called to instantiate the wrapped class as well as the classes of the nested beans whenever they need to be instantiated. To do this, first create a class that implements the interface <computeroutput>BeanInstanceCreator</computeroutput>. See the following example:</para>
 			<programlisting language="java">
 		BeanInstanceCreator iCreator = new BeanInstanceCreator() {
 			@Override
@@ -105,6 +137,8 @@ This will allow you access the source code of the library as well as the javadoc
 		Assert.assertEquals("Smith", programmer.getLastName());
 			</programlisting>
 		</section>
+	</section>
+
 		<section>
 			<title>BeanConverter</title>
 			<para>The BeanConverter is a utility class to convert between two beans.</para>

@@ -1,5 +1,7 @@
 package net.sf.juffrou.reflect;
 
+import java.lang.reflect.Type;
+
 import net.sf.juffrou.error.BeanInstanceCreatorException;
 import net.sf.juffrou.util.reflect.BeanInstanceCreator;
 import net.sf.juffrou.util.reflect.BeanWrapper;
@@ -20,6 +22,17 @@ public class BeanWrapperTestCase {
 		BeanWrapper bw = new BeanWrapper(context, programmer);
 		String[] propertyNames = bw.getPropertyNames();
 		Assert.assertArrayEquals(expectedPropertyNames, propertyNames);
+	}
+	
+	@Test
+	public void testInquireBeanWraper() {
+		BeanWrapperContext context = new BeanWrapperContext(Programmer.class);
+		BeanWrapper beanWrapper = new BeanWrapper(context);
+		for(String propertyName : beanWrapper.getPropertyNames()) {
+			Type type = beanWrapper.getType(propertyName);
+			Object value = beanWrapper.getValue(propertyName);
+			System.out.println(type + ": " + value);
+		}
 	}
 	
 	@Test
