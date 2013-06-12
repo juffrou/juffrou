@@ -136,6 +136,11 @@ This will allow you access the source code of the library as well as the javadoc
 		Assert.assertEquals("John", programmer.getFirstName());
 		Assert.assertEquals("Smith", programmer.getLastName());
 			</programlisting>
+			<section1><title>Extending BeanWrapperContext</title>
+			<para>Sometimes you want to associate more information with a bean than the introspection information collected by the BeanWrapperContext.
+			For instance you might want add information to help represent the bean in XML format (like Juffrou-XML does).</para>
+			<para>This is achieved by creating a class that extends <computeroutput>BeanWrapperContext</computeroutput> and then telling Juffrou-reflect that you want to be in charge of creating BeanWrapperContext instances.</para>
+			</section1>
 		</section>
 	</section>
 
