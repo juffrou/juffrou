@@ -19,7 +19,7 @@ public abstract class AbstractCollectionSerializer implements Serializer {
 	
 	public AbstractCollectionSerializer(JuffrouBeanMetadata xmlBeanMetadata) {
 		this.xmlBeanMetadata = xmlBeanMetadata;
-		this.valueHolderWrapperContext = new BeanWrapperContext(ValueHolder.class);
+		this.valueHolderWrapperContext = BeanWrapperContext.create(ValueHolder.class);
 	}
 
 	public void serialize(JuffrouWriter writer, BeanWrapper valueOwner, String valuePropertyName) {
@@ -47,7 +47,7 @@ public abstract class AbstractCollectionSerializer implements Serializer {
 	}
 
 	private void serializeBeanType(JuffrouWriter writer, Collection<?> collection, Object firstBean) {
-		BeanClassBinding beanClassBinding = xmlBeanMetadata.getXmlBeanWrapperContextCreator().newBeanWrapperContext(valueHolderWrapperContext.getHierarchyContext(), firstBean.getClass());
+		BeanClassBinding beanClassBinding = xmlBeanMetadata.getBeanWrapperFactory().getBeanWrapperContext(firstBean.getClass());
 
 		BeanWrapper bw = new BeanWrapper(beanClassBinding);
 		for(Object object : collection) {

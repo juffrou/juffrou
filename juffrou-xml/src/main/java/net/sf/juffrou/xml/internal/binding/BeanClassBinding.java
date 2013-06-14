@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import net.sf.juffrou.util.reflect.BeanWrapperContext;
-import net.sf.juffrou.util.reflect.BeanWrapperContextHierarchy;
+import net.sf.juffrou.util.reflect.BeanWrapperFactory;
 import net.sf.juffrou.util.reflect.ReflectionUtil;
 import net.sf.juffrou.util.reflect.internal.BeanFieldHandler;
 import net.sf.juffrou.xml.internal.NodeType;
@@ -27,16 +27,7 @@ public class BeanClassBinding extends BeanWrapperContext {
 	 */
 	private Map<String, BeanPropertyBinding> xmlElementsToBeanProperties = new HashMap<String, BeanPropertyBinding>();
 
-	public BeanClassBinding(Class<?> clazz) {
-		super(clazz);
-		xmlElementName = clazz.getName();
-	}
-
-	public BeanClassBinding(BeanWrapperContextHierarchy hierarchyContext, Class<?> clazz) {
-		super(hierarchyContext, clazz);
-		xmlElementName = clazz.getName();
-	}
-	public BeanClassBinding(BeanWrapperContextHierarchy hierarchyContext, Class clazz, Type... types) {
+	public BeanClassBinding(BeanWrapperFactory hierarchyContext, Class clazz, Type... types) {
 		super(hierarchyContext, clazz, types);
 		xmlElementName = clazz.getName();
 	}

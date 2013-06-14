@@ -2,11 +2,11 @@ package net.sf.juffrou.xml.internal.binding;
 
 import java.lang.reflect.Type;
 
-import net.sf.juffrou.util.reflect.BeanContextCreator;
-import net.sf.juffrou.util.reflect.BeanWrapperContextHierarchy;
+import net.sf.juffrou.util.reflect.BeanContextBuilder;
+import net.sf.juffrou.util.reflect.BeanWrapperFactory;
 import net.sf.juffrou.xml.internal.JuffrouBeanMetadata;
 
-public class XmlBeanWrapperContextCreator implements BeanContextCreator<BeanClassBinding> {
+public class XmlBeanWrapperContextCreator implements BeanContextBuilder<BeanClassBinding> {
 
 	private final JuffrouBeanMetadata juffrouBeanMetadata;
 	
@@ -15,28 +15,13 @@ public class XmlBeanWrapperContextCreator implements BeanContextCreator<BeanClas
 	}
 	
 	@Override
-	public BeanClassBinding newBeanWrapperContext(BeanWrapperContextHierarchy hierarchyContext, Class clazz) {
-		BeanClassBinding beanClassBinding = juffrouBeanMetadata.getBeanClassBindingFromClass(clazz);
-		if(beanClassBinding == null) {
-			beanClassBinding = new BeanClassBinding(hierarchyContext, clazz);
-			registerBeanClassBinding(beanClassBinding);
-		}
-		return beanClassBinding;
-	}
-
-	@Override
-	public BeanClassBinding newBeanWrapperContext(BeanWrapperContextHierarchy hierarchyContext, Class clazz, Type... types) {
+	public BeanClassBinding build(BeanWrapperFactory<BeanClassBinding> hierarchyContext, Class clazz, Type... types) {
 		BeanClassBinding beanClassBinding = juffrouBeanMetadata.getBeanClassBindingFromClass(clazz);
 		if(beanClassBinding == null) {
 			beanClassBinding = new BeanClassBinding(hierarchyContext, clazz, types);
-			registerBeanClassBinding(beanClassBinding);
+			juffrouBeanMetadata.putBeanClassBinding(beanClassBinding);
 		}
 		return beanClassBinding;
-	}
-	
-	public void registerBeanClassBinding(BeanClassBinding xmlBeanWrapperContext) {
-		xmlBeanWrapperContext.setBeanContextCreator(this);
-		juffrouBeanMetadata.putBeanClassBinding(xmlBeanWrapperContext);
 	}
 
 }

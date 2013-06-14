@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import net.sf.juffrou.util.reflect.BeanWrapperFactory;
 import net.sf.juffrou.util.reflect.ReflectionUtil;
 import net.sf.juffrou.xml.error.NoImplementationClassException;
 import net.sf.juffrou.xml.error.NoSerializerException;
@@ -41,7 +42,7 @@ import net.sf.juffrou.xml.serializer.StringSerializer;
 
 public class JuffrouBeanMetadata {
 
-	private final XmlBeanWrapperContextCreator xmlBeanWrapperContextCreator;
+	private final BeanWrapperFactory<BeanClassBinding> beanWrapperFactory;
 	private final Map<Class<?>, BeanClassBinding> classToBindingMap = new HashMap<Class<?>, BeanClassBinding>();
 	private final Map<String, BeanClassBinding> xmlElementNameToBindingMap = new HashMap<String, BeanClassBinding>();
 	private final Map<Class<?>, Class<?>> defaultImplementations = new HashMap<Class<?>, Class<?>>();
@@ -52,14 +53,15 @@ public class JuffrouBeanMetadata {
 	
 	public JuffrouBeanMetadata() {
 		defaultSerializer = new BeanWrapperSerializer(this);
-		xmlBeanWrapperContextCreator = new XmlBeanWrapperContextCreator(this);
 		preferences = new JuffrouXmlPreferences();
+		beanWrapperFactory = new BeanWrapperFactory<BeanClassBinding>();
+		beanWrapperFactory.setBeanContextBuilder(new XmlBeanWrapperContextCreator(this));
 		setDefaultImplementations();
 		setDefaultConverters();
 	}
 	
-	public XmlBeanWrapperContextCreator getXmlBeanWrapperContextCreator() {
-		return xmlBeanWrapperContextCreator;
+	public BeanWrapperFactory<BeanClassBinding> getBeanWrapperFactory() {
+		return beanWrapperFactory;
 	}
 
 	public BeanClassBinding getBeanClassBindingFromClass(Class beanClass) {
@@ -71,7 +73,7 @@ public class JuffrouBeanMetadata {
 		if(beanClassBinding == null) {
 			try {
 				Class<?> beanClass = Class.forName(xmlElement);
-				beanClassBinding = xmlBeanWrapperContextCreator.newBeanWrapperContext(null, beanClass);
+				beanClassBinding = beanWrapperFactory.getBeanWrapperContext(beanClass);
 			} catch (ClassNotFoundException e) {
 				throw new UnknownXmlElementException("The element '" + xmlElement + "' has not been registered");
 			}
@@ -96,10 +98,9 @@ public class JuffrouBeanMetadata {
 			classToBindingMap.remove(beanClazz);
 			xmlElementNameToBindingMap.remove(beanClassBinding.getXmlElementName());
 		}
-		else {
-			beanClassBinding = new BeanClassBinding(beanClazz);
-			beanClassBinding.setBeanContextCreator(xmlBeanWrapperContextCreator);
-		}
+		else
+			beanClassBinding = beanWrapperFactory.getBeanWrapperContext(beanClazz);
+
 		beanClassBinding.setXmlElementName(elementName);
 		classToBindingMap.put(beanClazz, beanClassBinding);
 		xmlElementNameToBindingMap.put(elementName, beanClassBinding);

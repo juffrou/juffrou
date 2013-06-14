@@ -8,11 +8,15 @@ import java.lang.reflect.Type;
  * Implement this interface if you want bean contexts to hold more bean metadata than the one used by bean wrapper.
  * @author cemartins
  */
-public interface BeanContextCreator<T extends BeanWrapperContext> {
+public interface BeanContextBuilder<T extends BeanWrapperContext> {
 
+	/**
+	 * Called by the BeanWrapperFactory to instantiate a new BeanWrapperContext
+	 * @param bwFactory
+	 * @param clazz
+	 * @param types
+	 * @return
+	 */
 	@SuppressWarnings("rawtypes")
-	public T newBeanWrapperContext(BeanWrapperContextHierarchy hierarchyContext, Class clazz);
-	
-	@SuppressWarnings("rawtypes")
-	public T newBeanWrapperContext(BeanWrapperContextHierarchy hierarchyContext, Class clazz, Type...types);
+	public T build(BeanWrapperFactory<T> bwFactory, Class clazz, Type...types);
 }

@@ -126,7 +126,7 @@ public class ConfigReader {
 			throw new XmlMappingReaderException(e);
 		}
 
-		BeanClassBinding xmlBeanWrapperContext = new BeanClassBinding(clazz);
+		BeanClassBinding xmlBeanWrapperContext = metadata.getBeanWrapperFactory().getBeanWrapperContext(clazz);
 		attribute = attributes.getNamedItem(XML_ELEMENT_NODENAME);
 		if(attribute != null)
 			xmlBeanWrapperContext.setXmlElementName(attribute.getNodeValue());
@@ -147,7 +147,8 @@ public class ConfigReader {
 			currentNode = currentNode.getNextSibling();
 		}
 		
-		metadata.getXmlBeanWrapperContextCreator().registerBeanClassBinding(xmlBeanWrapperContext);
+		metadata.putBeanClassBinding(xmlBeanWrapperContext);
+
 	}
 
 	private static void processRootElementXml(JuffrouBeanMetadata metadata, BeanClassBinding xmlBeanWrapperContext, Node currentNode) {
@@ -242,7 +243,7 @@ public class ConfigReader {
 			throw new XmlMappingReaderException("Serializer class not found " + attribute.getNodeValue(), e);
 		}
 		
-		BeanWrapperContext bwContext = new BeanWrapperContext(clazz);
+		BeanWrapperContext bwContext = BeanWrapperContext.create(clazz);
 //		bwContext.setEagerInstatiation(true);
 		BeanWrapper serializerWrapper = new BeanWrapper(bwContext);
 

@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import net.sf.juffrou.error.BeanInstanceCreatorException;
+import net.sf.juffrou.error.BeanInstanceBuilderException;
 import net.sf.juffrou.error.ReflectionException;
 import net.sf.juffrou.util.reflect.internal.BeanFieldHandler;
 
@@ -30,27 +30,23 @@ public class BeanWrapperContext {
 	private final Class clazz;
 	private final Map<TypeVariable<?>, Type> typeArgumentsMap;
 	private final Map<String, BeanFieldHandler> fields;
-	private final BeanWrapperContextHierarchy hierarchyContext;
+	private final BeanWrapperFactory<? extends BeanWrapperContext> bwFactory;
 
-	@SuppressWarnings("unchecked")
-	public BeanWrapperContext(Class clazz) {
-		this(null, clazz, null);
+	public static final BeanWrapperContext create(Class clazz) {
+		BeanWrapperFactory<BeanWrapperContext> factory = new BeanWrapperFactory<BeanWrapperContext>();
+		return factory.getBeanWrapperContext(clazz);
 	}
 
-	public BeanWrapperContext(BeanWrapperContextHierarchy hierarchy, Class clazz) {
-		this(hierarchy, clazz, null);
+	public static final BeanWrapperContext create(Class clazz, Type...types) {
+		BeanWrapperFactory<BeanWrapperContext> factory = new BeanWrapperFactory<BeanWrapperContext>();
+		return factory.getBeanWrapperContext(clazz, types);
 	}
 
-	public BeanWrapperContext(Class clazz, Type...types) {
-		this(null, clazz, types);
-	}
-
-	public BeanWrapperContext(BeanWrapperContextHierarchy hierarchy, Class clazz, Type...types) {
-		if(hierarchy == null)
-			hierarchy = new BeanWrapperContextHierarchy();
-		this.hierarchyContext = hierarchy;
+	protected BeanWrapperContext(BeanWrapperFactory<? extends BeanWrapperContext> factory, Class clazz, Type...types) {
+		if(factory == null)
+			throw new IllegalArgumentException("BeanWrapperFactory cannot be null");
+		this.bwFactory = factory;
 		this.typeArgumentsMap = new HashMap<TypeVariable<?>, Type>();
-		hierarchy.addTypeContext(clazz, this);
 		if(types != null) {
 			TypeVariable<?>[] typeParameters = clazz.getTypeParameters();
 			for(int i = 0; i < types.length; i++) {
@@ -87,13 +83,11 @@ public class BeanWrapperContext {
 	 */
 	public BeanWrapperContext getNestedContext(String thisProperty) {
 		Type propertyType = getBeanFieldHandler(thisProperty).getType();
-		BeanWrapperContext nestedContext = hierarchyContext.getTypeContext(propertyType);
-		if(nestedContext == null) {
-			if(propertyType instanceof ParameterizedType)
-				nestedContext = hierarchyContext.getBeanContextCreator().newBeanWrapperContext(hierarchyContext, (Class<?>)((ParameterizedType) propertyType).getRawType(), ((ParameterizedType) propertyType).getActualTypeArguments());
-			else
-				nestedContext = hierarchyContext.getBeanContextCreator().newBeanWrapperContext(hierarchyContext, (Class<?>) propertyType);
-		}
+		BeanWrapperContext nestedContext;
+		if(propertyType instanceof ParameterizedType)
+			nestedContext = bwFactory.getBeanWrapperContext((Class<?>)((ParameterizedType) propertyType).getRawType(), ((ParameterizedType) propertyType).getActualTypeArguments());
+		else
+			nestedContext = bwFactory.getBeanWrapperContext((Class<?>) propertyType);
 		return nestedContext;
 	}
 
@@ -140,8 +134,8 @@ public class BeanWrapperContext {
 	
 	public Object newBeanInstance() {
 		try {
-			return hierarchyContext.getBeanInstanceCreator().newBeanInstance(clazz);
-		} catch (BeanInstanceCreatorException e) {
+			return bwFactory.getBeanInstanceBuilder().build(clazz);
+		} catch (BeanInstanceBuilderException e) {
 			throw new ReflectionException(e);
 		}
 	}
@@ -153,27 +147,24 @@ public class BeanWrapperContext {
 		return typeArgumentsMap;
 	}
 
-	public BeanWrapperContextHierarchy getHierarchyContext() {
-		return hierarchyContext;
+	public BeanWrapperFactory<? extends BeanWrapperContext> getHierarchyContext() {
+		return bwFactory;
 	}
 
-	public BeanInstanceCreator getBeanInstanceCreator() {
-		return hierarchyContext.getBeanInstanceCreator();
+	public BeanInstanceBuilder getBeanInstanceBuilder() {
+		return bwFactory.getBeanInstanceBuilder();
 	}
 
 	/**
 	 * The bean wrapper creates new instances using Class.newIntance(). You can use this this if you want to create class instances yourself.  
 	 * @param beanInstanceCreator
 	 */
-	public void setBeanInstanceCreator(BeanInstanceCreator beanInstanceCreator) {
-		hierarchyContext.setBeanInstanceCreator(beanInstanceCreator);
+	public void setBeanInstanceBuilder(BeanInstanceBuilder beanInstanceCreator) {
+		bwFactory.setBeanInstanceBuilder(beanInstanceCreator);
 	}
 	
-	public BeanContextCreator<? extends BeanWrapperContext> getBeanContextCreator() {
-		return hierarchyContext.getBeanContextCreator();
-	}
-	public void setBeanContextCreator(BeanContextCreator<? extends BeanWrapperContext> beanContextCreator) {
-		hierarchyContext.setBeanContextCreator(beanContextCreator);
+	public void setBeanContextCreator(BeanContextBuilder<? extends BeanWrapperContext> beanContextCreator) {
+		bwFactory.setBeanContextBuilder(beanContextCreator);
 	}
 
 }

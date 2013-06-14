@@ -62,7 +62,7 @@ public class BeanWrapper {
 	 */
 	public BeanWrapper(Object instance) {
 		this.instance = instance;
-		this.context = new BeanWrapperContext(instance.getClass());
+		this.context = BeanWrapperContext.create(instance.getClass());
 	}
 
 	/**
@@ -72,7 +72,7 @@ public class BeanWrapper {
 	 * @deprecated
 	 */
 	public BeanWrapper(Class<?> clazz) {
-		this.context = new BeanWrapperContext(clazz);
+		this.context = BeanWrapperContext.create(clazz);
 		this.instance = null;
 	}
 
@@ -97,14 +97,16 @@ public class BeanWrapper {
 	 * @throws InvalidParameterException if the new bean is not of the same type of the initially wrapped bean.
 	 */
 	public void setBean(Object bean) {
-		if(bean != null && ! context.getBeanClass().equals(bean.getClass())) {
-			throw new InvalidParameterException("Bean must be of type " + context.getBeanClass().getSimpleName());
-		}
-		instance = bean;
-		
-		// update the wrappers
-		for(Entry<String, BeanWrapper> entry : nestedWrappers.entrySet()) {
-			entry.getValue().setBean(getValue(entry.getKey()));
+		if(bean == null)
+			reset();
+		else {
+			if(bean != null && ! context.getBeanClass().equals(bean.getClass()))
+				throw new InvalidParameterException("Bean must be of type " + context.getBeanClass().getSimpleName());
+			instance = bean;
+			
+			// update the wrappers
+			for(Entry<String, BeanWrapper> entry : nestedWrappers.entrySet())
+				entry.getValue().setBean(getValue(entry.getKey()));
 		}
 	}
 	
@@ -126,7 +128,7 @@ public class BeanWrapper {
 	}
 	
 	/**
-	 * sets all properties to null in this instance and in all nested bean instances
+	 * Sets all properties to null in this instance and in all nested bean instances. This is the same as setBean(null)
 	 */
 	public void reset() {
 		for(BeanWrapper bw : nestedWrappers.values()) {

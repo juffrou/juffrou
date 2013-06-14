@@ -28,7 +28,7 @@ public class ReflectionUtilTestCase {
 	
 	@Test
 	public void testGenericClassExtended() {
-		BeanWrapperContext context = new BeanWrapperContext(GenericPerson.class);
+		BeanWrapperContext context = BeanWrapperContext.create(GenericPerson.class);
 		BeanWrapper bw = new BeanWrapper(context);
 		Type type = bw.getType("genericProperty");
 		Assert.assertTrue(Person.class.equals(type));
@@ -38,7 +38,7 @@ public class ReflectionUtilTestCase {
 	@Test
 	public void testGenericClassInstance() {
 		
-		BeanWrapperContext context = new BeanWrapperContext(GenericBean.class, Person.class);
+		BeanWrapperContext context = BeanWrapperContext.create(GenericBean.class, Person.class);
 		GenericBean<Person> genericPerson = new GenericBean<Person>();
 		BeanWrapper bw = new BeanWrapper(context, genericPerson);
 		Type type = bw.getType("genericProperty");

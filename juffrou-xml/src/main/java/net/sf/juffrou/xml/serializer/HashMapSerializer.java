@@ -22,7 +22,7 @@ public class HashMapSerializer implements Serializer {
 	
 	public HashMapSerializer(JuffrouBeanMetadata xmlBeanMetadata) {
 		this.xmlBeanMetadata = xmlBeanMetadata;
-		this.valueHolderWrapperContext = new BeanWrapperContext(ValueHolder.class);
+		this.valueHolderWrapperContext = BeanWrapperContext.create(ValueHolder.class);
 	}
 
 	public void serialize(JuffrouWriter writer, BeanWrapper valueOwner, String valuePropertyName) {
@@ -41,7 +41,7 @@ public class HashMapSerializer implements Serializer {
 			keyWrapper = new BeanWrapper(valueHolderWrapperContext);
 		}
 		else {
-			keyClassBinding = xmlBeanMetadata.getXmlBeanWrapperContextCreator().newBeanWrapperContext(valueHolderWrapperContext.getHierarchyContext(), firstEntry.getKey().getClass());
+			keyClassBinding = xmlBeanMetadata.getBeanWrapperFactory().getBeanWrapperContext(firstEntry.getKey().getClass());
 
 			keyWrapper = new BeanWrapper(keyClassBinding);
 		}

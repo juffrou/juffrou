@@ -1,6 +1,6 @@
 package net.sf.juffrou.util.reflect;
 
-import net.sf.juffrou.error.BeanInstanceCreatorException;
+import net.sf.juffrou.error.BeanInstanceBuilderException;
 
 /**
  * Used by the {@link BeanWrapperContext#newBeanInstance()} to instantiate the wrapped bean when necessary.<br>
@@ -8,8 +8,8 @@ import net.sf.juffrou.error.BeanInstanceCreatorException;
  * bean instatiation.
  * @author cemartins
  */
-public interface BeanInstanceCreator {
+public interface BeanInstanceBuilder {
 
 	@SuppressWarnings("rawtypes")
-	public Object newBeanInstance(Class clazz) throws BeanInstanceCreatorException ;
+	public Object build(Class clazz) throws BeanInstanceBuilderException ;
 }
