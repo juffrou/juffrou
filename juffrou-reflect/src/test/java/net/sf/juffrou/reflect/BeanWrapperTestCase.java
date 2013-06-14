@@ -37,6 +37,13 @@ public class BeanWrapperTestCase {
 	}
 	
 	@Test
+	public void testSetWrongPropertyType() {
+		BeanWrapperContext context = BeanWrapperContext.create(Person.class);
+		BeanWrapper beanWrapper = new BeanWrapper(context);
+		beanWrapper.setValue("birthDay", "SOMEVALUE");
+	}
+	
+	@Test
 	public void testBetterPerformanceWithContext() {
 		// create bean wrapper directly
 		int loop = 10000;

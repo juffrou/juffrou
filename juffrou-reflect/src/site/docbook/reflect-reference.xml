@@ -56,8 +56,8 @@ This will allow you access the source code of the library as well as the javadoc
 				</imageobject>
 			</mediaobject>
 			</figure>
-			<para><xref linkend="ClassDiagram" /> shows one class Person which has 3 simple attributes and one attribute of type Address. The Address class is also shown and has two simple attributes.
-			</para>
+			<para><xref linkend="ClassDiagram" /> shows one class Person with three simple attributes and one attribute of type Address. The Address class is also shown and has two simple attributes.</para>
+			<remark>Person and Address will be used extensively throughout this manual in code examples.</remark>
 			A tipical use of BeanWrapper could be:
 			<programlisting language="java">
 			BeanWrapper bw = new BeanWrapper(Person.class); <co xml:id="inst_co"  linkends="inst" />
@@ -81,7 +81,13 @@ This will allow you access the source code of the library as well as the javadoc
   </callout>
 </calloutlist>
   <para>When the program executes <literal>bw.setValue("firstName", "Carlos");</literal> the bean wrapper creates an instance of Person. And when it
-  executes <computeroutput>bw.setValue("home.city", "Lisboa");</computeroutput> it will instantiate an Address class, set the value of the property <userinput>home</userinput> in Person to the Address object and set the value of the property <userinput>city</userinput> in Address to "Lisboa".</para>
+  executes <computeroutput>bw.setValue("home.city", "Lisboa");</computeroutput> it will instantiate an Address class, set the value of the property <userinput>city</userinput> in Address to "Lisboa" and set the value of the property <userinput>home</userinput> in Person to the created Address instance.</para>
+  
+  <section><title>Setting Bean Property Values</title>
+  <para>When you execute the method <literal>bw.setValue("birthDay", someObject)</literal> to set the value of the birthDay property, the BeanWrapper expects <literal>someObject</literal> to be of the same type as the bean property (in this case Date). And if it is not, it will throw an IllegalArgumentException exception.</para>
+  <para>But if you use the method <literal>setValueOfString("birthDay", "1967-10-01")</literal>, then the BeanWrapper will try to convert the string value into the type of the property before setting it.</para>
+  </section>
+  
   <section><title>Nested BeanWrappers</title>
   	<para>When you access a nested property (i.e. a property of a nested bean), like in the case of <computeroutput>bw.setValue("home.city", "Lisboa")</computeroutput>, the BeanWraper automatically creates another BeanWrapper around the nested bean. In this case around an Address bean. This is called a nested bean wrapper.</para>
   	<para>Nested BeanWrappers are created only when referenced by <computeroutput>beanWrapper.getValue</computeroutput>, <computeroutput>beanWrapper.setValue</computeroutput>, <computeroutput>beanWrapper.getType</computeroutput>, <computeroutput>beanWrapper.getClass</computeroutput> or <computeroutput>beanWrapper.getNestedWrapper</computeroutput>.</para>
@@ -106,7 +112,7 @@ This will allow you access the source code of the library as well as the javadoc
 		<!-- <?hard-pagebreak?>  --> <!-- Conditional page break -->
 		<section>
 			<title>BeanWrapperContext</title>
-			<para>The BeanWrapperContext is the object that holds metadata for a BeanWrapper. This metadata is composed by data collected through class introspection and by preferences that the programmer defines.</para>
+			<para>The BeanWrapperContext is the object that holds metadata for a BeanWrapper. This metadata is composed by data collected through class introspection, including the references to the getter and setter methods of the class and all classes it extends.</para>
 			<para>If you instantiate a BeanWrapper using the default constructor, it will create a new BeanWrapperContext. But if you instantiate a BeanWrapper by passing a BeanWrapperContext, no introspection overhead is needed.</para>
 			<table><title>time in milliseconds to handle 10.000 BeanWrapers</title>
 				<tgroup cols='3' align='left' colsep='1' rowsep='1'>
@@ -119,17 +125,21 @@ This will allow you access the source code of the library as well as the javadoc
 				</thead>
 				<tbody>
 					<row>
-						<entry>Spring Framework's BeanWrapperImpl</entry><entry>168</entry><entry></entry>
+						<entry>Spring Framework's BeanWrapperImpl</entry><entry>73</entry><entry>329</entry>
 					</row>
 					<row>
-						<entry>Juffrou BeanWrapper</entry><entry>56</entry><entry></entry>
+						<entry>Juffrou BeanWrapper</entry><entry>57</entry><entry>165</entry>
 					</row>
 					<row>
-						<entry>Juffrou BeanWrapper with BeanWrapperContext</entry><entry>1</entry><entry></entry>
+						<entry>Juffrou BeanWrapper with BeanWrapperContext</entry><entry>1</entry><entry>17</entry>
+					</row>
+					<row>
+						<entry>Juffrou BeanWrapper with BeanWrapperFactory</entry><entry>4</entry><entry>20</entry>
 					</row>
 				</tbody>
 				</tgroup>
 			</table>
+			<remark>JDK 6 build 35 running on a Windows 7 32bit (Intel i3 2,93GHz with 4GB ram) machine</remark>
 			<para>When a BeanWrapper creates a nested BeanWrapper it also creates a nested BeanWrapperContext, of course. But it will only create one BeanWrapperContext per property type, so, for instance, if you have a BeanWrapper around a class Person with two properties (home and work) of type Address, you can have two nested BeanWrappers (one for home and another for work), but only one nested BeanWrapperContext.</para>
 			<para>You can obtain the BeanWrapperContext of a BeanWrapper at any time calling the method <literal>beanWrapper.getContext()</literal>.</para>
 			<section><title>Controling bean instantiation</title>
@@ -154,11 +164,13 @@ This will allow you access the source code of the library as well as the javadoc
 			<para>You might also want to associate more information with a bean than the introspection information collected by the BeanWrapperContext.
 			For instance you might want add information to help represent the bean in XML format (like Juffrou-XML does). This is where the BeanWrapperFactory comes in.</para>
 			</section>
+
 			<section><title>BeanWrapperFactory</title>
-			<para>The BeanWrapperFactory is the object responsible for creating all the BeanWrapperContexts. It mainly does two things:</para>
+			<para>The BeanWrapperFactory is the object responsible for creating all the BeanWrapperContexts. It does mainly three things:</para>
 	<itemizedlist mark="disc">
 <listitem>Keeps track of the BeanWrapperContexts it creates, so it doesn't create two BeanWrapperContexts for the same bean class.</listitem>
 <listitem>Injects itself into the BeanWrapperContexts it creates, so that they can use the same factory to create their nested BeanWrapperContexts.</listitem>
+<listitem>Gives out BeanWrapperContexts upon call to <literal>factory.getBeanWrapperContext(Person.class)</literal> method. The BeanWrapperContext will only be created in none exists for the specified class (in this case Person.class).</listitem>
 </itemizedlist>
 			<para>In fact you can also use the BeanWrapperFactory to instantiate BeanWrappers using the methods <literal>factory.getBeanWrapper(Person.class)</literal> or <literal>factory.getBeanWrapper(personIntance)</literal> for example. This is as fast as instantiating a BeanWrapper with a BeanWrapperContext parameter.</para>
 			</section>
@@ -170,7 +182,8 @@ public class MyBeanWrapperContext extends BeanWrapperContext {
 
 	//TODO create properties to extend the context
 	
-	public MyBeanWrapperContext(BeanWrapperFactory<MyBeanWrapperContext> factory, Class clazz, Type... types) {
+	public MyBeanWrapperContext(BeanWrapperFactory<MyBeanWrapperContext> factory, 
+													 Class clazz, Type... types) {
 		super(factory, clazz, types);
 		//TODO some initialization
 	}
@@ -182,10 +195,12 @@ public class MyBeanWrapperContext extends BeanWrapperContext {
 public class MyContextBuilder implements BeanContextBuilder<MyBeanWrapperContext> {
 
 	@Override
-	public MyBeanWrapperContext build(BeanWrapperFactory<MyBeanWrapperContext> hierarchyContext, Class clazz, 
-																							Type... types) {
+	public MyBeanWrapperContext build(
+						BeanWrapperFactory<MyBeanWrapperContext> hierarchyContext, 
+						Class clazz, Type... types) {
 
-		MyBeanWrapperContext context = new MyBeanWrapperContext(hierarchyContext, clazz, types);
+		MyBeanWrapperContext context = new MyBeanWrapperContext(hierarchyContext, 
+																		clazz, types);
 		return context;
 	}
 }
@@ -193,10 +208,12 @@ public class MyContextBuilder implements BeanContextBuilder<MyBeanWrapperContext
 			<para>And then we "tell" BeanWrapperFactory to use this builder. See the example bellow:</para>
 			<example><title>Using a custom BeanWrapperContext</title>
 			<programlisting><![CDATA[
-		BeanWrapperFactory<MyBeanWrapperContext> factory = new BeanWrapperFactory<MyBeanWrapperContext>();
+		BeanWrapperFactory<MyBeanWrapperContext> factory = 
+								new BeanWrapperFactory<MyBeanWrapperContext>();
 		factory.setBeanContextBuilder(new MyContextBuilder());
 		BeanWrapper myPersonWrapper = factory.getBeanWrapper(Person.class);
-		MyBeanWrapperContext context = (MyBeanWrapperContext) myPersonWrapper.getContext();
+		MyBeanWrapperContext context = (MyBeanWrapperContext) myPersonWrapper
+																.getContext();
 			]]></programlisting>
 			</example>
 			</section>

@@ -12,7 +12,7 @@
         <xsl:attribute name="font-family">
             <xsl:value-of select="$monospace.font.family"/>
         </xsl:attribute>
-        <xsl:attribute name="font-size">0.6em</xsl:attribute>
+        <xsl:attribute name="font-size">0.8em</xsl:attribute>
     </xsl:attribute-set>
 
 	<xsl:template match="processing-instruction('hard-pagebreak')">
