@@ -42,7 +42,7 @@ import net.sf.juffrou.xml.serializer.StringSerializer;
 
 public class JuffrouBeanMetadata {
 
-	private final BeanWrapperFactory<BeanClassBinding> beanWrapperFactory;
+	private final BeanWrapperFactory beanWrapperFactory;
 	private final Map<Class<?>, BeanClassBinding> classToBindingMap = new HashMap<Class<?>, BeanClassBinding>();
 	private final Map<String, BeanClassBinding> xmlElementNameToBindingMap = new HashMap<String, BeanClassBinding>();
 	private final Map<Class<?>, Class<?>> defaultImplementations = new HashMap<Class<?>, Class<?>>();
@@ -54,13 +54,13 @@ public class JuffrouBeanMetadata {
 	public JuffrouBeanMetadata() {
 		defaultSerializer = new BeanWrapperSerializer(this);
 		preferences = new JuffrouXmlPreferences();
-		beanWrapperFactory = new BeanWrapperFactory<BeanClassBinding>();
+		beanWrapperFactory = new BeanWrapperFactory();
 		beanWrapperFactory.setBeanContextBuilder(new XmlBeanWrapperContextCreator(this));
 		setDefaultImplementations();
 		setDefaultConverters();
 	}
 	
-	public BeanWrapperFactory<BeanClassBinding> getBeanWrapperFactory() {
+	public BeanWrapperFactory getBeanWrapperFactory() {
 		return beanWrapperFactory;
 	}
 
@@ -73,7 +73,7 @@ public class JuffrouBeanMetadata {
 		if(beanClassBinding == null) {
 			try {
 				Class<?> beanClass = Class.forName(xmlElement);
-				beanClassBinding = beanWrapperFactory.getBeanWrapperContext(beanClass);
+				beanClassBinding = (BeanClassBinding) beanWrapperFactory.getBeanWrapperContext(beanClass);
 			} catch (ClassNotFoundException e) {
 				throw new UnknownXmlElementException("The element '" + xmlElement + "' has not been registered");
 			}
@@ -99,7 +99,7 @@ public class JuffrouBeanMetadata {
 			xmlElementNameToBindingMap.remove(beanClassBinding.getXmlElementName());
 		}
 		else
-			beanClassBinding = beanWrapperFactory.getBeanWrapperContext(beanClazz);
+			beanClassBinding = (BeanClassBinding) beanWrapperFactory.getBeanWrapperContext(beanClazz);
 
 		beanClassBinding.setXmlElementName(elementName);
 		classToBindingMap.put(beanClazz, beanClassBinding);

@@ -30,19 +30,19 @@ public class BeanWrapperContext {
 	private final Class clazz;
 	private final Map<TypeVariable<?>, Type> typeArgumentsMap;
 	private final Map<String, BeanFieldHandler> fields;
-	private final BeanWrapperFactory<? extends BeanWrapperContext> bwFactory;
+	private final BeanWrapperFactory bwFactory;
 
 	public static final BeanWrapperContext create(Class clazz) {
-		BeanWrapperFactory<BeanWrapperContext> factory = new BeanWrapperFactory<BeanWrapperContext>();
+		BeanWrapperFactory factory = new BeanWrapperFactory();
 		return factory.getBeanWrapperContext(clazz);
 	}
 
 	public static final BeanWrapperContext create(Class clazz, Type...types) {
-		BeanWrapperFactory<BeanWrapperContext> factory = new BeanWrapperFactory<BeanWrapperContext>();
+		BeanWrapperFactory factory = new BeanWrapperFactory();
 		return factory.getBeanWrapperContext(clazz, types);
 	}
 
-	protected BeanWrapperContext(BeanWrapperFactory<? extends BeanWrapperContext> factory, Class clazz, Type...types) {
+	protected BeanWrapperContext(BeanWrapperFactory factory, Class clazz, Type...types) {
 		if(factory == null)
 			throw new IllegalArgumentException("BeanWrapperFactory cannot be null");
 		this.bwFactory = factory;
@@ -147,7 +147,7 @@ public class BeanWrapperContext {
 		return typeArgumentsMap;
 	}
 
-	public BeanWrapperFactory<? extends BeanWrapperContext> getHierarchyContext() {
+	public BeanWrapperFactory getHierarchyContext() {
 		return bwFactory;
 	}
 
@@ -157,14 +157,14 @@ public class BeanWrapperContext {
 
 	/**
 	 * The bean wrapper creates new instances using Class.newIntance(). You can use this this if you want to create class instances yourself.  
-	 * @param beanInstanceCreator
+	 * @param beanInstanceBuilder
 	 */
-	public void setBeanInstanceBuilder(BeanInstanceBuilder beanInstanceCreator) {
-		bwFactory.setBeanInstanceBuilder(beanInstanceCreator);
+	public void setBeanInstanceBuilder(BeanInstanceBuilder beanInstanceBuilder) {
+		bwFactory.setBeanInstanceBuilder(beanInstanceBuilder);
 	}
 	
-	public void setBeanContextCreator(BeanContextBuilder<? extends BeanWrapperContext> beanContextCreator) {
-		bwFactory.setBeanContextBuilder(beanContextCreator);
+	public void setBeanContextBuilder(BeanContextBuilder beanContextBuilder) {
+		bwFactory.setBeanContextBuilder(beanContextBuilder);
 	}
 
 }

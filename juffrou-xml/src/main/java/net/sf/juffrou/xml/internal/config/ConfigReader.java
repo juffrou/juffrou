@@ -126,7 +126,7 @@ public class ConfigReader {
 			throw new XmlMappingReaderException(e);
 		}
 
-		BeanClassBinding xmlBeanWrapperContext = metadata.getBeanWrapperFactory().getBeanWrapperContext(clazz);
+		BeanClassBinding xmlBeanWrapperContext = (BeanClassBinding) metadata.getBeanWrapperFactory().getBeanWrapperContext(clazz);
 		attribute = attributes.getNamedItem(XML_ELEMENT_NODENAME);
 		if(attribute != null)
 			xmlBeanWrapperContext.setXmlElementName(attribute.getNodeValue());

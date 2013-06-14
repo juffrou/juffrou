@@ -9,7 +9,7 @@ public class MyBeanWrapperContext extends BeanWrapperContext {
 
 	//TODO create properties to extend the context
 	
-	public MyBeanWrapperContext(BeanWrapperFactory<MyBeanWrapperContext> factory, Class clazz, Type... types) {
+	public MyBeanWrapperContext(BeanWrapperFactory factory, Class clazz, Type... types) {
 		super(factory, clazz, types);
 		//TODO some initialization
 	}

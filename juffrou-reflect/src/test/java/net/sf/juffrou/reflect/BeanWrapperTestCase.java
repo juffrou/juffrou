@@ -40,7 +40,10 @@ public class BeanWrapperTestCase {
 	public void testSetWrongPropertyType() {
 		BeanWrapperContext context = BeanWrapperContext.create(Person.class);
 		BeanWrapper beanWrapper = new BeanWrapper(context);
-		beanWrapper.setValue("birthDay", "SOMEVALUE");
+		try {
+			beanWrapper.setValue("birthDay", "SOMEVALUE");
+		} catch(IllegalArgumentException e) {
+		}
 	}
 	
 	@Test
@@ -112,7 +115,7 @@ public class BeanWrapperTestCase {
 		Long withContext = new Long(stop - start);
 
 		start = System.currentTimeMillis();
-		BeanWrapperFactory<BeanWrapperContext> factory = new BeanWrapperFactory<BeanWrapperContext>();
+		BeanWrapperFactory factory = new BeanWrapperFactory();
 		for(int i=0; i < loop; i++) {
 			BeanWrapper bw = factory.getBeanWrapper(PersonCircular.class);
 			bw.setValue("firstName", "Carlos");
@@ -185,7 +188,7 @@ public class BeanWrapperTestCase {
 	
 	@Test
 	public void testBeanContextCreator() {
-		BeanWrapperFactory<MyBeanWrapperContext> factory = new BeanWrapperFactory<MyBeanWrapperContext>();
+		BeanWrapperFactory factory = new BeanWrapperFactory();
 		factory.setBeanContextBuilder(new MyContextBuilder());
 		BeanWrapper myPersonWrapper = factory.getBeanWrapper(Person.class);
 		MyBeanWrapperContext context = (MyBeanWrapperContext) myPersonWrapper.getContext();

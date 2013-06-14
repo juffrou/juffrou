@@ -11,20 +11,20 @@ import net.sf.juffrou.error.BeanInstanceBuilderException;
  * The top BeanWrapperContext creates an instance of this class and all nested wrapper share the same instance
  * @author cemartins
  */
-public class BeanWrapperFactory<BWCType extends BeanWrapperContext> {
+public class BeanWrapperFactory {
 
-	private final Map<Type, BWCType> classContextMap = new HashMap<Type, BWCType>();
+	private final Map<Type, BeanWrapperContext> classContextMap = new HashMap<Type, BeanWrapperContext>();
 	
 	// preferences info
 	private BeanInstanceBuilder beanInstanceCreator = null;
-	private BeanContextBuilder<BWCType> beanContextCreator = null;
+	private BeanContextBuilder beanContextCreator = null;
 
-	public BWCType getBeanWrapperContext(Class clazz) {
+	public BeanWrapperContext getBeanWrapperContext(Class clazz) {
 		return getBeanWrapperContext(clazz, null);
 	}
 	
-	public BWCType getBeanWrapperContext(Class clazz, Type... types) {
-		BWCType context = classContextMap.get(clazz);
+	public BeanWrapperContext getBeanWrapperContext(Class clazz, Type... types) {
+		BeanWrapperContext context = classContextMap.get(clazz);
 		if(context == null) {
 			context = getBeanContextBuilder().build(this, clazz, types);
 			classContextMap.put(clazz,  context);
@@ -56,20 +56,19 @@ public class BeanWrapperFactory<BWCType extends BeanWrapperContext> {
 
 	/**
 	 * The bean wrapper creates new instances using Class.newIntance(). You can use this this if you want to create class instances yourself.  
-	 * @param beanInstanceCreator
+	 * @param beanInstanceBuilder
 	 */
-	public void setBeanInstanceBuilder(BeanInstanceBuilder beanInstanceCreator) {
-		this.beanInstanceCreator = beanInstanceCreator;
+	public void setBeanInstanceBuilder(BeanInstanceBuilder beanInstanceBuilder) {
+		this.beanInstanceCreator = beanInstanceBuilder;
 	}
 	
-	private BeanContextBuilder<BWCType> getBeanContextBuilder() {
+	private BeanContextBuilder getBeanContextBuilder() {
 		if(beanContextCreator == null)
-			beanContextCreator = new DefaultBeanContextCreator<BWCType>();
+			beanContextCreator = new DefaultBeanContextCreator();
 		return beanContextCreator;
 	}
-	public void setBeanContextBuilder(
-			BeanContextBuilder<? extends BeanWrapperContext> beanContextCreator) {
-		this.beanContextCreator = (BeanContextBuilder<BWCType>) beanContextCreator;
+	public void setBeanContextBuilder(BeanContextBuilder beanContextBuilder) {
+		this.beanContextCreator = beanContextBuilder;
 	}
 
 	private static class DefaultBeanInstanceCreator implements BeanInstanceBuilder {
@@ -87,11 +86,11 @@ public class BeanWrapperFactory<BWCType extends BeanWrapperContext> {
 		}
 	}
 	
-	private static class DefaultBeanContextCreator<BCType extends BeanWrapperContext> implements BeanContextBuilder<BCType> {
+	private static class DefaultBeanContextCreator implements BeanContextBuilder {
 
 		@Override
-		public BCType build(BeanWrapperFactory factory, Class clazz, Type... types) {
-			return (BCType) new BeanWrapperContext(factory, clazz, types);
+		public BeanWrapperContext build(BeanWrapperFactory factory, Class clazz, Type... types) {
+			return new BeanWrapperContext(factory, clazz, types);
 		}
 		
 	}

@@ -89,13 +89,9 @@ public class BeanFieldHandler {
 						(Class<?>) this.field.getType());
 			}
 			setter.invoke(bw.getBean(), value);
-		} catch (IllegalArgumentException e) {
-			throw new ReflectionException(e);
 		} catch (IllegalAccessException e) {
 			throw new ReflectionException(e);
 		} catch (InvocationTargetException e) {
-			throw new ReflectionException(e);
-		} catch (SecurityException e) {
 			throw new ReflectionException(e);
 		} catch (NoSuchMethodException e) {
 			throw new ReflectionException("The class " + bw.getBeanClass().getSimpleName()

@@ -6,7 +6,7 @@ import net.sf.juffrou.util.reflect.BeanContextBuilder;
 import net.sf.juffrou.util.reflect.BeanWrapperFactory;
 import net.sf.juffrou.xml.internal.JuffrouBeanMetadata;
 
-public class XmlBeanWrapperContextCreator implements BeanContextBuilder<BeanClassBinding> {
+public class XmlBeanWrapperContextCreator implements BeanContextBuilder {
 
 	private final JuffrouBeanMetadata juffrouBeanMetadata;
 	
@@ -15,7 +15,7 @@ public class XmlBeanWrapperContextCreator implements BeanContextBuilder<BeanClas
 	}
 	
 	@Override
-	public BeanClassBinding build(BeanWrapperFactory<BeanClassBinding> hierarchyContext, Class clazz, Type... types) {
+	public BeanClassBinding build(BeanWrapperFactory hierarchyContext, Class clazz, Type... types) {
 		BeanClassBinding beanClassBinding = juffrouBeanMetadata.getBeanClassBindingFromClass(clazz);
 		if(beanClassBinding == null) {
 			beanClassBinding = new BeanClassBinding(hierarchyContext, clazz, types);

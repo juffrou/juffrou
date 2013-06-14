@@ -47,7 +47,7 @@ public abstract class AbstractCollectionSerializer implements Serializer {
 	}
 
 	private void serializeBeanType(JuffrouWriter writer, Collection<?> collection, Object firstBean) {
-		BeanClassBinding beanClassBinding = xmlBeanMetadata.getBeanWrapperFactory().getBeanWrapperContext(firstBean.getClass());
+		BeanClassBinding beanClassBinding = (BeanClassBinding) xmlBeanMetadata.getBeanWrapperFactory().getBeanWrapperContext(firstBean.getClass());
 
 		BeanWrapper bw = new BeanWrapper(beanClassBinding);
 		for(Object object : collection) {
