@@ -182,8 +182,7 @@ public class MyBeanWrapperContext extends BeanWrapperContext {
 
 	//TODO create properties to extend the context
 	
-	public MyBeanWrapperContext(BeanWrapperFactory<MyBeanWrapperContext> factory, 
-													 Class clazz, Type... types) {
+	public MyBeanWrapperContext(BeanWrapperFactory factory, Class clazz, Type... types) {
 		super(factory, clazz, types);
 		//TODO some initialization
 	}
@@ -192,15 +191,13 @@ public class MyBeanWrapperContext extends BeanWrapperContext {
 			</example>
 			<para>And how do we "tell" the BeanWrapperFactory to use this as BeanWrapperContext? Easy. We create a class that implements <emphasis>BeanContextBuilder</emphasis> like this one:</para>
 			<programlisting language="java"><![CDATA[
-public class MyContextBuilder implements BeanContextBuilder<MyBeanWrapperContext> {
+public class MyContextBuilder implements BeanContextBuilder {
 
 	@Override
 	public MyBeanWrapperContext build(
-						BeanWrapperFactory<MyBeanWrapperContext> hierarchyContext, 
-						Class clazz, Type... types) {
+						BeanWrapperFactory factory,	Class clazz, Type... types) {
 
-		MyBeanWrapperContext context = new MyBeanWrapperContext(hierarchyContext, 
-																		clazz, types);
+		MyBeanWrapperContext context = new MyBeanWrapperContext(factory, clazz, types);
 		return context;
 	}
 }
@@ -208,8 +205,7 @@ public class MyContextBuilder implements BeanContextBuilder<MyBeanWrapperContext
 			<para>And then we "tell" BeanWrapperFactory to use this builder. See the example bellow:</para>
 			<example><title>Using a custom BeanWrapperContext</title>
 			<programlisting><![CDATA[
-		BeanWrapperFactory<MyBeanWrapperContext> factory = 
-								new BeanWrapperFactory<MyBeanWrapperContext>();
+		BeanWrapperFactory factory = new BeanWrapperFactory();
 		factory.setBeanContextBuilder(new MyContextBuilder());
 		BeanWrapper myPersonWrapper = factory.getBeanWrapper(Person.class);
 		MyBeanWrapperContext context = (MyBeanWrapperContext) myPersonWrapper
