@@ -8,8 +8,11 @@ import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 /**
  * Utility methods to provide information over generic types.<p>
@@ -149,5 +152,93 @@ public final class ReflectionUtil {
 		}
 		return resolvedTypes;
 	}
+	
+	/**
+	 * @param clazz
+	 * @return
+	 */
+	public static boolean isSimpleType(Type type) {
+		if(! (type instanceof Class))
+			return false;
+		Class<?> clazz = (Class<?>) type;
+		return clazz.isPrimitive() || clazz.isEnum() || clazz.isInterface() || clazz.getName().startsWith("java");
+	}
 
+	/**
+	 * @param bean
+	 * @return
+	 */
+	public static Map<String, Object> getMapFromBean(Object bean) {
+		return getMapFromBean(new BeanWrapperFactory(), bean);
+	}
+	
+	/**
+	 * @param factory
+	 * @param bean
+	 * @return
+	 */
+	public static Map<String, Object> getMapFromBean(BeanWrapperFactory factory, Object bean) {
+		Map<String, Object> beanMap = new HashMap<String, Object>();
+		Map<Object, String> circularReferences = new HashMap<Object, String>();
+		BeanWrapper beanWrapper = factory.getBeanWrapper(bean);
+		circularReferences.put(bean, "");
+		buildMapFromBean(factory, beanWrapper, circularReferences, "",beanMap);
+		return beanMap;
+	}
+	
+	private static void buildMapFromBean(BeanWrapperFactory factory, BeanWrapper beanWrapper, Map<Object, String> circularReferences, String pathPrefix, Map<String, Object> beanMap) {
+		for(String propertyName : beanWrapper.getPropertyNames()) {
+			Object value = beanWrapper.getValue(propertyName);
+			if(value == null)
+				continue;
+			if(isSimpleType(beanWrapper.getType(propertyName)))
+				beanMap.put(pathPrefix + propertyName, value);
+			else
+				if(circularReferences.containsKey(value))
+					beanMap.put(pathPrefix + propertyName, new CircularReference(circularReferences.get(value)));
+			else {
+				circularReferences.put(value, pathPrefix + propertyName);
+				buildMapFromBean(factory, beanWrapper.getNestedWrapper(propertyName), circularReferences, pathPrefix + propertyName + ".", beanMap);
+			}
+		}
+	}
+	
+	/**
+	 * @param beanMap
+	 * @param bean
+	 */
+	public static void getBeanFromMap(Map<String, Object> beanMap, Object bean) {
+		getBeanFromMap(new BeanWrapperFactory(), beanMap, bean);
+	}
+
+	/**
+	 * @param factory
+	 * @param beanMap
+	 * @param bean
+	 */
+	public static void getBeanFromMap(BeanWrapperFactory factory, Map<String, Object> beanMap, Object bean) {
+		Map<String, CircularReference> circularReferences = new HashMap<String, CircularReference>();
+		BeanWrapper beanWrapper = factory.getBeanWrapper(bean);
+		for(Entry<String, Object> entry : beanMap.entrySet())
+			if(entry.getValue() instanceof CircularReference)
+				circularReferences.put(entry.getKey(), (CircularReference) entry.getValue());
+			else
+				beanWrapper.setValue(entry.getKey(), entry.getValue());
+		
+		// set the circular references after the other properties so that they can reference existing values
+		for(Entry<String, CircularReference> entry : circularReferences.entrySet())
+			beanWrapper.setValue(entry.getKey(), entry.getValue().getPath().isEmpty() ? beanWrapper.getBean() : beanWrapper.getValue(entry.getValue().getPath()));
+	}
+
+	private static class CircularReference {
+		private final String path;
+		
+		private CircularReference(String path) {
+			this.path = path;
+		}
+		
+		public String getPath() {
+			return path;
+		}
+	}
 }

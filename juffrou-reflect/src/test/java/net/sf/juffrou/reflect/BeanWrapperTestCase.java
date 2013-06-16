@@ -35,6 +35,22 @@ public class BeanWrapperTestCase {
 			System.out.println(type + ": " + value);
 		}
 	}
+
+	@Test
+	public void testBeanWraperUseCase() {
+		BeanWrapper beanWrapper = new BeanWrapper(BeanWrapperContext.create(Programmer.class)); // Programmer extends Person
+		beanWrapper.setValue("specialization", "Bean Wrappers :)"); // set value to Programmer's property
+		beanWrapper.setValue("firstName", "Carlos"); // set value to Person's property
+		beanWrapper.setValue("home.town", "Lisboa");		// set value to a nested bean's property
+		for(String propertyName : beanWrapper.getPropertyNames()) {
+			Type type = beanWrapper.getType(propertyName);
+			Object value = beanWrapper.getValue(propertyName);
+			System.out.println(type + ": " + value);
+		}
+		Programmer programmer = (Programmer) beanWrapper.getBean();  // get the wrapped object
+		BeanWrapperContext context = beanWrapper.getContext(); // Reuse the context with cached introspection and save time
+	}
+
 	
 	@Test
 	public void testSetWrongPropertyType() {

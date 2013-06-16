@@ -1,11 +1,13 @@
 package net.sf.juffrou.reflect;
 
 import java.lang.reflect.Type;
+import java.util.Map;
 
 import junit.framework.Assert;
-
 import net.sf.juffrou.util.reflect.BeanWrapper;
 import net.sf.juffrou.util.reflect.BeanWrapperContext;
+import net.sf.juffrou.util.reflect.BeanWrapperFactory;
+import net.sf.juffrou.util.reflect.ReflectionUtil;
 
 import org.junit.Test;
 
@@ -45,4 +47,23 @@ public class ReflectionUtilTestCase {
 		Assert.assertTrue(Person.class.equals(type));
 	}
 
+	@Test
+	public void testBeanToMapAndBack() {
+		AddressCircular address = new AddressCircular();
+		address.setStreet("Bean Street");
+		address.setTown("Lisboa");
+		PersonCircular person = new PersonCircular();
+		person.setAddress(address);
+		person.setFirstName("Carlos");
+		person.setLastName("Martins");
+		
+		BeanWrapperFactory factory = new BeanWrapperFactory();
+		
+		Map<String, Object> beanMap = ReflectionUtil.getMapFromBean(factory, person);
+		
+		PersonCircular fromMap = new PersonCircular();
+		ReflectionUtil.getBeanFromMap(factory, beanMap, fromMap);
+		
+		Assert.assertEquals(person.getFirstName(), fromMap.getFirstName());
+	}
 }

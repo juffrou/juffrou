@@ -76,8 +76,18 @@ public class BeanWrapper {
 		this.instance = null;
 	}
 
+	/**
+	 * @return the BeanWrapperContext containing introspection information about this bean
+	 */
 	public BeanWrapperContext getContext() {
 		return context;
+	}
+	
+	/**
+	 * @return The BeanWrapperFactory responsible for creating the BeanWrapperContext for this bean and all its nested beans.
+	 */
+	public BeanWrapperFactory getFactory() {
+		return context.getFactory();
 	}
 
 	/**

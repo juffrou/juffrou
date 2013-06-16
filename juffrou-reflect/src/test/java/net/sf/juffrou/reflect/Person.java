@@ -7,6 +7,7 @@ public class Person {
 	private String firstName;
 	private String lastName;
 	private Date birthDay;
+	private Address home;
 	
 	
 	public String getFirstName() {
@@ -27,4 +28,11 @@ public class Person {
 	public void setBirthDay(Date birthDay) {
 		this.birthDay = birthDay;
 	}
+	public Address getHome() {
+		return home;
+	}
+	public void setHome(Address home) {
+		this.home = home;
+	}
+	
 }

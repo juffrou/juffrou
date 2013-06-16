@@ -147,7 +147,7 @@ public class BeanWrapperContext {
 		return typeArgumentsMap;
 	}
 
-	public BeanWrapperFactory getHierarchyContext() {
+	public BeanWrapperFactory getFactory() {
 		return bwFactory;
 	}
 
