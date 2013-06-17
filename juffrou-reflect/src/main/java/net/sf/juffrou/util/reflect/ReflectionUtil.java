@@ -8,11 +8,9 @@ import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 /**
  * Utility methods to provide information over generic types.<p>
@@ -154,8 +152,12 @@ public final class ReflectionUtil {
 	}
 	
 	/**
-	 * @param clazz
-	 * @return
+	 * Checks whether a type is a simple java type.<p>
+	 * Simple java types are primitives, classes included in the "java" package, Interfaces and Enumerations.
+	 * Simple java types cannot be java beans, so if this method returns true, you cannot create a BeanWrapper
+	 * around the specified type.
+	 * @param type the type to test
+	 * @return true if is a simple java type (is not a bean); false if it is not a simple type (may still not be a bean).
 	 */
 	public static boolean isSimpleType(Type type) {
 		if(! (type instanceof Class))
@@ -165,17 +167,25 @@ public final class ReflectionUtil {
 	}
 
 	/**
-	 * @param bean
-	 * @return
+	 * Transform a Java bean into a Map where the keys are the property names.<p>
+	 * If there are nested beans, then the key will be the path of property names in the form "prop1.prop2.prop2".<br>
+	 * Properties with null values are not put in the map.
+	 * @param bean The bean to transform
+	 * @return a Map with keys and values corresponding to the bean.
+	 * @see {@link #getMapFromBean(BeanWrapperFactory factory, Object bean)} for increased performance.
 	 */
 	public static Map<String, Object> getMapFromBean(Object bean) {
 		return getMapFromBean(new BeanWrapperFactory(), bean);
 	}
 	
 	/**
-	 * @param factory
-	 * @param bean
-	 * @return
+	 * Transform a Java bean into a Map where the keys are the property names.<p>
+	 * If there are nested beans, then the key will be the path of property names in the form "prop1.prop2.prop2".<br>
+	 * Properties with null values are not put in the map.
+	 * @param factory a BeanWrapperFactory instance to cache introspection information. Increases performance if re-used.
+	 * @param bean The bean to transform
+	 * @return a Map with keys and values corresponding to the bean.
+	 * @see {@link #getBeanFromMap(BeanWrapperFactory, Map, Object)}
 	 */
 	public static Map<String, Object> getMapFromBean(BeanWrapperFactory factory, Object bean) {
 		Map<String, Object> beanMap = new HashMap<String, Object>();
@@ -204,17 +214,20 @@ public final class ReflectionUtil {
 	}
 	
 	/**
-	 * @param beanMap
-	 * @param bean
+	 * Fill up a java bean with the contents of a map where the keys are property names.
+	 * @param beanMap Map with property names and values
+	 * @param bean bean instance to fill up
+	 * @see {@link #getBeanFromMap(BeanWrapperFactory, Map, Object)} for increased performance.
 	 */
 	public static void getBeanFromMap(Map<String, Object> beanMap, Object bean) {
 		getBeanFromMap(new BeanWrapperFactory(), beanMap, bean);
 	}
 
 	/**
-	 * @param factory
-	 * @param beanMap
-	 * @param bean
+	 * Fill up a java bean with the contents of a map where the keys are property names.
+	 * @param factory a BeanWrapperFactory instance to cache introspection information. Increases performance if re-used.
+	 * @param beanMap Map with property names and values
+	 * @param bean bean instance to fill up
 	 */
 	public static void getBeanFromMap(BeanWrapperFactory factory, Map<String, Object> beanMap, Object bean) {
 		Map<String, CircularReference> circularReferences = new HashMap<String, CircularReference>();
