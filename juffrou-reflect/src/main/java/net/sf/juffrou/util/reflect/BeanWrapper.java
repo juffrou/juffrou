@@ -58,7 +58,6 @@ public class BeanWrapper {
 	 * Construct a bean wrapper around an existing bean instance.<br>
 	 * This constructor will have to create a BeanWrapperContext to get introspection metadata. You can use {@link #BeanWrapper(BeanWrapperContext, Object)} instead.
 	 * @param instance
-	 * @deprecated
 	 */
 	public BeanWrapper(Object instance) {
 		this.instance = instance;
@@ -69,7 +68,6 @@ public class BeanWrapper {
 	 * Construct a bean wrapper around a class. Bean instances will be instances of that class.<br>
 	 * This constructor will have to create a BeanWrapperContext to get introspection metadata. You can use {@link #BeanWrapper(BeanWrapperContext, Object)} instead.
 	 * @param clazz class to instantiate the wrapped bean
-	 * @deprecated
 	 */
 	public BeanWrapper(Class<?> clazz) {
 		this.context = BeanWrapperContext.create(clazz);
@@ -84,7 +82,7 @@ public class BeanWrapper {
 	}
 	
 	/**
-	 * @return The BeanWrapperFactory responsible for creating the BeanWrapperContext for this bean and all its nested beans.
+	 * @return The BeanWrapperFactory responsible for creating and caching the BeanWrapperContext for this bean and all its nested beans.
 	 */
 	public BeanWrapperFactory getFactory() {
 		return context.getFactory();

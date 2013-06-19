@@ -17,9 +17,9 @@ import net.sf.juffrou.util.reflect.internal.BeanFieldHandler;
 
 
 /**
- * Holds metadata and preferences for a BeanWrapper.<p>
+ * Holds introspection information for a java bean class.<p>
  * Performs introspection and holds metadata information about a class used by the {@link BeanWrapper}.<br>
- * If you have to create several BeanWrappers for the same java class, use this and save the introspection overhead.<br>
+ * If you have to create several BeanWrappers for the same java class, use BeanWrapperContext and save the introspection overhead.<br>
  * This class is thread safe.
  * @author cemartins
  *

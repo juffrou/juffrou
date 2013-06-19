@@ -7,8 +7,10 @@ import java.util.Map;
 import net.sf.juffrou.error.BeanInstanceBuilderException;
 
 /**
- * This class holds data that is common to a whole hierarchy of BeanWrapperContexts (ie to a complete graph of wrapped nested beans).<p>
- * The top BeanWrapperContext creates an instance of this class and all nested wrapper share the same instance
+ * This class is responsible for creating and caching BeanWrapperContexts.<p>
+ * A BeanWrapper uses the same BeanWrapperFactory to create the BeanWrapperContexts for its nested BeanWrappers.
+ * BeanWrapperFactory can also be used as an umbrella to create BeanWrappers in a more performant way as it caches 
+ * the introspection information and re-uses it whenever possible.
  * @author cemartins
  */
 public class BeanWrapperFactory {
@@ -19,10 +21,24 @@ public class BeanWrapperFactory {
 	private BeanInstanceBuilder beanInstanceCreator = null;
 	private BeanContextBuilder beanContextCreator = null;
 
+	/**
+	 * Retrieves a BeanWrapperContext for java bean class.<p>
+	 * If the BeanWrapperContext is not in cache then creates a new one.
+	 * @param clazz the bean class to inspect
+	 * @return a BeanWrapperContext with introspection information about the specified class.
+	 * @see {@link #getBeanWrapperContext(Class, Type...)}
+	 */
 	public BeanWrapperContext getBeanWrapperContext(Class clazz) {
 		return getBeanWrapperContext(clazz, null);
 	}
 	
+	/**
+	 * Retrieves a BeanWrapperContext for a parameterized (generic) java bean class.<p>
+	 * If the BeanWrapperContext is not in cache then creates a new one.
+	 * @param clazz the generic bean class to inspect.
+	 * @param types the parameters that defined the generic bean class.
+	 * @return a BeanWrapperContext with introspection information about the specified class.
+	 */
 	public BeanWrapperContext getBeanWrapperContext(Class clazz, Type... types) {
 		BeanWrapperContext context = classContextMap.get(clazz);
 		if(context == null) {
@@ -33,19 +49,22 @@ public class BeanWrapperFactory {
 	}
 
 	/**
-	 * Construct a bean wrapper around a class. Bean instances will be instances of that class and will be created only when necessary.
+	 * Construct a bean wrapper around a class.<p>
+	 * Bean instances will be instances of that class and will be created only when necessary.<br>
+	 * Try to use a cached BeanWrapperContext to save introspection time.
 	 * @param clazz class to instantiate the wrapped bean
 	 */
 	public BeanWrapper getBeanWrapper(Class clazz) {
-		return new BeanWrapper(getBeanWrapperContext(clazz));
+		return new BeanWrapper(getBeanWrapperContext(clazz), null);
 	}
 	
 	/**
-	 * Construct a bean wrapper around an existing bean instance.
-	 * @param instance
+	 * Construct a bean wrapper around an existing bean instance.<p>
+	 * Will try to use a cached BeanWrapperContext to save introspection time.
+	 * @param instance the bean object to be wrapped
 	 */
 	public BeanWrapper getBeanWrapper(Object instance) {
-		return new BeanWrapper(getBeanWrapperContext(instance.getClass()), instance);
+		return new BeanWrapper(getBeanWrapperContext(instance.getClass(), null), instance);
 	}
 
 	protected BeanInstanceBuilder getBeanInstanceBuilder() {
@@ -55,7 +74,9 @@ public class BeanWrapperFactory {
 	}
 
 	/**
-	 * The bean wrapper creates new instances using Class.newIntance(). You can use this this if you want to create class instances yourself.  
+	 * Control the instantiation of beans and wrapped beans.<p>
+	 * The bean wrapper creates new instances using Class.newIntance() by default. 
+	 * You can use this this if you want to create class instances yourself.  
 	 * @param beanInstanceBuilder
 	 */
 	public void setBeanInstanceBuilder(BeanInstanceBuilder beanInstanceBuilder) {
@@ -67,6 +88,13 @@ public class BeanWrapperFactory {
 			beanContextCreator = new DefaultBeanContextCreator();
 		return beanContextCreator;
 	}
+	
+	/**
+	 * Control the creation of BeanWrapperContexts.<p>
+	 * Provide a custom BeanContextBuilder that will instantiate your custom BeanWrapperContext. This way
+	 * you can extend the BeanWrapperContext class and attach more information to a bean.
+	 * @param beanContextBuilder
+	 */
 	public void setBeanContextBuilder(BeanContextBuilder beanContextBuilder) {
 		this.beanContextCreator = beanContextBuilder;
 	}
