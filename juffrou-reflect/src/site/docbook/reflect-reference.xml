@@ -208,8 +208,7 @@ public class MyContextBuilder implements BeanContextBuilder {
 		BeanWrapperFactory factory = new BeanWrapperFactory();
 		factory.setBeanContextBuilder(new MyContextBuilder());
 		BeanWrapper myPersonWrapper = factory.getBeanWrapper(Person.class);
-		MyBeanWrapperContext context = (MyBeanWrapperContext) myPersonWrapper
-																.getContext();
+		MyBeanWrapperContext context = (MyBeanWrapperContext) myPersonWrapper.getContext();
 			]]></programlisting>
 			</example>
 			</section>
@@ -220,6 +219,15 @@ public class MyContextBuilder implements BeanContextBuilder {
 			<title>BeanConverter</title>
 			<para>The BeanConverter is a utility class to convert between two beans.</para>
 			<para>Given any two beans and a map that establishes which properties in bean 1 correspond to properties in bean 2, this class can be used to automatically obtain bean 1 from an instance of bean 2 and vice-versa.</para>
+		</section>
+		<section>
+			<title>ReflectionUtil</title>
+			<para>The ReflectionUtil is a utility class with several helper static methods. They are all well documented in Javadoc for an easy and direct reference.</para>
+			<para>Some of these methods are:</para>
+	<itemizedlist mark="disc">
+<listitem><literal>getMapFromBean</literal> Transform a Java bean into a Map where the keys are the property names. If there are nested beans, then the key will be the path of property names in the form "prop1.prop2.prop2". Properties with null values are not put in the map.</listitem>
+<listitem><literal>getBeanFromMap</literal> Fill up a java bean with the contents of a map where the keys are property names.</listitem>
+</itemizedlist>
 		</section>
 	</chapter>
 </book>

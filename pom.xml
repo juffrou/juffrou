@@ -33,7 +33,7 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 			<timezone>GMT</timezone>
 		</developer>
 	</developers>
-
+	
 	<modules>
 		<module>juffrou-reflect</module>
 		<module>juffrou-xml</module>
