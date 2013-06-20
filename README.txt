@@ -1,12 +1,13 @@
-# Before deploying, uploading files or web site, create a shell on sourceforge with the command
-ssh cemartins,juffrou@shell.sourceforge.net create
+Juffrou is a maven project. The sources are organized in a typical maven2 structure
 
-# to upload files to sourceforge
-mvn wagon:upload
+To upload files to sourceforge
+> mvn wagon:upload
 
-# to release without deploying the site
-mvn release:clean release:prepare release:perform -Dgoals=deploy
-# to upload files to sourceforge
+To release without deploying the site
+> mvn release:clean release:prepare release:perform -Dgoals=deploy
 
-# to deploy the site
-mvn site site:deploy
+To deploy the site
+> mvn site site:deploy
+
+Before deploying, artifacts or site, create a shell on sourceforge with the command
+> ssh cemartins,juffrou@shell.sourceforge.net create

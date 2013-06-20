@@ -149,6 +149,7 @@
 					<failOnError>true</failOnError>
 					<target>
 						<copy file="${project.build.directory}/reference-manual.pdf" toDir="${project.build.directory}/site" />
+						<copy file="${basedir}/src/resources/README.txt" toDir="${project.build.directory}" />
 					</target>
 				</configuration>
 			</plugin>
@@ -185,7 +186,7 @@
 				</executions>
 				<configuration>
 					<fromDir>${project.build.directory}</fromDir>
-					<includes>juffrou-${project.version}-bundle.zip,reference-manual.pdf</includes>
+					<includes>juffrou-${project.version}-bundle.zip,reference-manual.pdf,README.txt</includes>
 					<url>${sf.url}${sf.downloads.dir}</url>
 				</configuration>
 			</plugin>

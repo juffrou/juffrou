@@ -14,6 +14,19 @@
 		</i>
 	</xsl:template>
 
+	<xsl:template name="user.head.content">
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-36088259-2', 'sourceforge.net');
+ga('send', 'pageview');
+</script>
+ 	</xsl:template>
+
 	<!-- CUSTOMIZATION
 	     BASED ON THE FILE (docbook-xsl-ns-1.78.1)/html/highlight.xsl
 	     (basically copy some entries of that file to this file and then change some properties) -->

@@ -30,12 +30,12 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 		<developer>
 			<name>Carlos Martins</name>
 			<email>carlos.mfa.martins@gmail.com</email>
-			<timezone>GMT</timezone>
+			<timezone>Europe/Lisbon</timezone>
 		</developer>
 		<developer>
 			<name>Subramaniam S.</name>
 			<email>subramaniam.s17@gmail.com</email>
-			<timezone>GMT+5:30</timezone>
+			<timezone>IST</timezone>
 		</developer>
 	</developers>
 	
