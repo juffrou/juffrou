@@ -10,6 +10,11 @@ import net.sf.juffrou.xml.internal.binding.BeanPropertyBinding;
 import net.sf.juffrou.xml.internal.io.JuffrouReader;
 import net.sf.juffrou.xml.internal.io.JuffrouWriter;
 
+/**
+ * Main serializer / deserializer class.<p>
+ * Handles a java bean beans, and calls specific serializers for each of its properties.
+ * @author cemartins
+ */
 public class BeanWrapperSerializer implements Serializer {
 
 	private final JuffrouBeanMetadata xmlBeanMetadata;

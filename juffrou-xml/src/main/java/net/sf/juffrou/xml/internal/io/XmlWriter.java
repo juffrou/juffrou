@@ -56,12 +56,17 @@ public class XmlWriter implements JuffrouWriter {
 	}
 
 	public void startNode(String nodeName, NodeType nodeType) {
-		Node node;
-		if(nodeType == NodeType.ATTRIBUTE) {
+		Node node = null;
+		switch(nodeType) {
+		case ATTRIBUTE:
 			node = doc.createAttribute(nodeName);
 			((Element)parentNode).setAttributeNode((Attr) node);
-		}
-		else {
+			break;
+		case TEXT:
+			node = doc.createTextNode("");
+			parentNode.appendChild(node);
+			break;
+		case ELEMENT:
 			node = doc.createElement(nodeName);
 			parentNode.appendChild(node);
 		}
