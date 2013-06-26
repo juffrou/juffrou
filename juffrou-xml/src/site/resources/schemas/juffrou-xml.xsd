@@ -34,6 +34,7 @@
 				<xs:element ref="xml" minOccurs="0"/>
 				<xs:element ref="serializer" minOccurs="0"/>
 				<xs:element ref="attribute" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="text" minOccurs="0" maxOccurs="1"/>
 				<xs:element ref="element" minOccurs="0" maxOccurs="unbounded"/>
 			</xs:sequence>
 			<xs:attribute name="xml">
@@ -71,6 +72,29 @@
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="attribute">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="xml" minOccurs="0"/>
+				<xs:element ref="serializer" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute name="property" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="xml">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="type">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="text">
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element ref="xml" minOccurs="0"/>

@@ -36,6 +36,7 @@ public class ConfigReader {
 	private static String PREFERENCES_NODENAME = "preferences";
 	private static String ROOT_ELEMENT_NODENAME = "root-element";
 	private static String ATTRIBUTE_ELEMENT_NODENAME = "attribute";
+	private static String TEXT_ELEMENT_NODENAME = "text";
 	private static String ELEMENT_ELEMENT_NODENAME = "element";
 	private static String SERIALIZER_ELEMENT_NODENAME = "serializer";
 	private static String TYPE_ELEMENT_NODENAME = "type";
@@ -139,6 +140,8 @@ public class ConfigReader {
 					processElement(metadata, xmlBeanWrapperContext, currentNode, NodeType.ELEMENT);
 				else if(currentNode.getNodeName().equals(ATTRIBUTE_ELEMENT_NODENAME))
 					processElement(metadata, xmlBeanWrapperContext, currentNode, NodeType.ATTRIBUTE);
+				else if(currentNode.getNodeName().equals(TEXT_ELEMENT_NODENAME))
+					processElement(metadata, xmlBeanWrapperContext, currentNode, NodeType.TEXT);
 				else if(currentNode.getNodeName().equals(XML_ELEMENT_NODENAME))
 					processRootElementXml(metadata, xmlBeanWrapperContext, currentNode);
 				else if(currentNode.getNodeName().equals(SERIALIZER_ELEMENT_NODENAME))

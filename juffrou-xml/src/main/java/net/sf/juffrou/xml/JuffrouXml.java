@@ -76,5 +76,13 @@ public class JuffrouXml {
 	public void registerAttribute(Class beanClazz, String beanPropertyName, String attributeName, String serializerId) {
 		xmlBeanMetadata.registerProperty(beanClazz, beanPropertyName, attributeName, serializerId, NodeType.ATTRIBUTE);
 	}
-	
+
+	public void registerText(Class beanClazz, String beanPropertyName, String attributeName) {
+		xmlBeanMetadata.registerProperty(beanClazz, beanPropertyName, attributeName, null, NodeType.TEXT);
+	}
+
+	public void registerText(Class beanClazz, String beanPropertyName, String attributeName, String serializerId) {
+		xmlBeanMetadata.registerProperty(beanClazz, beanPropertyName, attributeName, serializerId, NodeType.TEXT);
+	}
+
 }

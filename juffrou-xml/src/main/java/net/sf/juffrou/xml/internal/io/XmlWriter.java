@@ -89,9 +89,8 @@ public class XmlWriter implements JuffrouWriter {
 
 	public void write(String value) {
 		
-		Node lastChild = parentNode.getLastChild();
-		if (lastChild != null && lastChild.getNodeType() == Node.TEXT_NODE)
-			((Text) lastChild).appendData(value);
+		if (parentNode.getNodeType() == Node.TEXT_NODE)
+			((Text) parentNode).appendData(value);
 		else if(parentNode.getNodeType() == Node.ATTRIBUTE_NODE)
 			parentNode.setNodeValue(value);
 		else
