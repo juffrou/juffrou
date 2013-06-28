@@ -97,7 +97,7 @@ public class XmlReader implements JuffrouReader {
 		parentNodes.push(currentNode);
 		currentNode = currentNode.getFirstChild();
 		Node textChild = null;
-		if(currentNode.getNodeType() == Node.TEXT_NODE) {
+		if(currentNode != null && currentNode.getNodeType() == Node.TEXT_NODE) {
 			textChild = currentNode;
 		}
 		while(currentNode != null && currentNode.getNodeType() != Node.ELEMENT_NODE)
