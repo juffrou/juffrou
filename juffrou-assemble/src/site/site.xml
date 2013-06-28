@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Juffrou Assemble">
 	<body>
-		<links>
-			<item name="Sourceforge" href="http://sourceforge.net/p/juffrou/wiki/Home" />
-			<item name="Releases" href="https://oss.sonatype.org/content/groups/public/com/googlecode/juffrou" />
-		</links>
+
+		<breadcrumbs>
+			<item name="Juffrou" href="http://juffrou.sourceforge.net/index.html"/>
+			<item name="Assemble" href="http://juffrou.sourceforge.net/juffrou-assemble/index.html"/>
+		</breadcrumbs>
 
 		<menu ref="parent" />
 

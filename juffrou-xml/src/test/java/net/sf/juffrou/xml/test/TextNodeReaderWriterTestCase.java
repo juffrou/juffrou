@@ -16,18 +16,14 @@ public class TextNodeReaderWriterTestCase {
 		
 		Person person = new Person();
 		person.setFirstName("Carlos");
-		person.setLastName("Martins");
 		
 		String xmlString = juffrouXml.toXml(person);
 		
 		System.out.println(xmlString);
 
-		/*
 		Object object = juffrouXml.fromXml(xmlString);
 		Assert.assertTrue(object instanceof Person);
 		Person newPerson = (Person) object;
 		Assert.assertEquals("Carlos", newPerson.getFirstName());
-		Assert.assertEquals("Martins", newPerson.getLastName());
-		*/
 	}
 }

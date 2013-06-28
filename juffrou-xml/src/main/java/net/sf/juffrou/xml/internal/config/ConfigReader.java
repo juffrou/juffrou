@@ -16,6 +16,7 @@ import net.sf.juffrou.xml.error.JuffrouXmlException;
 import net.sf.juffrou.xml.error.XmlMappingReaderException;
 import net.sf.juffrou.xml.internal.JuffrouBeanMetadata;
 import net.sf.juffrou.xml.internal.NodeType;
+import net.sf.juffrou.xml.internal.XmlConstants;
 import net.sf.juffrou.xml.internal.binding.BeanClassBinding;
 import net.sf.juffrou.xml.internal.binding.BeanPropertyBinding;
 import net.sf.juffrou.xml.internal.config.protocols.classpath.Handler;
@@ -175,9 +176,15 @@ public class ConfigReader {
 		NamedNodeMap attributes = currentNode.getAttributes();
 		Node attribute = attributes.getNamedItem(PROPERTY_ELEMENT_NODENAME);
 		propertyBinding.setBeanPropertyName(attribute.getNodeValue());
-		attribute = attributes.getNamedItem(XML_ELEMENT_NODENAME);
-		if(attribute != null)
-			propertyBinding.setXmlElementName(attribute.getNodeValue());
+		
+		// is the property is a node of type TEXT then its xml element name will be CDATA
+		if(nodeType == NodeType.TEXT)
+			propertyBinding.setXmlElementName(XmlConstants.CDATA_ELEMENT_NAME);
+		else {
+			attribute = attributes.getNamedItem(XML_ELEMENT_NODENAME);
+			if(attribute != null)
+				propertyBinding.setXmlElementName(attribute.getNodeValue());
+		}
 
 		attribute = attributes.getNamedItem(TYPE_ELEMENT_NODENAME);
 		if(attribute != null) {

@@ -96,9 +96,15 @@ public class XmlReader implements JuffrouReader {
 
 		parentNodes.push(currentNode);
 		currentNode = currentNode.getFirstChild();
+		Node textChild = null;
+		if(currentNode.getNodeType() == Node.TEXT_NODE) {
+			textChild = currentNode;
+		}
 		while(currentNode != null && currentNode.getNodeType() != Node.ELEMENT_NODE)
 			currentNode = currentNode.getNextSibling();
 
+		if(currentNode == null)
+			currentNode = textChild;
 		if(parentAttributes.isEmpty())
 			return currentNode != null ? currentNode.getNodeName() : null;
 		else {
@@ -116,13 +122,22 @@ public class XmlReader implements JuffrouReader {
 	public String getText() {
 		if(currentNode == null)
 			return null;
-		if(currentNode.getNodeType() == Node.ELEMENT_NODE)
-			return currentNode.getTextContent();
-		else if(currentNode.getNodeType() == Node.ATTRIBUTE_NODE) {
-			return currentNode.getNodeValue();
+		
+		String nodeText;
+		switch(currentNode.getNodeType()) {
+		case Node.ELEMENT_NODE:
+			nodeText = currentNode.getTextContent();
+			break;
+		case Node.ATTRIBUTE_NODE:
+			nodeText = currentNode.getNodeValue();
+			break;
+		case Node.TEXT_NODE:
+			nodeText = currentNode.getNodeValue();
+			break;
+			default:
+				nodeText = null;
 		}
-		else
-			return null;
+		return nodeText;
 	}
 	
 	@Override
