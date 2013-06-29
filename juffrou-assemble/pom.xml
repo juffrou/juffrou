@@ -177,16 +177,28 @@
 				<artifactId>wagon-maven-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>upload-to-sourceforge</id>
+						<id>upload-bundle-to-sourceforge</id>
 						<phase>deploy</phase>
 						<goals>
 							<goal>upload</goal>
 						</goals>
+						<configuration>
+							<includes>juffrou-${project.version}-bundle.zip</includes>
+						</configuration>
+					</execution>
+					<execution>
+						<id>upload-docs-to-sourceforge</id>
+						<phase>site-deploy</phase>
+						<goals>
+							<goal>upload</goal>
+						</goals>
+						<configuration>
+							<includes>reference-manual.pdf,README.txt</includes>
+						</configuration>
 					</execution>
 				</executions>
 				<configuration>
 					<fromDir>${project.build.directory}</fromDir>
-					<includes>juffrou-${project.version}-bundle.zip,reference-manual.pdf,README.txt</includes>
 					<url>${sf.url}${sf.downloads.dir}</url>
 				</configuration>
 			</plugin>
