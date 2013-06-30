@@ -16,11 +16,22 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import net.sf.juffrou.xml.internal.config.ConfigReader;
+import net.sf.juffrou.xml.internal.config.JuffrouSpringConfigReader;
 import net.sf.juffrou.xml.internal.io.XmlReader;
 import net.sf.juffrou.xml.internal.io.XmlWriter;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.core.io.Resource;
 import org.springframework.oxm.XmlMappingException;
 import org.springframework.oxm.support.AbstractMarshaller;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.xml.StaxUtils;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -32,15 +43,38 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.ext.LexicalHandler;
 import org.xml.sax.helpers.AttributesImpl;
 
-public class JuffrouMarshaller extends AbstractMarshaller {
+/**
+ * 
+ * @author Carlos Martins
+ */
+public class JuffrouMarshaller extends AbstractMarshaller implements ApplicationContextAware, InitializingBean {
 
 	public static final String DEFAULT_ENCODING = "UTF-8";
 
+	protected final Log logger = LogFactory.getLog(getClass());
+
 	private final JuffrouXml juffrouXml = new JuffrouXml();
+	
+	private ApplicationContext applicationContext;
+	
+	private Resource[] mappingLocations;
 	
 	private String encoding = DEFAULT_ENCODING;
 	
-	
+	/**
+	 * Set the locations of the Juffrou XML Mapping files.
+	 */
+	public void setMappingLocation(Resource mappingLocation) {
+		this.mappingLocations = new Resource[]{mappingLocation};
+	}
+
+	/**
+	 * Set the locations of the Juffrou XML Mapping files.
+	 */
+	public void setMappingLocations(Resource[] mappingLocations) {
+		this.mappingLocations = mappingLocations;
+	}
+
 	@Override
 	public boolean supports(Class<?> clazz) {
 		return true;
@@ -168,6 +202,37 @@ public class JuffrouMarshaller extends AbstractMarshaller {
 		XmlReader reader = new XmlReader(inputSource);
 		Object unmarshallBean = juffrouXml.getXmlMarshaller().unmarshallBean(reader);
 		return unmarshallBean;
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		
+		if (!ObjectUtils.isEmpty(mappingLocations)) {
+			ConfigReader configReader = new JuffrouSpringConfigReader(applicationContext);
+			for (Resource mappingLocation : mappingLocations) {
+				try {
+					InputStream inputStream = mappingLocation.getInputStream();
+					juffrouXml.readConfigFile(configReader, inputStream);
+					inputStream.close();
+				}
+				catch(RuntimeException e) {
+					if(logger.isErrorEnabled())
+						logger.error("Cannot read configuration file " + mappingLocation.toString(), e);
+				}
+			}
+		}
+		else {
+			if(logger.isWarnEnabled())
+				logger.warn("No mapping location defined. Using default configuration for JuffrouXml.");
+		}
+	}
+
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext)
+			throws BeansException {
+		
+		this.applicationContext = applicationContext;
+		
 	}
 
 }

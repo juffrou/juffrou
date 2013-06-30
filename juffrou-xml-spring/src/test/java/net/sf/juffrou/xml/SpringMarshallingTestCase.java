@@ -15,6 +15,7 @@ public class SpringMarshallingTestCase {
 		ApplicationContext appContext = new ClassPathXmlApplicationContext("application-context.xml");
 
 		MockApplication application = (MockApplication) appContext.getBean("application");
+		application.getSettings().setMyString("SomeBeanPropertyValue");
         try {
 			application.saveSettings();
 	        application.loadSettings();

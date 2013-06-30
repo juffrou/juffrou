@@ -24,6 +24,10 @@ public class MockApplication {
     public void setUnmarshaller(Unmarshaller unmarshaller) {
         this.unmarshaller = unmarshaller;
     }
+    
+    public Settings getSettings() {
+    	return settings;
+    }
 
     public void saveSettings() throws IOException {
         FileOutputStream os = null;

@@ -12,7 +12,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import net.sf.juffrou.util.reflect.BeanWrapper;
 import net.sf.juffrou.util.reflect.BeanWrapperContext;
-import net.sf.juffrou.xml.error.JuffrouXmlException;
+import net.sf.juffrou.xml.error.JuffrouXmlConfigReaderException;
 import net.sf.juffrou.xml.error.XmlMappingReaderException;
 import net.sf.juffrou.xml.internal.JuffrouBeanMetadata;
 import net.sf.juffrou.xml.internal.NodeType;
@@ -34,24 +34,38 @@ import org.xml.sax.SAXException;
  */
 public class ConfigReader {
 	
-	private static String PREFERENCES_NODENAME = "preferences";
-	private static String ROOT_ELEMENT_NODENAME = "root-element";
-	private static String ATTRIBUTE_ELEMENT_NODENAME = "attribute";
-	private static String TEXT_ELEMENT_NODENAME = "text";
-	private static String ELEMENT_ELEMENT_NODENAME = "element";
-	private static String SERIALIZER_ELEMENT_NODENAME = "serializer";
-	private static String TYPE_ELEMENT_NODENAME = "type";
-	private static String XML_ELEMENT_NODENAME = "xml";
-	private static String REF_ELEMENT_NODENAME = "ref";
-	private static String CLASS_ELEMENT_NODENAME = "class";
-	private static String ID_ELEMENT_NODENAME = "id";
-	private static String PROPERTY_ELEMENT_NODENAME = "property";
-
-	public static void readConfigFile(JuffrouBeanMetadata metadata, String urlSpec) {
+	protected static String PREFERENCES_NODENAME = "preferences";
+	protected static String ROOT_ELEMENT_NODENAME = "root-element";
+	protected static String ATTRIBUTE_ELEMENT_NODENAME = "attribute";
+	protected static String TEXT_ELEMENT_NODENAME = "text";
+	protected static String ELEMENT_ELEMENT_NODENAME = "element";
+	protected static String SERIALIZER_ELEMENT_NODENAME = "serializer";
+	protected static String TYPE_ELEMENT_NODENAME = "type";
+	protected static String XML_ELEMENT_NODENAME = "xml";
+	protected static String REF_ELEMENT_NODENAME = "ref";
+	protected static String CLASS_ELEMENT_NODENAME = "class";
+	protected static String ID_ELEMENT_NODENAME = "id";
+	protected static String PROPERTY_ELEMENT_NODENAME = "property";
+	
+	public void readConfigFile(JuffrouBeanMetadata metadata, String urlSpec) {
 		try {
 			URL url = new URL(null, urlSpec, new Handler(ClassLoader.getSystemClassLoader()));
 			InputStream stream = url.openStream();
-//			InputStream stream = ConfigReader.class.getResourceAsStream(fileName);
+			readConfigFile(metadata, stream);
+			stream.close();
+
+		} catch (UnsupportedEncodingException e) {
+			throw new JuffrouXmlConfigReaderException("Cannot create a reader of the XML string passed", e);
+		} catch (FileNotFoundException e) {
+			throw new JuffrouXmlConfigReaderException("Cannot create a reader of the XML string passed", e);
+		} catch (IOException e) {
+			throw new JuffrouXmlConfigReaderException("Cannot create a reader of the XML string passed", e);
+		}
+	}
+
+	public void readConfigFile(JuffrouBeanMetadata metadata, InputStream stream) {
+		try {
+			
 			Document doc;
 			
 			DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -63,24 +77,18 @@ public class ConfigReader {
 			processMappingElement(metadata, doc.getFirstChild());
 			
 		} catch (UnsupportedEncodingException e) {
-			throw new JuffrouXmlException("Cannot create a reader of the XML string passed", e);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new JuffrouXmlConfigReaderException("Cannot create a reader of the XML string passed", e);
 		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new JuffrouXmlConfigReaderException("Cannot create a reader of the XML string passed", e);
 		} catch (SAXException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new JuffrouXmlConfigReaderException("Cannot create a reader of the XML string passed", e);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new JuffrouXmlConfigReaderException("Cannot create a reader of the XML string passed", e);
 		}
 
 	}
-	
-	private static void processMappingElement(JuffrouBeanMetadata metadata, Node currentNode) {
+
+	protected void processMappingElement(JuffrouBeanMetadata metadata, Node currentNode) {
 		
 		currentNode = currentNode.getFirstChild();
 		while(currentNode != null) {
@@ -96,7 +104,7 @@ public class ConfigReader {
 		}
 	}
 	
-	private static void processPreferences(JuffrouBeanMetadata metadata, Node currentNode) {
+	protected void processPreferences(JuffrouBeanMetadata metadata, Node currentNode) {
 		
 		// read tag attributes
 		
@@ -116,7 +124,7 @@ public class ConfigReader {
 	 * @param metadata
 	 * @param currentNode
 	 */
-	private static void processRootElement(JuffrouBeanMetadata metadata, Node currentNode) {
+	protected void processRootElement(JuffrouBeanMetadata metadata, Node currentNode) {
 		
 		// read tag attributes
 		NamedNodeMap attributes = currentNode.getAttributes();
@@ -155,7 +163,7 @@ public class ConfigReader {
 
 	}
 
-	private static void processRootElementXml(JuffrouBeanMetadata metadata, BeanClassBinding xmlBeanWrapperContext, Node currentNode) {
+	protected void processRootElementXml(JuffrouBeanMetadata metadata, BeanClassBinding xmlBeanWrapperContext, Node currentNode) {
 		NamedNodeMap attributes = currentNode.getAttributes();
 		Node attribute = attributes.getNamedItem(ID_ELEMENT_NODENAME);
 		xmlBeanWrapperContext.setXmlElementName(attribute.getNodeValue());
@@ -167,7 +175,7 @@ public class ConfigReader {
 	 * @param xmlBeanWrapperContext
 	 * @param currentNode
 	 */
-	private static void processElement(JuffrouBeanMetadata metadata, BeanClassBinding xmlBeanWrapperContext, Node currentNode, NodeType nodeType) {
+	protected void processElement(JuffrouBeanMetadata metadata, BeanClassBinding xmlBeanWrapperContext, Node currentNode, NodeType nodeType) {
 		
 		// read tag attributes
 		BeanPropertyBinding propertyBinding = new BeanPropertyBinding();
@@ -223,13 +231,13 @@ public class ConfigReader {
 		xmlBeanWrapperContext.addBeanPropertyBinding(propertyBinding);
 	}
 
-	private static void processElementXml(JuffrouBeanMetadata metadata, BeanPropertyBinding propertyBinding, Node currentNode) {
+	protected void processElementXml(JuffrouBeanMetadata metadata, BeanPropertyBinding propertyBinding, Node currentNode) {
 		NamedNodeMap attributes = currentNode.getAttributes();
 		Node attribute = attributes.getNamedItem(ID_ELEMENT_NODENAME);
 		propertyBinding.setXmlElementName(attribute.getNodeValue());
 	}
 
-	private static Serializer processSerializer(JuffrouBeanMetadata metadata, Node currentNode) {
+	protected Serializer processSerializer(JuffrouBeanMetadata metadata, Node currentNode) {
 		// read tag attributes
 		String serializerId = null;
 		NamedNodeMap attributes = currentNode.getAttributes();

@@ -1,5 +1,7 @@
 package net.sf.juffrou.xml;
 
+import java.io.InputStream;
+
 import net.sf.juffrou.xml.internal.JuffrouBeanMetadata;
 import net.sf.juffrou.xml.internal.JuffrouXmlMarshaller;
 import net.sf.juffrou.xml.internal.NodeType;
@@ -22,15 +24,19 @@ public class JuffrouXml {
 	 */
 	public JuffrouXml(String mappingUrlSpec) {
 		this.xmlBeanMetadata = new JuffrouBeanMetadata();
-		readConfigFile(mappingUrlSpec);
+		readConfigFile(new ConfigReader(), mappingUrlSpec);
 		this.xmlMarshaller = new JuffrouXmlMarshaller(this.xmlBeanMetadata);
 	}
 	
 	/**
 	 * @param mappingUrlSpec (example "classpath:juffrou-xml-mapping.xml")
 	 */
-	public void readConfigFile(String mappingUrlSpec) {
-		ConfigReader.readConfigFile(this.xmlBeanMetadata, mappingUrlSpec);
+	public void readConfigFile(ConfigReader configReader, String mappingUrlSpec) {
+		configReader.readConfigFile(this.xmlBeanMetadata, mappingUrlSpec);
+	}
+
+	public void readConfigFile(ConfigReader configReader, InputStream inputStream) {
+		configReader.readConfigFile(this.xmlBeanMetadata, inputStream);
 	}
 	
 	public String toXml(Object object) {
