@@ -19,7 +19,7 @@ Copyright Notice, whether distributed in print or electronically.</para></legaln
 			</personname>
 		</author>
 	</info>
-	<chapter>
+	<chapter xml:id="spring_ref_chpt_01">
 		<title>Getting Started with Juffrou-XML-Spring</title>
 		<section>
 			<title>Introduction</title>
@@ -61,14 +61,39 @@ This will allow you access the source code of the library as well as the javadoc
     </bean>
 ]]></programlisting></example>
 			<para>In the above example spring tells juffrou-xml to load its configuration from several mapping files.</para>
-		<section><title>Defining Serializers as spring beans</title>
-		<para></para>
-		<example><title>define root element names through code</title>
-<programlisting language="java"><![CDATA[
-	JuffrouXml juffrouXml = new JuffrouXml();
-	juffrouXml.registerRootElement(Person.class, "Person");
+		<section><title>Defining serializers as spring beans</title>
+		<para>Serializers may be used to convert between the text in an XML element and a complex type. With juffrou-xml-spring you can define your serializers as java beans and thus take advantage of spring's dependency injection mechanism.</para>
+		<para>For example purposes lets consider the <literal>SimpleDateSerializer</literal> from the spring-xml reference. First we would define the serializer bean:</para>
+<programlisting language="xml"><![CDATA[
+	<bean id="mySimpleDateSerializerBean" class="net.sf.juffrou.xml.test.dom.SimpleDateSerializer">
+
+    <bean id="marshaller" class="net.sf.juffrou.xml.JuffrouMarshaller">
+    	<property name="mappingLocations">
+    		<list>
+    			<value>classpath:/net/sf/juffrou/**/*-xml-mapping.xml</value>
+    			<value>file:${CONFIG_LOCATION}/juffrou-xml/**/*-xml-mapping.xml</value>
+    		</list>
+    	</property>
+    </bean>
 ]]></programlisting>
-		</example>
+		<para>To use this serializer bean in juffrou-xml you would configure the configuration mapping like the following example:</para>
+<programlisting language="xml"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns="http://juffrou.sourceforge.net/juffrou-xml"
+	xsi:schemaLocation="http://juffrou.sourceforge.net/juffrou-xml 
+	http://juffrou.sourceforge.net/juffrou-xml/schemas/juffrou-xml.xsd">
+
+	<root-element xml="Person" type="net.sf.juffrou.xml.test.dom.Person">
+		<attribute property="firstName" xml="name" />
+		<element property="lastName" xml="Surname" />
+		<element property="birthDay" xml="birthday">
+			<serializer bean="mySimpleDateSerializerBean"/>
+		</element>
+	</root-element>
+	
+</mapping>
+]]></programlisting>
 		</section>
 		</section>
 	</chapter>

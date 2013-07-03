@@ -80,6 +80,12 @@
 	<!-- 			
 	</part>
 	 -->
+	 
+	 		<xi:include
+			href="../../../../juffrou-xml-spring/src/site/docbook/spring-reference.xml"
+			xpointer="element(spring_ref_chpt_01)" />
+	 
+	 
 	<!-- <chapter id="xml"> <title>Juffrou XML</title> <xi:include href="../../../../juffrou-xml/src/site/docbook/xml-intro.xml" 
 		xpointer="element(/1/1)" /> <xi:include href="../../../../juffrou-xml/src/site/docbook/xml-reference.xml" 
 		xpointer="element(/1/5)" /> </chapter> -->

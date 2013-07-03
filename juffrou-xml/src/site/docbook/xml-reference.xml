@@ -198,28 +198,9 @@ root elements are in the program classpath like in the following example:</para>
 		<title>More Advanced Stuff</title>
 		<section>
 			<title>Serializers</title>
-			<para>Serializers are the java classes responsible for translating java objects to XML and back.</para>
-			<para>Currently there are serializers for the basic java types:
-			<computeroutput>
-<itemizedlist mark="disc">
-<listitem>ArrayList</listitem>
-<listitem>BigDecimal</listitem>
-<listitem>BigInteger</listitem>
-<listitem>Boolean</listitem>
-<listitem>Byte</listitem>
-<listitem>Character</listitem>
-<listitem>Date</listitem>
-<listitem>Double</listitem>
-<listitem>Enum</listitem>
-<listitem>Float</listitem>
-<listitem>HashMap</listitem>
-<listitem>HashSet</listitem>
-<listitem>Integer</listitem>
-<listitem>Long</listitem>
-<listitem>Short</listitem>
-<listitem>String</listitem>
-</itemizedlist>
-			</computeroutput>
+			<para>Serializers are the classes responsible for translating bean property values to XML and back. Juffrou-xml comes with serializers for the basic java types, like <literal>String</literal>, <literal>Integer</literal> and <literal>Boolean</literal> for instance. <remark>You can see the complete list of serializers in the javadoc for the package net.sf.juffrou.xml.serializer</remark>.</para>
+			<para>You may want to create your own serializers and tell juffrou to use them. For intance, you may want to have properties of type <literal>Date</literal> displayed in a particular format, so you create a serailizer that knows how to convert between <literal>Date</literal> and that specific format.
+			You can also use serializers to convert between the text in an XML element and a more complex type. For example, in a class called <literal>Person</literal>, with a property <literal>private Address home</literal> you may want to represent <literal>home</literal> as a single text string. In this case you create a serializer that knows how to convert between <literal>Address</literal> and that text string.
 			</para>
 			<para>Creating your own serializer is simple. Just implement the <command>Serializer</command> interface like in the following example:</para>
 <programlisting language="java">
@@ -261,7 +242,8 @@ public class SimpleDateSerializer implements Serializer {
 	xsi:schemaLocation="http://juffrou.sourceforge.net/juffrou-xml 
 	http://juffrou.sourceforge.net/juffrou-xml/schemas/juffrou-xml.xsd">
 
-	<serializer id="mySimpleDateSerializer" class="net.sf.juffrou.xml.test.dom.SimpleDateSerializer"/>
+	<serializer id="mySimpleDateSerializer" 
+		class="net.sf.juffrou.xml.test.dom.SimpleDateSerializer"/>
 	
 	<root-element xml="Person" type="net.sf.juffrou.xml.test.dom.Person">
 		<attribute property="firstName" xml="name" />
@@ -279,9 +261,9 @@ public class SimpleDateSerializer implements Serializer {
 
 		<para>You can define serializers to share between bean properties with <literal>serializer</literal> element in the mapping file:</para>
 <programlisting language="xml"><![CDATA[
-	<serializer id="mySimpleDateSerializer" <co xml:id="srl_id" linkends="l_srl_id" />
-		class="net.sf.juffrou.xml.test.dom.SimpleDateSerializer"/> <co xml:id="srl_classimpl" linkends="l_srl_classimpl" />
-]]></programlisting>
+	<serializer id="mySimpleDateSerializer"]]> <co xml:id="srl_id" linkends="l_srl_id" /> <![CDATA[
+		class="net.sf.juffrou.xml.test.dom.SimpleDateSerializer"/>]]>  <co xml:id="srl_classimpl" linkends="l_srl_classimpl" />
+</programlisting>
 <calloutlist>
   <callout arearefs="srl_id" xml:id="l_srl_id" >
     <para>Id of the serializer to be referenced by the bean property serializers.</para>
@@ -294,10 +276,10 @@ public class SimpleDateSerializer implements Serializer {
 		<para>You can define a serializer for a bean property by nesting a <literal>serializer</literal> element like in the above example. Below are all the properties for a property serializer:</para>
 <programlisting language="xml"><![CDATA[
 	<serializer 
-		class="net.sf.juffrou.xml.test.dom.SimpleDateSerializer" <co xml:id="srl_class" linkends="l_srl_class" />
-		ref="mySimpleDateSerializer" <co xml:id="srl_ref" linkends="l_srl_ref" />
-		bean="mySpringBeanSerializer" /> <co xml:id="srl_bean" linkends="l_srl_bean" />
-]]></programlisting>
+		class="net.sf.juffrou.xml.test.dom.SimpleDateSerializer" ]]> <co xml:id="srl_class" linkends="l_srl_class" /> <![CDATA[
+		ref="mySimpleDateSerializer" ]]> <co xml:id="srl_ref" linkends="l_srl_ref" /> <![CDATA[
+		bean="mySpringBeanSerializer" /> ]]> <co xml:id="srl_bean" linkends="l_srl_bean" />
+</programlisting>
 <calloutlist>
   <callout arearefs="srl_class" xml:id="l_srl_class" >
     <para>Class name of the specific serializer class to use. This class will be instantiated and used exclusively for the bean property.</para>
