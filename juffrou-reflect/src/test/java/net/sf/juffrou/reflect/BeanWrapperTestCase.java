@@ -3,6 +3,13 @@ package net.sf.juffrou.reflect;
 import java.lang.reflect.Type;
 
 import net.sf.juffrou.error.BeanInstanceBuilderException;
+import net.sf.juffrou.reflect.dom.BooleanHolder;
+import net.sf.juffrou.reflect.dom.Country;
+import net.sf.juffrou.reflect.dom.MyBeanWrapperContext;
+import net.sf.juffrou.reflect.dom.MyContextBuilder;
+import net.sf.juffrou.reflect.dom.Person;
+import net.sf.juffrou.reflect.dom.PersonCircular;
+import net.sf.juffrou.reflect.dom.Programmer;
 import net.sf.juffrou.util.reflect.BeanInstanceBuilder;
 import net.sf.juffrou.util.reflect.BeanWrapper;
 import net.sf.juffrou.util.reflect.BeanWrapperContext;
@@ -209,5 +216,42 @@ public class BeanWrapperTestCase {
 		BeanWrapper myPersonWrapper = factory.getBeanWrapper(Person.class);
 		MyBeanWrapperContext context = (MyBeanWrapperContext) myPersonWrapper.getContext();
 		
+	}
+
+	@Test
+	public void testPrimitiveBoolean() {
+		BooleanHolder booleanHolder = new BooleanHolder();
+		booleanHolder.setDirty(true);
+		booleanHolder.setHasContent(true);
+		booleanHolder.setIsClean(Boolean.TRUE);
+		booleanHolder.setHasCash(Boolean.TRUE);
+		
+		BeanWrapper bw = new BeanWrapper(booleanHolder);
+		
+		Object value = bw.getValue("isDirty");
+		Assert.assertEquals(value, true);
+		value = bw.getValue("hasContent");
+		Assert.assertEquals(value, true);
+		value = bw.getValue("isClean");
+		Assert.assertEquals(value, Boolean.TRUE);
+		value = bw.getValue("hasCash");
+		Assert.assertEquals(value, Boolean.TRUE);
+		
+		
+		bw.setValue("isDirty", false);
+		bw.setValue("hasContent", false);
+		bw.setValue("isClean", Boolean.FALSE);
+		bw.setValue("hasCash", Boolean.FALSE);
+
+		
+		value = bw.getValue("isDirty");
+		Assert.assertEquals(value, false);
+		value = bw.getValue("hasContent");
+		Assert.assertEquals(value, false);
+		value = bw.getValue("isClean");
+		Assert.assertEquals(value, Boolean.FALSE);
+		value = bw.getValue("hasCash");
+		Assert.assertEquals(value, Boolean.FALSE);
+
 	}
 }

@@ -68,7 +68,7 @@ public class BeanFieldHandler {
 						name = name.substring(2);
 					methodName = "is" + name.substring(0, 1).toUpperCase() + name.substring(1);
 					try {
-						setter = bw.getBeanClass().getMethod(methodName, null);
+						getter = bw.getBeanClass().getMethod(methodName, null);
 					} catch (NoSuchMethodException e1) {
 						throw new ReflectionException("The class " + bw.getBeanClass().getSimpleName()	+ " does not have a getter method for the field " + field.getName());
 					}

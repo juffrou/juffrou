@@ -4,6 +4,11 @@ import java.lang.reflect.Type;
 import java.util.Map;
 
 import junit.framework.Assert;
+import net.sf.juffrou.reflect.dom.AddressCircular;
+import net.sf.juffrou.reflect.dom.GenericBean;
+import net.sf.juffrou.reflect.dom.GenericPerson;
+import net.sf.juffrou.reflect.dom.Person;
+import net.sf.juffrou.reflect.dom.PersonCircular;
 import net.sf.juffrou.util.reflect.BeanWrapper;
 import net.sf.juffrou.util.reflect.BeanWrapperContext;
 import net.sf.juffrou.util.reflect.BeanWrapperFactory;
