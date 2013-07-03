@@ -10,6 +10,7 @@
 
 		<menu name="Juffrou XML Spring">
 			<item name="Introduction" href="index.html" />
+			<item name="Reference" href="spring-reference.html" />
 		</menu>
 
 		<menu name="Project Documentation">

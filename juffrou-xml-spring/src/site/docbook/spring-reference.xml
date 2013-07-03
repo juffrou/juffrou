@@ -23,10 +23,7 @@ Copyright Notice, whether distributed in print or electronically.</para></legaln
 		<title>Getting Started with Juffrou-XML-Spring</title>
 		<section>
 			<title>Introduction</title>
-			<para>Juffrou-XML-Spring is an open source java library to marshall beans to xml and back. The objective is to make this simple, logical and flexible.</para>
-			<para>With Juffrou-XML you have simplified marshalling, wich means that you can obtain the XML representation of complex structure of java beans with all its nested beans represented as nested elements, but
-			you can also get a "flattened" XML representation with properties from the root bean and properties from the nested beans in a very simple manner.</para>
-			<para>Enough talk! Let's see how it works:</para>
+			<para>Juffrou-XML-Spring is the implementation of springframework's (spring-oxm) Marshaller and Unmarshaller interfaces using Juffrou-XML.</para>
 		</section>
 		<section>
 			<title>Installing</title>
@@ -50,130 +47,29 @@ This will allow you access the source code of the library as well as the javadoc
 			</section>
 		</section>
 		<section>
-			<title>Configuring Juffrou-XML-Spring</title>
-				<para>If you want to change the element names of the beans or how those beans are marshalled / unmarshalled, then you need configuration. Configuration can be done either through direct coding or by means of an XML file.</para>
-				<para>To configure by file you can instantiate Juffrou-XML and pass the file name in the constructor, or you can instantiate Juffrou-XML with the default constructor and then call the readConfigFile method.</para>
-				<example><title>Configuring Juffrou-XML:</title>
-<programlisting language="java"><![CDATA[
-	JuffrouXml juffrouXml = new JuffrouXml("classpath:juffrou-config.xml");
-	
-	JuffrouXml juffrouXml = new JuffrouXml();
-	juffrouXml.readConfigFile("classpath:config-file-one.xml");
-	juffrouXml.readConfigFile("file:/etc/config-file-two.xml");
+			<title>Configuring Juffrou-XML though Spring</title>
+				<para>In a spring application context, Juffrou-XML is a bean and can be configured like any other bean in spring.</para>
+				<example><title>Juffrou-XML Spring Configuration</title>
+<programlisting language="xml"><![CDATA[
+    <bean id="marshaller" class="net.sf.juffrou.xml.JuffrouMarshaller">
+    	<property name="mappingLocations">
+    		<list>
+    			<value>classpath:/net/sf/juffrou/**/*-xml-mapping.xml</value>
+    			<value>file:${CONFIG_LOCATION}/juffrou-xml/**/*-xml-mapping.xml</value>
+    		</list>
+    	</property>
+    </bean>
 ]]></programlisting></example>
-		<section><title>Defining root element names</title>
+			<para>In the above example spring tells juffrou-xml to load its configuration from several mapping files.</para>
+		<section><title>Defining Serializers as spring beans</title>
+		<para></para>
 		<example><title>define root element names through code</title>
 <programlisting language="java"><![CDATA[
 	JuffrouXml juffrouXml = new JuffrouXml();
 	juffrouXml.registerRootElement(Person.class, "Person");
 ]]></programlisting>
 		</example>
-		<example><title>Defining root element in configuration file</title>
-<programlisting language="xml"><![CDATA[
-<?xml version="1.0" encoding="UTF-8"?>
-<mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns="http://juffrou.sourceforge.net/juffrou-xml"
-	xsi:schemaLocation="http://juffrou.sourceforge.net/juffrou-xml 
-	http://juffrou.sourceforge.net/juffrou-xml/schemas/juffrou-xml.xsd">
-
-	<root-element xml="Person" type="net.sf.juffrou.xml.test.dom.Person" />
-	
-</mapping>
-]]></programlisting>
-		</example>
-		<para>The corresponding XML now looks like this:</para>
-<programlisting language="xml"><![CDATA[
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Person>
-	<firstName>Carlos</firstName>
-	<lastName>Martins</lastName>
-	<birthDay>10/1/67 12:00 AM</birthDay>
-</Person>
-]]></programlisting>
 		</section>
-		
-		<section><title>Defining element names</title>
-		<example><title>define element names through code</title>
-<programlisting language="java"><![CDATA[
-	JuffrouXml juffrouXml = new JuffrouXml();
-	juffrouXml.registerElement(Person.class, "lastName", "Surname");
-]]></programlisting>
-		</example>
-		<example><title>Defining element names in configuration file</title>
-<programlisting language="xml"><![CDATA[
-<?xml version="1.0" encoding="UTF-8"?>
-<mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns="http://juffrou.sourceforge.net/juffrou-xml"
-	xsi:schemaLocation="http://juffrou.sourceforge.net/juffrou-xml 
-	http://juffrou.sourceforge.net/juffrou-xml/schemas/juffrou-xml.xsd">
-
-	<root-element xml="Person" type="net.sf.juffrou.xml.test.dom.Person">
-		<element property="firstName" />
-		<element property="lastName" xml="Surname" />
-		<element property="birthDay" />
-	</root-element>
-	
-</mapping>
-]]></programlisting>
-		</example>
-		<para>The corresponding XML now looks like this:</para>
-<programlisting language="xml"><![CDATA[
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Person>
-	<firstName>Carlos</firstName>
-	<Surname>Martins</Surname>
-	<birthDay>10/1/67 12:00 AM</birthDay>
-</Person>
-]]></programlisting>
-		
-		</section>
-
-		<section><title>Defining attributes</title>
-		<example><title>define attributes through code</title>
-<programlisting language="java"><![CDATA[
-	JuffrouXml juffrouXml = new JuffrouXml();
-	juffrouXml.registerAttribute(Person.class, "firstName", "name");
-]]></programlisting>
-		</example>
-		<example><title>Defining attributes in configuration file</title>
-<programlisting language="xml"><![CDATA[
-<?xml version="1.0" encoding="UTF-8"?>
-<mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns="http://juffrou.sourceforge.net/juffrou-xml"
-	xsi:schemaLocation="http://juffrou.sourceforge.net/juffrou-xml 
-	http://juffrou.sourceforge.net/juffrou-xml/schemas/juffrou-xml.xsd">
-
-	<root-element xml="Person" type="net.sf.juffrou.xml.test.dom.Person">
-		<attribute property="firstName" xml="name" />
-		<element property="lastName" xml="Surname" />
-		<element property="birthDay" />
-	</root-element>
-	
-</mapping>
-]]></programlisting>
-		</example>
-		<para>The corresponding XML now looks like this:</para>
-<programlisting language="xml"><![CDATA[
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Person name="Carlos">
-	<Surname>Martins</Surname>
-	<birthDay>10/1/67 12:00 AM</birthDay>
-</Person>
-]]></programlisting>
-
-		</section>
-
-		</section>
-	</chapter>
-	<chapter xml:id="xml_ref_chpt_02">
-		<title>More Advanced Stuff</title>
-		<section>
-			<title>Serializers</title>
-			<para>Creating your own serializers is simple. Just implement the <command>Serializer</command> interface like in the following example:</para>
-			
-		</section>
-		<section>
-			<title>Simplified Marshalling</title>
 		</section>
 	</chapter>
 </book>

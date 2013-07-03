@@ -13,7 +13,7 @@
     	<property name="mappingLocations">
     		<list>
     			<value>classpath:/net/sf/juffrou/**/*-xml-mapping.xml</value>
-    			<value>file:${SUNSET_INTEGRATION_CONFIG_LOCATION}/juffrou-xml/**/*-xml-mapping.xml</value>
+    			<value>file:${CONFIG_LOCATION}/juffrou-xml/**/*-xml-mapping.xml</value>
     		</list>
     	</property>
     </bean>

@@ -221,7 +221,7 @@ root elements are in the program classpath like in the following example:</para>
 </itemizedlist>
 			</computeroutput>
 			</para>
-			<para>Creating your own serializers is simple. Just implement the <command>Serializer</command> interface like in the following example:</para>
+			<para>Creating your own serializer is simple. Just implement the <command>Serializer</command> interface like in the following example:</para>
 <programlisting language="java">
 public class SimpleDateSerializer implements Serializer {
 
@@ -244,6 +244,71 @@ public class SimpleDateSerializer implements Serializer {
 	}
 }
 </programlisting>
+		<para>Once your serializer class is created, you can use it to translate your beans or bean properties using by configuring through code or mapping file.</para>
+		<example><title>using serializers through code</title>
+<programlisting language="java"><![CDATA[
+	JuffrouXml juffrouXml = new JuffrouXml();
+	juffrouXml.registerSerializer("mySimpleDateSerializer", new SimpleDateSerializer());
+	juffrouXml.registerElement(Person.class, "birthDay", "birthday", "mySimpleDateSerializer");
+]]></programlisting>
+		</example>
+		<example><title>using serializers through configuration file</title>
+		<para>When using a configuration file you can define reusable serializers to share between bean properties or define a serializer that is exlusive to a perticular bean property.</para>
+<programlisting language="xml"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns="http://juffrou.sourceforge.net/juffrou-xml"
+	xsi:schemaLocation="http://juffrou.sourceforge.net/juffrou-xml 
+	http://juffrou.sourceforge.net/juffrou-xml/schemas/juffrou-xml.xsd">
+
+	<serializer id="mySimpleDateSerializer" class="net.sf.juffrou.xml.test.dom.SimpleDateSerializer"/>
+	
+	<root-element xml="Person" type="net.sf.juffrou.xml.test.dom.Person">
+		<attribute property="firstName" xml="name" />
+		<element property="lastName" xml="Surname">
+			<serializer class="net.sf.juffrou.xml.serializer.StringSerializer"/>
+		</element>
+		<element property="birthDay" xml="birthday">
+			<serializer ref="mySimpleDateSerializer"/>
+		</element>
+	</root-element>
+	
+</mapping>
+]]></programlisting>
+		</example>
+
+		<para>You can define serializers to share between bean properties with <literal>serializer</literal> element in the mapping file:</para>
+<programlisting language="xml"><![CDATA[
+	<serializer id="mySimpleDateSerializer" <co xml:id="srl_id" linkends="l_srl_id" />
+		class="net.sf.juffrou.xml.test.dom.SimpleDateSerializer"/> <co xml:id="srl_classimpl" linkends="l_srl_classimpl" />
+]]></programlisting>
+<calloutlist>
+  <callout arearefs="srl_id" xml:id="l_srl_id" >
+    <para>Id of the serializer to be referenced by the bean property serializers.</para>
+  </callout>
+  <callout arearefs="srl_classimpl" xml:id="l_srl_classimpl">
+    <para>Class name of the serializer. This class will be instantiated only once and will be shared between the bean properties that reference it.</para>
+  </callout>
+</calloutlist>
+
+		<para>You can define a serializer for a bean property by nesting a <literal>serializer</literal> element like in the above example. Below are all the properties for a property serializer:</para>
+<programlisting language="xml"><![CDATA[
+	<serializer 
+		class="net.sf.juffrou.xml.test.dom.SimpleDateSerializer" <co xml:id="srl_class" linkends="l_srl_class" />
+		ref="mySimpleDateSerializer" <co xml:id="srl_ref" linkends="l_srl_ref" />
+		bean="mySpringBeanSerializer" /> <co xml:id="srl_bean" linkends="l_srl_bean" />
+]]></programlisting>
+<calloutlist>
+  <callout arearefs="srl_class" xml:id="l_srl_class" >
+    <para>Class name of the specific serializer class to use. This class will be instantiated and used exclusively for the bean property.</para>
+  </callout>
+  <callout arearefs="srl_ref" xml:id="l_srl_ref">
+    <para>Id of the shared serializer.</para>
+  </callout>
+  <callout arearefs="srl_bean" xml:id="l_srl_bean">
+    <para>Id of a springframework bean which implements <literal>serializer</literal>. This is only valid when using the library <literal>juffrou-xml-spring</literal></para>
+  </callout>
+</calloutlist>
 			
 		</section>
 		<section>
