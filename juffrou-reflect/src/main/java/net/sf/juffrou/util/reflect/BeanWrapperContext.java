@@ -11,6 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import net.sf.juffrou.error.BeanInstanceBuilderException;
+import net.sf.juffrou.error.CannotWrapInterfaceException;
 import net.sf.juffrou.error.ReflectionException;
 import net.sf.juffrou.util.reflect.internal.BeanFieldHandler;
 
@@ -45,6 +46,8 @@ public class BeanWrapperContext {
 	protected BeanWrapperContext(BeanWrapperFactory factory, Class clazz, Type...types) {
 		if(factory == null)
 			throw new IllegalArgumentException("BeanWrapperFactory cannot be null");
+		if(clazz.isInterface())
+			throw new CannotWrapInterfaceException("Cannot create a bean wrapper around an object of type " + clazz.getSimpleName());
 		this.bwFactory = factory;
 		this.typeArgumentsMap = new HashMap<TypeVariable<?>, Type>();
 		if(types != null) {

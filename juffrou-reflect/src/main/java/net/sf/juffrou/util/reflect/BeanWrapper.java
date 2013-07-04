@@ -108,7 +108,7 @@ public class BeanWrapper {
 		if(bean == null)
 			reset();
 		else {
-			if(bean != null && ! context.getBeanClass().equals(bean.getClass()))
+			if(bean != null && ! context.getBeanClass().isAssignableFrom(bean.getClass()))
 				throw new InvalidParameterException("Bean must be of type " + context.getBeanClass().getSimpleName());
 			instance = bean;
 			
