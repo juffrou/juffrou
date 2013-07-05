@@ -1,12 +1,14 @@
-What's new in Juffrou 2.0.6
+What's new in Juffrou 2.0.8
 
-Juffrou-XML supports text nodes
- You can now define bean properties as xml elements, attributes and text nodes.
- 
-Juffrou-reflect
- ReflectionUtil now has a method for converting a java bean to a Map and vice-versa.
+juffrou-reflect now supports "is" getters and setters for primitive boolean properties acording to the oracle specification, like in the following example:
+private boolean isActive;
 
-The Juffrou bundle file contains binary, sources and javadoc of each module.
+//Getter
+public boolean isActive() {...}
 
-You can also download the reference manual from the main project site at 
-http://juffrou.sourceforge.net
+//Setter
+public void setActive(boolean isActive) {...}
+
+slight improvements in juffrou-reflect
+
+better documentation
