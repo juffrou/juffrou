@@ -55,7 +55,7 @@ public class BeanWrapperFactory {
 	 * @param clazz class to instantiate the wrapped bean
 	 */
 	public BeanWrapper getBeanWrapper(Class clazz) {
-		return new BeanWrapper(getBeanWrapperContext(clazz), null);
+		return new BeanWrapper(getBeanWrapperContext(clazz));
 	}
 	
 	/**
