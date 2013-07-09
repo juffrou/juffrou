@@ -84,8 +84,12 @@ public class BeanWrapperContext {
 	 * @param thisProperty property name in this bean wrapper context (bean class). It must be of bean type.
 	 * @return
 	 */
-	public BeanWrapperContext getNestedContext(String thisProperty) {
-		Type propertyType = getBeanFieldHandler(thisProperty).getType();
+	public BeanWrapperContext getNestedContext(String thisProperty, Object propertyValue) {
+		Type propertyType;
+		if(propertyValue != null)
+			propertyType = propertyValue.getClass();
+		else
+			propertyType = getBeanFieldHandler(thisProperty).getType();
 		BeanWrapperContext nestedContext;
 		if(propertyType instanceof ParameterizedType)
 			nestedContext = bwFactory.getBeanWrapperContext((Class<?>)((ParameterizedType) propertyType).getRawType(), ((ParameterizedType) propertyType).getActualTypeArguments());
@@ -122,7 +126,7 @@ public class BeanWrapperContext {
 			// its a nested property
 			String thisProperty = propertyName.substring(0, nestedIndex);
 			String nestedProperty = propertyName.substring(nestedIndex + 1);
-			BeanWrapperContext nestedContext = getNestedContext(thisProperty);
+			BeanWrapperContext nestedContext = getNestedContext(thisProperty, null);
 			return nestedContext.getType(nestedProperty);
 		}
 	}

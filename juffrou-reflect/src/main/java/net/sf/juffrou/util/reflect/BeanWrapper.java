@@ -31,6 +31,7 @@ public class BeanWrapper {
 
 	private final BeanWrapperContext context;
 	private Object instance;
+	private boolean isInitialized;
 	private final Map<String, BeanWrapper> nestedWrappers = new HashMap<String, BeanWrapper>();
 
 	/**
@@ -41,6 +42,7 @@ public class BeanWrapper {
 	public BeanWrapper(BeanWrapperContext context) {
 		this.context = context;
 		this.instance = null;
+		this.isInitialized = false;
 	}
 
 	/**
@@ -61,6 +63,7 @@ public class BeanWrapper {
 	 */
 	public BeanWrapper(Object instance) {
 		this.instance = instance;
+		this.isInitialized = true;
 		this.context = BeanWrapperContext.create(instance.getClass());
 	}
 
@@ -72,6 +75,7 @@ public class BeanWrapper {
 	public BeanWrapper(Class<?> clazz) {
 		this.context = BeanWrapperContext.create(clazz);
 		this.instance = null;
+		this.isInitialized = false;
 	}
 
 	/**
@@ -94,7 +98,7 @@ public class BeanWrapper {
 	 * @return the wrapped bean
 	 */
 	public Object getBean() {
-		if(instance == null)
+		if(instance == null && !isInitialized)
 			instance = context.newBeanInstance();
 		return instance;
 	}
@@ -105,6 +109,7 @@ public class BeanWrapper {
 	 * @throws InvalidParameterException if the new bean is not of the same type of the initially wrapped bean.
 	 */
 	public void setBean(Object bean) {
+		isInitialized = true;
 		if(bean == null)
 			reset();
 		else {
@@ -244,7 +249,21 @@ public class BeanWrapper {
 	 * @return
 	 */
 	public Type getType(String propertyName) {
-		return context.getType(propertyName);
+		int nestedIndex = propertyName.indexOf('.');
+		if (nestedIndex == -1) {
+			Object value = context.getBeanFieldHandler(propertyName).getValue(this);
+			if(value != null)
+				return value.getClass();
+			else
+				return context.getBeanFieldHandler(propertyName).getType();
+		} else {
+			// its a nested property
+			String thisProperty = propertyName.substring(0, nestedIndex);
+			Object value = context.getBeanFieldHandler(thisProperty).getValue(this);
+			String nestedProperty = propertyName.substring(nestedIndex + 1);
+			BeanWrapperContext nestedContext = context.getNestedContext(thisProperty, value);
+			return nestedContext.getType(nestedProperty);
+		}
 	}
 
 	/**
@@ -379,16 +398,17 @@ public class BeanWrapper {
 	public BeanWrapper getNestedWrapper(String thisProperty) {
 		BeanWrapper nestedWrapper = nestedWrappers.get(thisProperty);
 		if (nestedWrapper == null) {
-			BeanWrapperContext bwc = context.getNestedContext(thisProperty);
-			
 			Object value = getValue(thisProperty);
+
+			BeanWrapperContext bwc = context.getNestedContext(thisProperty, value);
+			
 			if (value != null)
 				nestedWrapper = new BeanWrapper(bwc, value);
 			else
 				nestedWrapper = new BeanWrapper(bwc);
 			
-			setValue(thisProperty, nestedWrapper.getBean());
 			nestedWrappers.put(thisProperty, nestedWrapper);
+			setValue(thisProperty, nestedWrapper.getBean());
 		}
 		return nestedWrapper;
 	}
