@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import net.sf.juffrou.error.ReflectionException;
 import net.sf.juffrou.util.reflect.internal.BeanFieldHandler;
@@ -30,10 +29,9 @@ import net.sf.juffrou.util.reflect.internal.BeanFieldHandler;
 public class BeanWrapper {
 
 	private final BeanWrapperContext context;
-	private BeanWrapper parentBeanWrapper = null;
-	private String parentBeanProperty = null;
-	private Object instance;
-	private boolean isInitialized;
+	private final BeanWrapper parentBeanWrapper;
+	private final String parentBeanProperty;
+	private Object wrappedInstance;
 	private final Map<String, BeanWrapper> nestedWrappers = new HashMap<String, BeanWrapper>();
 
 	/**
@@ -43,8 +41,9 @@ public class BeanWrapper {
 	 */
 	public BeanWrapper(BeanWrapperContext context) {
 		this.context = context;
-		this.instance = null;
-		this.isInitialized = false;
+		this.wrappedInstance = null;
+		this.parentBeanWrapper = null;
+		this.parentBeanProperty = null;
 	}
 
 	/**
@@ -55,18 +54,28 @@ public class BeanWrapper {
 	 */
 	public BeanWrapper(BeanWrapperContext context, Object instance) {
 		this.context = context;
+		this.parentBeanWrapper = null;
+		this.parentBeanProperty = null;
 		setBean(instance);
 	}
-	
+
+	public BeanWrapper(BeanWrapperContext context, BeanWrapper parentBeanWrapper, String parentBeanProperty) {
+		this.context = context;
+		this.wrappedInstance = null;
+		this.parentBeanWrapper = parentBeanWrapper;
+		this.parentBeanProperty = parentBeanProperty;
+	}
+
 	/**
 	 * Construct a bean wrapper around an existing bean instance.<br>
 	 * This constructor will have to create a BeanWrapperContext to get introspection metadata. You can use {@link #BeanWrapper(BeanWrapperContext, Object)} instead.
 	 * @param instance
 	 */
 	public BeanWrapper(Object instance) {
-		this.instance = instance;
-		this.isInitialized = true;
+		this.wrappedInstance = instance;
 		this.context = BeanWrapperContext.create(instance.getClass());
+		this.parentBeanWrapper = null;
+		this.parentBeanProperty = null;
 	}
 
 	/**
@@ -76,8 +85,13 @@ public class BeanWrapper {
 	 */
 	public BeanWrapper(Class<?> clazz) {
 		this.context = BeanWrapperContext.create(clazz);
-		this.instance = null;
-		this.isInitialized = false;
+		this.wrappedInstance = null;
+		this.parentBeanWrapper = null;
+		this.parentBeanProperty = null;
+	}
+	
+	private boolean isRoot() {
+		return (this.parentBeanWrapper == null);
 	}
 
 	/**
@@ -100,9 +114,9 @@ public class BeanWrapper {
 	 * @return the wrapped bean
 	 */
 	public Object getBean() {
-		if(instance == null && !isInitialized)
-			createInstance();
-		return instance;
+		if(isRoot())
+			return wrappedInstance;
+		return parentBeanWrapper.getContext().getBeanFieldHandler(parentBeanProperty).getValue(parentBeanWrapper);
 	}
 	
 	/**
@@ -111,27 +125,16 @@ public class BeanWrapper {
 	 * @throws InvalidParameterException if the new bean is not of the same type of the initially wrapped bean.
 	 */
 	public void setBean(Object bean) {
-		if(bean == null)
-			reset();
-		else {
-			if( !isInitialized && parentBeanWrapper != null )
-				parentBeanWrapper.setValue(parentBeanProperty, bean);
-			isInitialized = true;
-			if(bean != null && ! context.getBeanClass().isAssignableFrom(bean.getClass()))
-				throw new InvalidParameterException("Bean must be of type " + context.getBeanClass().getSimpleName());
-			instance = bean;
-			
-			// update the wrappers
-			for(Entry<String, BeanWrapper> entry : nestedWrappers.entrySet())
-				entry.getValue().setBean(getValue(entry.getKey()));
-		}
+
+		if(bean != null && ! context.getBeanClass().isAssignableFrom(bean.getClass()))
+			throw new InvalidParameterException("Bean must be of type " + context.getBeanClass().getSimpleName());
+
+		if(isRoot())
+			wrappedInstance = bean;
+		else 
+			parentBeanWrapper.setValue(parentBeanProperty, bean);
 	}
 	
-	public void setBeanSilently(Object bean) {
-		isInitialized = true;
-		instance = bean;
-	}
-
 	/**
 	 * Get the wrapped bean class
 	 * @return
@@ -149,15 +152,6 @@ public class BeanWrapper {
 		return nestedWrappers;
 	}
 	
-	/**
-	 * Sets all properties to null in this instance and in all nested bean instances. This is the same as setBean(null)
-	 */
-	public void reset() {
-		for(BeanWrapper bw : nestedWrappers.values()) {
-			bw.reset();
-		}
-		this.instance = null;
-	}
 	
 	/**
 	 * Checks whether a property exists in the wrapped bean. If that property references another bean (a nested bean) 
@@ -201,6 +195,7 @@ public class BeanWrapper {
 	 */
 	@Override
 	public String toString() {
+		Object instance = getBean();
 		return instance == null ? "" : instance.toString();
 	}
 
@@ -216,19 +211,19 @@ public class BeanWrapper {
 	 * @return the value held in the bean property
 	 */
 	public Object getValue(String propertyName) {
-		if(instance == null)
+		if(getBean() == null)
 			return null;
 		int nestedIndex = propertyName.indexOf('.');
 		if (nestedIndex == -1) {
 			return context.getBeanFieldHandler(propertyName).getValue(this);
 		}
 		 else {
-				// its a nested property
-				String thisProperty = propertyName.substring(0, nestedIndex);
-				String nestedProperty = propertyName.substring(nestedIndex + 1);
-				BeanWrapper nestedWrapper = getNestedWrapper(thisProperty);
-				return nestedWrapper.getValue(nestedProperty);
-			}
+			// its a nested property
+			String thisProperty = propertyName.substring(0, nestedIndex);
+			String nestedProperty = propertyName.substring(nestedIndex + 1);
+			BeanWrapper nestedWrapper = getNestedWrapper(thisProperty);
+			return nestedWrapper.getValue(nestedProperty);
+		}
 	}
 
 	/**
@@ -260,7 +255,7 @@ public class BeanWrapper {
 	public Type getType(String propertyName) {
 		int nestedIndex = propertyName.indexOf('.');
 		if (nestedIndex == -1) {
-			Object value = context.getBeanFieldHandler(propertyName).getValue(this);
+			Object value = getBean() == null ? null : context.getBeanFieldHandler(propertyName).getValue(this);
 			if(value != null)
 				return value.getClass();
 			else
@@ -332,7 +327,7 @@ public class BeanWrapper {
 	 *            String representation of the value to be set
 	 */
 	public void setValueOfString(String propertyName, String value) {
-		if(instance == null)
+		if(getBean() == null)
 			createInstance();
 		int nestedIndex = propertyName.indexOf('.');
 		if (nestedIndex == -1) {
@@ -384,7 +379,7 @@ public class BeanWrapper {
 	 *            value to be set
 	 */
 	public void setValue(String propertyName, Object value) {
-		if(instance == null)
+		if(getBean() == null)
 			createInstance();
 		int nestedIndex = propertyName.indexOf('.');
 		if (nestedIndex == -1) {
@@ -411,15 +406,8 @@ public class BeanWrapper {
 
 			BeanWrapperContext bwc = context.getNestedContext(thisProperty, value);
 			
-			if (value != null) {
-				nestedWrapper = new BeanWrapper(bwc, value);
-				setValue(thisProperty, nestedWrapper.getBean());
-			}
-			else
-				nestedWrapper = new BeanWrapper(bwc);
+			nestedWrapper = new BeanWrapper(bwc, this, thisProperty);
 			
-			nestedWrapper.setParentBeanWrapper(this);
-			nestedWrapper.setParentBeanProperty(thisProperty);
 			nestedWrappers.put(thisProperty, nestedWrapper);
 		}
 		return nestedWrapper;
@@ -429,30 +417,15 @@ public class BeanWrapper {
 		return parentBeanWrapper;
 	}
 
-	protected void setParentBeanWrapper(BeanWrapper parentBeanWrapper) {
-		this.parentBeanWrapper = parentBeanWrapper;
-	}
-
 	protected String getParentBeanProperty() {
 		return parentBeanProperty;
 	}
-
-	protected void setParentBeanProperty(String parentBeanProperty) {
-		this.parentBeanProperty = parentBeanProperty;
-	}
-
-	protected boolean isInitialized() {
-		return isInitialized;
-	}
-
-	protected void setInitialized(boolean isInitialized) {
-		this.isInitialized = isInitialized;
-	}
-
+	
 	private void createInstance() {
-		isInitialized = true;
-		instance = context.newBeanInstance();
-		if( parentBeanWrapper != null )
+		Object instance = context.newBeanInstance();
+		if( isRoot() )
+			wrappedInstance = instance;
+		else
 			parentBeanWrapper.setValue(parentBeanProperty, instance);
 	}
 }

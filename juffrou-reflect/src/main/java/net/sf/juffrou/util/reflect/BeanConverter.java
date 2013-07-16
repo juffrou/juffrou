@@ -41,7 +41,7 @@ public class BeanConverter<T1, T2> {
 	 * @return
 	 */
 	public T1 getBean1(T2 bean2) {
-		bw1.reset();
+		bw1.setBean(null);
 		bw2.setBean(bean2);
 		for(String b2prop : b2b1BindingMap.keySet()) {
 			bw1.setValue(b2b1BindingMap.get(b2prop), bw2.getValue(b2prop));
@@ -55,7 +55,7 @@ public class BeanConverter<T1, T2> {
 	 * @return
 	 */
 	public T2 getBean2(T1 bean1) {
-		bw2.reset();
+		bw2.setBean(null);
 		bw1.setBean(bean1);
 		for(String b1prop : b1b2BindingMap.keySet()) {
 			bw2.setValue(b1b2BindingMap.get(b1prop), bw1.getValue(b1prop));
