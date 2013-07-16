@@ -114,8 +114,11 @@ public class BeanWrapper {
 	 * @return the wrapped bean
 	 */
 	public Object getBean() {
-		if(isRoot())
+		if(isRoot()) {
+			if(wrappedInstance == null)
+				createInstance();
 			return wrappedInstance;
+		}
 		return parentBeanWrapper.getContext().getBeanFieldHandler(parentBeanProperty).getValue(parentBeanWrapper);
 	}
 	
