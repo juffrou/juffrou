@@ -4,7 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
-import net.sf.juffrou.util.reflect.BeanWrapper;
+import net.sf.juffrou.reflect.JuffrouBeanWrapper;
 import net.sf.juffrou.xml.error.JuffrouXmlException;
 import net.sf.juffrou.xml.internal.binding.BeanClassBinding;
 import net.sf.juffrou.xml.internal.io.JuffrouReader;
@@ -46,7 +46,7 @@ public class JuffrouXmlMarshaller {
 	public void marshallBean(JuffrouWriter writer, Object bean) {
 		BeanClassBinding beanClassBinding = (BeanClassBinding) xmlBeanMetadata.getBeanWrapperFactory().getBeanWrapperContext(bean.getClass());
 
-		BeanWrapper bw = new BeanWrapper(beanClassBinding, bean);
+		JuffrouBeanWrapper bw = new JuffrouBeanWrapper(beanClassBinding, bean);
 		writer.startNode(beanClassBinding.getXmlElementName(), NodeType.ELEMENT);
 		xmlBeanMetadata.getDefaultSerializer().serializeBeanProperties(writer, bw);
 		writer.endNode();
@@ -56,7 +56,7 @@ public class JuffrouXmlMarshaller {
 		
 		String next = reader.enterNode();
 		BeanClassBinding beanClassBinding = xmlBeanMetadata.getBeanClassBindingFromXmlElement(next);
-		BeanWrapper beanWrapper = new BeanWrapper(beanClassBinding);
+		JuffrouBeanWrapper beanWrapper = new JuffrouBeanWrapper(beanClassBinding);
 		xmlBeanMetadata.getDefaultSerializer().deserializeBeanProperties(reader, beanWrapper);
 		Object bean = beanWrapper.getBean();
 		return bean;

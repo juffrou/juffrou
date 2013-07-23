@@ -10,8 +10,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import net.sf.juffrou.util.reflect.BeanWrapper;
-import net.sf.juffrou.util.reflect.BeanWrapperContext;
+import net.sf.juffrou.reflect.JuffrouBeanWrapper;
+import net.sf.juffrou.reflect.BeanWrapperContext;
 import net.sf.juffrou.xml.error.JuffrouXmlConfigReaderException;
 import net.sf.juffrou.xml.error.XmlMappingReaderException;
 import net.sf.juffrou.xml.internal.JuffrouBeanMetadata;
@@ -223,7 +223,7 @@ public class ConfigReader {
 		
 		// if the property type was not defined, use reflection with the help of a bean wrapper
 		if(propertyBinding.getPropertyType() == null) {
-			BeanWrapper bw = new BeanWrapper(xmlBeanWrapperContext);
+			JuffrouBeanWrapper bw = new JuffrouBeanWrapper(xmlBeanWrapperContext);
 			Class<?> clazz = bw.getClazz(propertyBinding.getBeanPropertyName());
 			propertyBinding.setPropertyType(clazz);
 		}
@@ -263,7 +263,7 @@ public class ConfigReader {
 		
 		BeanWrapperContext bwContext = BeanWrapperContext.create(clazz);
 //		bwContext.setEagerInstatiation(true);
-		BeanWrapper serializerWrapper = new BeanWrapper(bwContext);
+		JuffrouBeanWrapper serializerWrapper = new JuffrouBeanWrapper(bwContext);
 
 		// read tag content
 		currentNode = currentNode.getFirstChild();

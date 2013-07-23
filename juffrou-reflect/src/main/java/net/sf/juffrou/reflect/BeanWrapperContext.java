@@ -1,4 +1,4 @@
-package net.sf.juffrou.util.reflect;
+package net.sf.juffrou.reflect;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -10,20 +10,20 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import net.sf.juffrou.error.BeanInstanceBuilderException;
-import net.sf.juffrou.error.CannotWrapInterfaceException;
-import net.sf.juffrou.error.ReflectionException;
-import net.sf.juffrou.util.reflect.internal.BeanFieldHandler;
-
-
+import net.sf.juffrou.reflect.error.BeanInstanceBuilderException;
+import net.sf.juffrou.reflect.error.CannotWrapInterfaceException;
+import net.sf.juffrou.reflect.error.ReflectionException;
+import net.sf.juffrou.reflect.internal.BeanFieldHandler;
 
 /**
- * Holds introspection information for a java bean class.<p>
- * Performs introspection and holds metadata information about a class used by the {@link BeanWrapper}.<br>
- * If you have to create several BeanWrappers for the same java class, use BeanWrapperContext and save the introspection overhead.<br>
+ * Holds introspection information for a java bean class.
+ * <p>
+ * Performs introspection and holds metadata information about a class used by the {@link JuffrouBeanWrapper}.<br>
+ * If you have to create several BeanWrappers for the same java class, use BeanWrapperContext and save the introspection
+ * overhead.<br>
  * This class is thread safe.
+ * 
  * @author cemartins
- *
  */
 public class BeanWrapperContext {
 
@@ -34,35 +34,39 @@ public class BeanWrapperContext {
 	private final BeanWrapperFactory bwFactory;
 
 	public static final BeanWrapperContext create(Class clazz) {
-		BeanWrapperFactory factory = new BeanWrapperFactory();
+		BeanWrapperFactory factory = new DefaultBeanWrapperFactory();
 		return factory.getBeanWrapperContext(clazz);
 	}
 
-	public static final BeanWrapperContext create(Class clazz, Type...types) {
-		BeanWrapperFactory factory = new BeanWrapperFactory();
+	public static final BeanWrapperContext create(Class clazz, Type... types) {
+		BeanWrapperFactory factory = new DefaultBeanWrapperFactory();
 		return factory.getBeanWrapperContext(clazz, types);
 	}
 
-	protected BeanWrapperContext(BeanWrapperFactory factory, Class clazz, Type...types) {
-		if(factory == null)
+	protected BeanWrapperContext(BeanWrapperFactory factory, Class clazz, Type... types) {
+		if (factory == null)
 			throw new IllegalArgumentException("BeanWrapperFactory cannot be null");
-		if(clazz.isInterface())
-			throw new CannotWrapInterfaceException("Cannot create a bean wrapper around an object of type " + clazz.getSimpleName());
+		if (clazz.isInterface())
+			throw new CannotWrapInterfaceException("Cannot create a bean wrapper around an object of type "
+					+ clazz.getSimpleName());
 		this.bwFactory = factory;
 		this.typeArgumentsMap = new HashMap<TypeVariable<?>, Type>();
-		if(types != null) {
+		if (types != null) {
 			TypeVariable<?>[] typeParameters = clazz.getTypeParameters();
-			for(int i = 0; i < types.length; i++) {
+			for (int i = 0; i < types.length; i++) {
 				this.typeArgumentsMap.put(typeParameters[i], types[i]);
 			}
 		}
 		this.clazz = clazz;
 		this.typeArgumentsMap.putAll(ReflectionUtil.getTypeArgumentsMap(Class.class, clazz));
-		if( ! this.typeArgumentsMap.keySet().containsAll(Arrays.asList(clazz.getTypeParameters()))) {
-			if(types == null)
-				throw new ReflectionException(clazz.getSimpleName() + " is a parameterized type. Please use the BeanWrapperContext(Class clazz, Type...types) constructor.");
+		if (!this.typeArgumentsMap.keySet().containsAll(Arrays.asList(clazz.getTypeParameters()))) {
+			if (types == null)
+				throw new ReflectionException(
+						clazz.getSimpleName()
+								+ " is a parameterized type. Please use the BeanWrapperContext(Class clazz, Type...types) constructor.");
 			else
-				throw new ReflectionException(clazz.getSimpleName() + " has more parameterized types than those specified.");
+				throw new ReflectionException(clazz.getSimpleName()
+						+ " has more parameterized types than those specified.");
 		}
 		this.fields = new LinkedHashMap<String, BeanFieldHandler>();
 		initFieldInfo(this.clazz, this.fields);
@@ -70,29 +74,31 @@ public class BeanWrapperContext {
 
 	private void initFieldInfo(Class<?> clazz, Map<String, BeanFieldHandler> fs) {
 		Class<?> superclass = clazz.getSuperclass();
-		if(superclass != Object.class) {
+		if (superclass != Object.class) {
 			initFieldInfo(superclass, fs);
 		}
-		for(Field f : clazz.getDeclaredFields()) {
-			if( !Modifier.isStatic(f.getModifiers()) )
+		for (Field f : clazz.getDeclaredFields()) {
+			if (!Modifier.isStatic(f.getModifiers()))
 				fs.put(f.getName(), new BeanFieldHandler(this, f));
 		}
 	}
-	
+
 	/**
 	 * Obtains the BeanWrapperContext that corresponds to the bean type of this property type.
-	 * @param thisProperty property name in this bean wrapper context (bean class). It must be of bean type.
+	 * 
+	 * @param thisProperty
+	 *            property name in this bean wrapper context (bean class). It must be of bean type.
 	 * @return
 	 */
 	public BeanWrapperContext getNestedContext(String thisProperty, Object propertyValue) {
 		Type propertyType;
-		if(propertyValue != null)
+		if (propertyValue != null)
 			propertyType = propertyValue.getClass();
 		else
 			propertyType = getBeanFieldHandler(thisProperty).getType();
 		BeanWrapperContext nestedContext;
-		if(propertyType instanceof ParameterizedType)
-			nestedContext = bwFactory.getBeanWrapperContext((Class<?>)((ParameterizedType) propertyType).getRawType(), ((ParameterizedType) propertyType).getActualTypeArguments());
+		if (propertyType instanceof ParameterizedType)
+			nestedContext = bwFactory.getBeanWrapperContext((Class<?>) ((ParameterizedType) propertyType).getRawType(), ((ParameterizedType) propertyType).getActualTypeArguments());
 		else
 			nestedContext = bwFactory.getBeanWrapperContext((Class<?>) propertyType);
 		return nestedContext;
@@ -133,12 +139,13 @@ public class BeanWrapperContext {
 
 	/**
 	 * Get the wrapped bean class
+	 * 
 	 * @return
 	 */
 	public Class<?> getBeanClass() {
 		return clazz;
 	}
-	
+
 	public Object newBeanInstance() {
 		try {
 			return bwFactory.getBeanInstanceBuilder().build(clazz);
@@ -146,10 +153,11 @@ public class BeanWrapperContext {
 			throw new ReflectionException(e);
 		}
 	}
-	
+
 	public Map<String, BeanFieldHandler> getFields() {
 		return fields;
 	}
+
 	public Map<TypeVariable<?>, Type> getTypeArgumentsMap() {
 		return typeArgumentsMap;
 	}
@@ -157,21 +165,4 @@ public class BeanWrapperContext {
 	public BeanWrapperFactory getFactory() {
 		return bwFactory;
 	}
-
-	public BeanInstanceBuilder getBeanInstanceBuilder() {
-		return bwFactory.getBeanInstanceBuilder();
-	}
-
-	/**
-	 * The bean wrapper creates new instances using Class.newIntance(). You can use this this if you want to create class instances yourself.  
-	 * @param beanInstanceBuilder
-	 */
-	public void setBeanInstanceBuilder(BeanInstanceBuilder beanInstanceBuilder) {
-		bwFactory.setBeanInstanceBuilder(beanInstanceBuilder);
-	}
-	
-	public void setBeanContextBuilder(BeanContextBuilder beanContextBuilder) {
-		bwFactory.setBeanContextBuilder(beanContextBuilder);
-	}
-
 }

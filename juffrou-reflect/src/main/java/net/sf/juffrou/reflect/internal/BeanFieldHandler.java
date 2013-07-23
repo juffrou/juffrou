@@ -1,4 +1,4 @@
-package net.sf.juffrou.util.reflect.internal;
+package net.sf.juffrou.reflect.internal;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -7,9 +7,9 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 
-import net.sf.juffrou.error.ReflectionException;
-import net.sf.juffrou.util.reflect.BeanWrapper;
-import net.sf.juffrou.util.reflect.BeanWrapperContext;
+import net.sf.juffrou.reflect.JuffrouBeanWrapper;
+import net.sf.juffrou.reflect.BeanWrapperContext;
+import net.sf.juffrou.reflect.error.ReflectionException;
 
 
 
@@ -53,7 +53,7 @@ public class BeanFieldHandler {
 		return ftypeArguments;
 	}
 
-	public Object getValue(BeanWrapper bw) {
+	public Object getValue(JuffrouBeanWrapper bw) {
 
 		if (getter == null) {
 			String name = field.getName();
@@ -90,7 +90,7 @@ public class BeanFieldHandler {
 
 	}
 
-	public void setValue(BeanWrapper bw, Object value) {
+	public void setValue(JuffrouBeanWrapper bw, Object value) {
 
 		if (setter == null) {
 			String name = field.getName();
@@ -126,7 +126,7 @@ public class BeanFieldHandler {
 		}
 	}
 
-	public void setValueIfBeanField(BeanWrapper bw, Object value) {
+	public void setValueIfBeanField(JuffrouBeanWrapper bw, Object value) {
 		if (getter != null || setter != null) {
 			try {
 				setValue(bw, value);

@@ -1,6 +1,6 @@
-package net.sf.juffrou.util.reflect;
+package net.sf.juffrou.reflect;
 
-import net.sf.juffrou.error.BeanInstanceBuilderException;
+import net.sf.juffrou.reflect.error.BeanInstanceBuilderException;
 
 /**
  * Used by the {@link BeanWrapperContext#newBeanInstance()} to instantiate the wrapped bean when necessary.<br>

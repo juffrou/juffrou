@@ -7,10 +7,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.sf.juffrou.util.reflect.BeanWrapperContext;
-import net.sf.juffrou.util.reflect.BeanWrapperFactory;
-import net.sf.juffrou.util.reflect.ReflectionUtil;
-import net.sf.juffrou.util.reflect.internal.BeanFieldHandler;
+import net.sf.juffrou.reflect.BeanWrapperContext;
+import net.sf.juffrou.reflect.CustomizableBeanWrapperFactory;
+import net.sf.juffrou.reflect.ReflectionUtil;
+import net.sf.juffrou.reflect.internal.BeanFieldHandler;
 import net.sf.juffrou.xml.internal.NodeType;
 import net.sf.juffrou.xml.serializer.Serializer;
 
@@ -27,7 +27,7 @@ public class BeanClassBinding extends BeanWrapperContext {
 	 */
 	private Map<String, BeanPropertyBinding> xmlElementsToBeanProperties = new HashMap<String, BeanPropertyBinding>();
 
-	public BeanClassBinding(BeanWrapperFactory hierarchyContext, Class clazz, Type... types) {
+	public BeanClassBinding(CustomizableBeanWrapperFactory hierarchyContext, Class clazz, Type... types) {
 		super(hierarchyContext, clazz, types);
 		xmlElementName = clazz.getName();
 	}
