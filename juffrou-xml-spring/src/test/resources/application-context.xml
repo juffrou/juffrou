@@ -9,6 +9,7 @@
     <bean id="mySerializerBean" class="net.sf.juffrou.xml.SerializerBean">
     </bean>
     
+    <!-- JuffrouMarshaller alone -->
     <bean id="marshaller" class="net.sf.juffrou.xml.JuffrouMarshaller">
     	<property name="mappingLocations">
     		<list>
@@ -17,9 +18,22 @@
     		</list>
     	</property>
     </bean>
+
+    <!-- JuffrouMarshaller and JuffrouXmlSpring -->
+    <bean id="juffrouXmlSpring" class="net.sf.juffrou.xml.JuffrouXmlSpring">
+    	<property name="mappingLocations">
+    		<list>
+    			<value>classpath:/net/sf/juffrou/**/*-xml-mapping.xml</value>
+    			<value>file:${CONFIG_LOCATION}/juffrou-xml/**/*-xml-mapping.xml</value>
+    		</list>
+    	</property>
+    </bean>
+    <bean id="unmarshaller" class="net.sf.juffrou.xml.JuffrouMarshaller">
+    	<property name="juffrouXml" ref="juffrouXmlSpring" />
+    </bean>
     
     <bean id="application" class="net.sf.juffrou.xml.MockApplication">
     	<property name="marshaller" ref="marshaller" />
-    	<property name="unmarshaller" ref="marshaller" />
+    	<property name="unmarshaller" ref="unmarshaller" />
     </bean>
 </beans>

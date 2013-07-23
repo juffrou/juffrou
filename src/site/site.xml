@@ -50,7 +50,7 @@
 	<publishDate position="right" />
 	<version position="right" />
 	<poweredBy>
-		<logo name="Powered by sourceforge" href="https://sourceforge.net/p/juffrou" img="https://a.fsdn.com/con/img/sftheme/logo.png?1345149519" />
+		<logo name="Powered by sourceforge (click for project page)" href="https://sourceforge.net/p/juffrou" img="https://a.fsdn.com/con/img/sftheme/logo.png?1345149519" />
 	</poweredBy>
 	<custom>
 		<fluidoSkin>

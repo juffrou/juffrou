@@ -25,7 +25,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.io.Resource;
@@ -53,7 +52,7 @@ public class JuffrouMarshaller extends AbstractMarshaller implements Application
 
 	protected final Log logger = LogFactory.getLog(getClass());
 
-	private final JuffrouXml juffrouXml = new JuffrouXml();
+	private JuffrouXml juffrouXml = null;
 	
 	private ApplicationContext applicationContext;
 	
@@ -73,6 +72,14 @@ public class JuffrouMarshaller extends AbstractMarshaller implements Application
 	 */
 	public void setMappingLocations(Resource[] mappingLocations) {
 		this.mappingLocations = mappingLocations;
+	}
+
+	public JuffrouXml getJuffrouXml() {
+		return juffrouXml;
+	}
+
+	public void setJuffrouXml(JuffrouXml juffrouXml) {
+		this.juffrouXml = juffrouXml;
 	}
 
 	@Override
@@ -206,6 +213,9 @@ public class JuffrouMarshaller extends AbstractMarshaller implements Application
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
+		
+		if(juffrouXml == null)
+			juffrouXml = new JuffrouXml();
 		
 		if (!ObjectUtils.isEmpty(mappingLocations)) {
 			ConfigReader configReader = new JuffrouSpringConfigReader(applicationContext);

@@ -51,7 +51,7 @@ This will allow you access the source code of the library as well as the javadoc
 				<para>In a spring application context, Juffrou-XML is a bean and can be configured like any other bean in spring.</para>
 				<example><title>Juffrou-XML Spring Configuration</title>
 <programlisting language="xml"><![CDATA[
-    <bean id="marshaller" class="net.sf.juffrou.xml.JuffrouMarshaller">
+    <bean id="marshaller" class="net.sf.juffrou.xml.JuffrouXmlSpring">
     	<property name="mappingLocations">
     		<list>
     			<value>classpath:/net/sf/juffrou/**/*-xml-mapping.xml</value>

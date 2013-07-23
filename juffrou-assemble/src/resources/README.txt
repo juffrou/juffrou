@@ -1,14 +1,10 @@
-What's new in Juffrou 2.0.8
+What's new in Juffrou 2.0.10
 
-juffrou-reflect now supports "is" getters and setters for primitive boolean properties acording to the oracle specification, like in the following example:
-private boolean isActive;
+juffrou-reflect Module:
 
-//Getter
-public boolean isActive() {...}
+ Nested BeanWrappers now have reference to their parent and nestedBW.getBean() or setBean(...) return or set the value of the parent wrapper property.
+ 
+juffrou-xml-spring Module:
 
-//Setter
-public void setActive(boolean isActive) {...}
-
-slight improvements in juffrou-reflect
-
-better documentation
+ JuffrouXmlSpring extends JuffrouXml and can now be parameterized as a bean.
+ JuffrouMarshaller may be configured with a juffrouXmlSpring property or mapping location properties.
