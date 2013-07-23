@@ -1,8 +1,10 @@
 package net.sf.juffrou.reflect;
 
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Type;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 import net.sf.juffrou.reflect.internal.DefaultBeanInstanceCreator;
 
@@ -15,13 +17,12 @@ import net.sf.juffrou.reflect.internal.DefaultBeanInstanceCreator;
  * 
  * @author cemartins
  */
-public class CustomizableBeanWrapperFactory implements BeanWrapperFactory {
+public class DefaultBeanWrapperFactory implements BeanWrapperFactory {
 
-	private final Map<Type, BeanWrapperContext> classContextMap = new HashMap<Type, BeanWrapperContext>();
+	static final Map<Type, WeakReference<BeanWrapperContext>> classContextMap = Collections.synchronizedMap(new WeakHashMap<Type, WeakReference<BeanWrapperContext>>());
 
 	// preferences info
-	private BeanInstanceBuilder beanInstanceCreator = null;
-	private BeanContextBuilder beanContextCreator = null;
+	private final BeanInstanceBuilder beanInstanceCreator = new DefaultBeanInstanceCreator();
 
 	/**
 	 * Retrieves a BeanWrapperContext for java bean class.
@@ -51,10 +52,11 @@ public class CustomizableBeanWrapperFactory implements BeanWrapperFactory {
 	 */
 	@Override
 	public BeanWrapperContext getBeanWrapperContext(Class clazz, Type... types) {
-		BeanWrapperContext context = classContextMap.get(clazz);
+		WeakReference<BeanWrapperContext> contextReference = classContextMap.get(clazz);
+		BeanWrapperContext context = contextReference != null ? contextReference.get() : null;
 		if (context == null) {
-			context = getBeanContextBuilder().build(this, clazz, types);
-			classContextMap.put(clazz, context);
+			context = new BeanWrapperContext(this, clazz, types);
+			classContextMap.put(clazz, new WeakReference<BeanWrapperContext>(context));
 		}
 		return context;
 	}
@@ -88,48 +90,7 @@ public class CustomizableBeanWrapperFactory implements BeanWrapperFactory {
 
 	@Override
 	public BeanInstanceBuilder getBeanInstanceBuilder() {
-		if (beanInstanceCreator == null)
-			beanInstanceCreator = new DefaultBeanInstanceCreator();
 		return beanInstanceCreator;
-	}
-
-	/**
-	 * Control the instantiation of beans and wrapped beans.
-	 * <p>
-	 * The bean wrapper creates new instances using Class.newIntance() by default. You can use this this if you want to
-	 * create class instances yourself.
-	 * 
-	 * @param beanInstanceBuilder
-	 */
-	public void setBeanInstanceBuilder(BeanInstanceBuilder beanInstanceBuilder) {
-		this.beanInstanceCreator = beanInstanceBuilder;
-	}
-
-	private BeanContextBuilder getBeanContextBuilder() {
-		if (beanContextCreator == null)
-			beanContextCreator = new DefaultBeanContextCreator();
-		return beanContextCreator;
-	}
-
-	/**
-	 * Control the creation of BeanWrapperContexts.
-	 * <p>
-	 * Provide a custom BeanContextBuilder that will instantiate your custom BeanWrapperContext. This way you can extend
-	 * the BeanWrapperContext class and attach more information to a bean.
-	 * 
-	 * @param beanContextBuilder
-	 */
-	public void setBeanContextBuilder(BeanContextBuilder beanContextBuilder) {
-		this.beanContextCreator = beanContextBuilder;
-	}
-
-	private static class DefaultBeanContextCreator implements BeanContextBuilder {
-
-		@Override
-		public BeanWrapperContext build(CustomizableBeanWrapperFactory factory, Class clazz, Type... types) {
-			return new BeanWrapperContext(factory, clazz, types);
-		}
-
 	}
 
 }
