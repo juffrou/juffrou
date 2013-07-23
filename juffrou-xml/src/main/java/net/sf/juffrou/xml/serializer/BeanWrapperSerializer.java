@@ -2,7 +2,7 @@ package net.sf.juffrou.xml.serializer;
 
 import java.util.Collection;
 
-import net.sf.juffrou.util.reflect.BeanWrapper;
+import net.sf.juffrou.reflect.JuffrouBeanWrapper;
 import net.sf.juffrou.xml.error.UnknownXmlElementException;
 import net.sf.juffrou.xml.internal.JuffrouBeanMetadata;
 import net.sf.juffrou.xml.internal.binding.BeanClassBinding;
@@ -24,18 +24,18 @@ public class BeanWrapperSerializer implements Serializer {
 	}
 	
 	@Override
-	public void serialize(JuffrouWriter writer, BeanWrapper valueOwner, String valuePropertyName) {
-		BeanWrapper nestedWrapper = valueOwner.getNestedWrapper(valuePropertyName);
+	public void serialize(JuffrouWriter writer, JuffrouBeanWrapper valueOwner, String valuePropertyName) {
+		JuffrouBeanWrapper nestedWrapper = valueOwner.getNestedWrapper(valuePropertyName);
 		serializeBeanProperties(writer, nestedWrapper);
 	}
 
 	@Override
-	public void deserialize(JuffrouReader reader, BeanWrapper valueOwner, String valuePropertyName) {
-		BeanWrapper nestedWrapper = valueOwner.getNestedWrapper(valuePropertyName);
+	public void deserialize(JuffrouReader reader, JuffrouBeanWrapper valueOwner, String valuePropertyName) {
+		JuffrouBeanWrapper nestedWrapper = valueOwner.getNestedWrapper(valuePropertyName);
 		deserializeBeanProperties(reader, nestedWrapper);
 	}
 	
-	public void serializeBeanProperties(JuffrouWriter writer, BeanWrapper bw) {
+	public void serializeBeanProperties(JuffrouWriter writer, JuffrouBeanWrapper bw) {
 		BeanClassBinding beanClassBinding = (BeanClassBinding) bw.getContext();
 		if(beanClassBinding.isEmpty())
 			beanClassBinding.setAllBeanPropertiesToMarshall();
@@ -56,7 +56,7 @@ public class BeanWrapperSerializer implements Serializer {
 		}
 	}
 
-	public void deserializeBeanProperties(JuffrouReader reader, BeanWrapper instance) {
+	public void deserializeBeanProperties(JuffrouReader reader, JuffrouBeanWrapper instance) {
 		BeanClassBinding beanClassBinding = (BeanClassBinding) instance.getContext();
 		if(beanClassBinding.isEmpty())
 			beanClassBinding.setAllBeanPropertiesToMarshall();
@@ -68,7 +68,7 @@ public class BeanWrapperSerializer implements Serializer {
 		reader.exitNode();
 	}
 	
-	public void deserializeElement(JuffrouReader reader, BeanWrapper instance, BeanClassBinding beanClassBinding, String xmlElementName) {
+	public void deserializeElement(JuffrouReader reader, JuffrouBeanWrapper instance, BeanClassBinding beanClassBinding, String xmlElementName) {
 		BeanPropertyBinding beanPropertyBinding = beanClassBinding.getBeanPropertyBindingFromXmlElement(xmlElementName);
 		if(beanPropertyBinding == null)
 			throw new UnknownXmlElementException("I do not know the element " + xmlElementName + " of the class " + instance.getBeanClass().getSimpleName());

@@ -4,15 +4,15 @@ import java.lang.reflect.Type;
 import java.util.Map;
 
 import junit.framework.Assert;
+import net.sf.juffrou.reflect.JuffrouBeanWrapper;
+import net.sf.juffrou.reflect.BeanWrapperContext;
+import net.sf.juffrou.reflect.CustomizableBeanWrapperFactory;
+import net.sf.juffrou.reflect.ReflectionUtil;
 import net.sf.juffrou.reflect.dom.AddressCircular;
 import net.sf.juffrou.reflect.dom.GenericBean;
 import net.sf.juffrou.reflect.dom.GenericPerson;
 import net.sf.juffrou.reflect.dom.Person;
 import net.sf.juffrou.reflect.dom.PersonCircular;
-import net.sf.juffrou.util.reflect.BeanWrapper;
-import net.sf.juffrou.util.reflect.BeanWrapperContext;
-import net.sf.juffrou.util.reflect.BeanWrapperFactory;
-import net.sf.juffrou.util.reflect.ReflectionUtil;
 
 import org.junit.Test;
 
@@ -36,7 +36,7 @@ public class ReflectionUtilTestCase {
 	@Test
 	public void testGenericClassExtended() {
 		BeanWrapperContext context = BeanWrapperContext.create(GenericPerson.class);
-		BeanWrapper bw = new BeanWrapper(context);
+		JuffrouBeanWrapper bw = new JuffrouBeanWrapper(context);
 		Type type = bw.getType("genericProperty");
 		Assert.assertTrue(Person.class.equals(type));
 	}
@@ -47,7 +47,7 @@ public class ReflectionUtilTestCase {
 		
 		BeanWrapperContext context = BeanWrapperContext.create(GenericBean.class, Person.class);
 		GenericBean<Person> genericPerson = new GenericBean<Person>();
-		BeanWrapper bw = new BeanWrapper(context, genericPerson);
+		JuffrouBeanWrapper bw = new JuffrouBeanWrapper(context, genericPerson);
 		Type type = bw.getType("genericProperty");
 		Assert.assertTrue(Person.class.equals(type));
 	}
@@ -62,7 +62,7 @@ public class ReflectionUtilTestCase {
 		person.setFirstName("Carlos");
 		person.setLastName("Martins");
 		
-		BeanWrapperFactory factory = new BeanWrapperFactory();
+		CustomizableBeanWrapperFactory factory = new CustomizableBeanWrapperFactory();
 		
 		Map<String, Object> beanMap = ReflectionUtil.getMapFromBean(factory, person);
 		

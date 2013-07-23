@@ -1,4 +1,4 @@
-package net.sf.juffrou.error;
+package net.sf.juffrou.reflect.error;
 
 public abstract class AbstractRuntimeException extends RuntimeException {
 

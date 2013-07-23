@@ -1,10 +1,10 @@
-package net.sf.juffrou.util.reflect;
+package net.sf.juffrou.reflect;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sf.juffrou.error.BeanInstanceBuilderException;
+import net.sf.juffrou.reflect.error.BeanInstanceBuilderException;
 
 /**
  * This class is responsible for creating and caching BeanWrapperContexts.<p>
@@ -13,7 +13,7 @@ import net.sf.juffrou.error.BeanInstanceBuilderException;
  * the introspection information and re-uses it whenever possible.
  * @author cemartins
  */
-public class BeanWrapperFactory {
+public class CustomizableBeanWrapperFactory {
 
 	private final Map<Type, BeanWrapperContext> classContextMap = new HashMap<Type, BeanWrapperContext>();
 	
@@ -54,8 +54,8 @@ public class BeanWrapperFactory {
 	 * Try to use a cached BeanWrapperContext to save introspection time.
 	 * @param clazz class to instantiate the wrapped bean
 	 */
-	public BeanWrapper getBeanWrapper(Class clazz) {
-		return new BeanWrapper(getBeanWrapperContext(clazz));
+	public JuffrouBeanWrapper getBeanWrapper(Class clazz) {
+		return new JuffrouBeanWrapper(getBeanWrapperContext(clazz));
 	}
 	
 	/**
@@ -63,8 +63,8 @@ public class BeanWrapperFactory {
 	 * Will try to use a cached BeanWrapperContext to save introspection time.
 	 * @param instance the bean object to be wrapped
 	 */
-	public BeanWrapper getBeanWrapper(Object instance) {
-		return new BeanWrapper(getBeanWrapperContext(instance.getClass(), null), instance);
+	public JuffrouBeanWrapper getBeanWrapper(Object instance) {
+		return new JuffrouBeanWrapper(getBeanWrapperContext(instance.getClass(), null), instance);
 	}
 
 	protected BeanInstanceBuilder getBeanInstanceBuilder() {
@@ -117,7 +117,7 @@ public class BeanWrapperFactory {
 	private static class DefaultBeanContextCreator implements BeanContextBuilder {
 
 		@Override
-		public BeanWrapperContext build(BeanWrapperFactory factory, Class clazz, Type... types) {
+		public BeanWrapperContext build(CustomizableBeanWrapperFactory factory, Class clazz, Type... types) {
 			return new BeanWrapperContext(factory, clazz, types);
 		}
 		

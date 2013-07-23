@@ -1,4 +1,4 @@
-package net.sf.juffrou.util.reflect;
+package net.sf.juffrou.reflect;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,8 +17,8 @@ public class BeanConverter<T1, T2> {
 
 	private Map<String, String> b1b2BindingMap;
 	private Map<String, String> b2b1BindingMap;
-	private BeanWrapper bw1;
-	private BeanWrapper bw2;
+	private JuffrouBeanWrapper bw1;
+	private JuffrouBeanWrapper bw2;
 	
 	/**
 	 * @param clazz1 bean 1 class
@@ -26,8 +26,8 @@ public class BeanConverter<T1, T2> {
 	 * @param propertyBindingMap map that establishes which properties in bean 1 correspond to properties in bean 2
 	 */
 	public BeanConverter(Class<T1> clazz1, Class<T2> clazz2, Map<String, String> propertyBindingMap) {
-		this.bw1 = new BeanWrapper(clazz1);
-		this.bw2 = new BeanWrapper(clazz2);
+		this.bw1 = new JuffrouBeanWrapper(clazz1);
+		this.bw2 = new JuffrouBeanWrapper(clazz2);
 		this.b1b2BindingMap = propertyBindingMap;
 		b2b1BindingMap = new HashMap<String, String>();
 		for(String b1prop : b1b2BindingMap.keySet()) {

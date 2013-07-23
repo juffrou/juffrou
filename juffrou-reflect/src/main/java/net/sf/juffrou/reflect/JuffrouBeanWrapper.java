@@ -1,4 +1,4 @@
-package net.sf.juffrou.util.reflect;
+package net.sf.juffrou.reflect;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -10,8 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sf.juffrou.error.ReflectionException;
-import net.sf.juffrou.util.reflect.internal.BeanFieldHandler;
+import net.sf.juffrou.reflect.error.ReflectionException;
+import net.sf.juffrou.reflect.internal.BeanFieldHandler;
 
 
 
@@ -26,20 +26,20 @@ import net.sf.juffrou.util.reflect.internal.BeanFieldHandler;
  * 
  * @author cemartins
  */
-public class BeanWrapper {
+public class JuffrouBeanWrapper {
 
 	private final BeanWrapperContext context;
-	private final BeanWrapper parentBeanWrapper;
+	private final JuffrouBeanWrapper parentBeanWrapper;
 	private final String parentBeanProperty;
 	private Object wrappedInstance;
-	private final Map<String, BeanWrapper> nestedWrappers = new HashMap<String, BeanWrapper>();
+	private final Map<String, JuffrouBeanWrapper> nestedWrappers = new HashMap<String, JuffrouBeanWrapper>();
 
 	/**
 	 * Construct a bean wrapper using the metadata and preferences of an existing BeanWrapperContext.<br>
 	 * Performance is better, because there is no need to do introspection.
 	 * @param context metadata information about the class to instantiate the wrapped bean
 	 */
-	public BeanWrapper(BeanWrapperContext context) {
+	public JuffrouBeanWrapper(BeanWrapperContext context) {
 		this.context = context;
 		this.wrappedInstance = null;
 		this.parentBeanWrapper = null;
@@ -52,14 +52,14 @@ public class BeanWrapper {
 	 * @param context metadata and preferences information about the class
 	 * @param instance bean instance
 	 */
-	public BeanWrapper(BeanWrapperContext context, Object instance) {
+	public JuffrouBeanWrapper(BeanWrapperContext context, Object instance) {
 		this.context = context;
 		this.parentBeanWrapper = null;
 		this.parentBeanProperty = null;
 		setBean(instance);
 	}
 
-	public BeanWrapper(BeanWrapperContext context, BeanWrapper parentBeanWrapper, String parentBeanProperty) {
+	public JuffrouBeanWrapper(BeanWrapperContext context, JuffrouBeanWrapper parentBeanWrapper, String parentBeanProperty) {
 		this.context = context;
 		this.wrappedInstance = null;
 		this.parentBeanWrapper = parentBeanWrapper;
@@ -71,7 +71,7 @@ public class BeanWrapper {
 	 * This constructor will have to create a BeanWrapperContext to get introspection metadata. You can use {@link #BeanWrapper(BeanWrapperContext, Object)} instead.
 	 * @param instance
 	 */
-	public BeanWrapper(Object instance) {
+	public JuffrouBeanWrapper(Object instance) {
 		this.wrappedInstance = instance;
 		this.context = BeanWrapperContext.create(instance.getClass());
 		this.parentBeanWrapper = null;
@@ -83,7 +83,7 @@ public class BeanWrapper {
 	 * This constructor will have to create a BeanWrapperContext to get introspection metadata. You can use {@link #BeanWrapper(BeanWrapperContext, Object)} instead.
 	 * @param clazz class to instantiate the wrapped bean
 	 */
-	public BeanWrapper(Class<?> clazz) {
+	public JuffrouBeanWrapper(Class<?> clazz) {
 		this.context = BeanWrapperContext.create(clazz);
 		this.wrappedInstance = null;
 		this.parentBeanWrapper = null;
@@ -104,7 +104,7 @@ public class BeanWrapper {
 	/**
 	 * @return The BeanWrapperFactory responsible for creating and caching the BeanWrapperContext for this bean and all its nested beans.
 	 */
-	public BeanWrapperFactory getFactory() {
+	public CustomizableBeanWrapperFactory getFactory() {
 		return context.getFactory();
 	}
 
@@ -151,7 +151,7 @@ public class BeanWrapper {
 	 * Nested bean wrappers are created when you access a nested property (i.e. getValue("prop1.prop2"))
 	 * @return a Map where the keys are property names and the values are bean wrappers
 	 */
-	public Map<String, BeanWrapper> getNestedWrappers() {
+	public Map<String, JuffrouBeanWrapper> getNestedWrappers() {
 		return nestedWrappers;
 	}
 	
@@ -175,7 +175,7 @@ public class BeanWrapper {
 			// its a nested property
 			String thisProperty = propertyName.substring(0, nestedIndex);
 			String nestedProperty = propertyName.substring(nestedIndex + 1);
-			BeanWrapper nestedWrapper = getNestedWrapper(thisProperty);
+			JuffrouBeanWrapper nestedWrapper = getNestedWrapper(thisProperty);
 			return nestedWrapper.hasProperty(nestedProperty);
 		}
 
@@ -224,7 +224,7 @@ public class BeanWrapper {
 			// its a nested property
 			String thisProperty = propertyName.substring(0, nestedIndex);
 			String nestedProperty = propertyName.substring(nestedIndex + 1);
-			BeanWrapper nestedWrapper = getNestedWrapper(thisProperty);
+			JuffrouBeanWrapper nestedWrapper = getNestedWrapper(thisProperty);
 			return nestedWrapper.getValue(nestedProperty);
 		}
 	}
@@ -292,7 +292,7 @@ public class BeanWrapper {
 			// its a nested property
 			String thisProperty = propertyName.substring(0, nestedIndex);
 			String nestedProperty = propertyName.substring(nestedIndex + 1);
-			BeanWrapper nestedWrapper = getNestedWrapper(thisProperty);
+			JuffrouBeanWrapper nestedWrapper = getNestedWrapper(thisProperty);
 			return nestedWrapper.getTypeArguments(nestedProperty);
 		}
 	}
@@ -316,7 +316,7 @@ public class BeanWrapper {
 			// its a nested property
 			String thisProperty = propertyName.substring(0, nestedIndex);
 			String nestedProperty = propertyName.substring(nestedIndex + 1);
-			BeanWrapper nestedWrapper = getNestedWrapper(thisProperty);
+			JuffrouBeanWrapper nestedWrapper = getNestedWrapper(thisProperty);
 			return nestedWrapper.getField(nestedProperty);
 		}
 	}
@@ -362,7 +362,7 @@ public class BeanWrapper {
 			// its a nested property
 			String thisProperty = propertyName.substring(0, nestedIndex);
 			String nestedProperty = propertyName.substring(nestedIndex + 1);
-			BeanWrapper nestedWrapper = getNestedWrapper(thisProperty);
+			JuffrouBeanWrapper nestedWrapper = getNestedWrapper(thisProperty);
 			nestedWrapper.setValueOfString(nestedProperty, value);
 		}
 	}
@@ -392,7 +392,7 @@ public class BeanWrapper {
 			// its a nested property
 			String thisProperty = propertyName.substring(0, nestedIndex);
 			String nestedProperty = propertyName.substring(nestedIndex + 1);
-			BeanWrapper nestedWrapper = getNestedWrapper(thisProperty);
+			JuffrouBeanWrapper nestedWrapper = getNestedWrapper(thisProperty);
 			nestedWrapper.setValue(nestedProperty, value);
 		}
 	}
@@ -402,21 +402,21 @@ public class BeanWrapper {
 	 * @param thisProperty property name in this bean wrapper. It must be of bean type.
 	 * @return
 	 */
-	public BeanWrapper getNestedWrapper(String thisProperty) {
-		BeanWrapper nestedWrapper = nestedWrappers.get(thisProperty);
+	public JuffrouBeanWrapper getNestedWrapper(String thisProperty) {
+		JuffrouBeanWrapper nestedWrapper = nestedWrappers.get(thisProperty);
 		if (nestedWrapper == null) {
 			Object value = getValue(thisProperty);
 
 			BeanWrapperContext bwc = context.getNestedContext(thisProperty, value);
 			
-			nestedWrapper = new BeanWrapper(bwc, this, thisProperty);
+			nestedWrapper = new JuffrouBeanWrapper(bwc, this, thisProperty);
 			
 			nestedWrappers.put(thisProperty, nestedWrapper);
 		}
 		return nestedWrapper;
 	}
 
-	protected BeanWrapper getParentBeanWrapper() {
+	protected JuffrouBeanWrapper getParentBeanWrapper() {
 		return parentBeanWrapper;
 	}
 

@@ -1,10 +1,10 @@
-package net.sf.juffrou.util.reflect;
+package net.sf.juffrou.reflect;
 
 import java.lang.reflect.Type;
 
 
 /**
- * Used by the {@link BeanWrapper} to created contexts for its nested bean wrappers.<br>
+ * Used by the {@link JuffrouBeanWrapper} to created contexts for its nested bean wrappers.<br>
  * Implement this interface if you want bean contexts to hold more bean metadata than the one used by bean wrapper.
  * @author cemartins
  */
@@ -18,5 +18,5 @@ public interface BeanContextBuilder {
 	 * @return
 	 */
 	@SuppressWarnings("rawtypes")
-	public BeanWrapperContext build(BeanWrapperFactory bwFactory, Class clazz, Type...types);
+	public BeanWrapperContext build(CustomizableBeanWrapperFactory bwFactory, Class clazz, Type...types);
 }

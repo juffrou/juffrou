@@ -1,4 +1,4 @@
-package net.sf.juffrou.util.reflect;
+package net.sf.juffrou.reflect;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.GenericArrayType;
@@ -172,10 +172,10 @@ public final class ReflectionUtil {
 	 * Properties with null values are not put in the map.
 	 * @param bean The bean to transform
 	 * @return a Map with keys and values corresponding to the bean.
-	 * @see {@link #getMapFromBean(BeanWrapperFactory factory, Object bean)} for increased performance.
+	 * @see {@link #getMapFromBean(CustomizableBeanWrapperFactory factory, Object bean)} for increased performance.
 	 */
 	public static Map<String, Object> getMapFromBean(Object bean) {
-		return getMapFromBean(new BeanWrapperFactory(), bean);
+		return getMapFromBean(new CustomizableBeanWrapperFactory(), bean);
 	}
 	
 	/**
@@ -185,18 +185,18 @@ public final class ReflectionUtil {
 	 * @param factory a BeanWrapperFactory instance to cache introspection information. Increases performance if re-used.
 	 * @param bean The bean to transform
 	 * @return a Map with keys and values corresponding to the bean.
-	 * @see {@link #getBeanFromMap(BeanWrapperFactory, Map, Object)}
+	 * @see {@link #getBeanFromMap(CustomizableBeanWrapperFactory, Map, Object)}
 	 */
-	public static Map<String, Object> getMapFromBean(BeanWrapperFactory factory, Object bean) {
+	public static Map<String, Object> getMapFromBean(CustomizableBeanWrapperFactory factory, Object bean) {
 		Map<String, Object> beanMap = new HashMap<String, Object>();
 		Map<Object, String> circularReferences = new HashMap<Object, String>();
-		BeanWrapper beanWrapper = factory.getBeanWrapper(bean);
+		JuffrouBeanWrapper beanWrapper = factory.getBeanWrapper(bean);
 		circularReferences.put(bean, "");
 		buildMapFromBean(factory, beanWrapper, circularReferences, "",beanMap);
 		return beanMap;
 	}
 	
-	private static void buildMapFromBean(BeanWrapperFactory factory, BeanWrapper beanWrapper, Map<Object, String> circularReferences, String pathPrefix, Map<String, Object> beanMap) {
+	private static void buildMapFromBean(CustomizableBeanWrapperFactory factory, JuffrouBeanWrapper beanWrapper, Map<Object, String> circularReferences, String pathPrefix, Map<String, Object> beanMap) {
 		for(String propertyName : beanWrapper.getPropertyNames()) {
 			Object value = beanWrapper.getValue(propertyName);
 			if(value == null)
@@ -217,10 +217,10 @@ public final class ReflectionUtil {
 	 * Fill up a java bean with the contents of a map where the keys are property names.
 	 * @param beanMap Map with property names and values
 	 * @param bean bean instance to fill up
-	 * @see {@link #getBeanFromMap(BeanWrapperFactory, Map, Object)} for increased performance.
+	 * @see {@link #getBeanFromMap(CustomizableBeanWrapperFactory, Map, Object)} for increased performance.
 	 */
 	public static void getBeanFromMap(Map<String, Object> beanMap, Object bean) {
-		getBeanFromMap(new BeanWrapperFactory(), beanMap, bean);
+		getBeanFromMap(new CustomizableBeanWrapperFactory(), beanMap, bean);
 	}
 
 	/**
@@ -229,9 +229,9 @@ public final class ReflectionUtil {
 	 * @param beanMap Map with property names and values
 	 * @param bean bean instance to fill up
 	 */
-	public static void getBeanFromMap(BeanWrapperFactory factory, Map<String, Object> beanMap, Object bean) {
+	public static void getBeanFromMap(CustomizableBeanWrapperFactory factory, Map<String, Object> beanMap, Object bean) {
 		Map<String, CircularReference> circularReferences = new HashMap<String, CircularReference>();
-		BeanWrapper beanWrapper = factory.getBeanWrapper(bean);
+		JuffrouBeanWrapper beanWrapper = factory.getBeanWrapper(bean);
 		for(Entry<String, Object> entry : beanMap.entrySet())
 			if(entry.getValue() instanceof CircularReference)
 				circularReferences.put(entry.getKey(), (CircularReference) entry.getValue());

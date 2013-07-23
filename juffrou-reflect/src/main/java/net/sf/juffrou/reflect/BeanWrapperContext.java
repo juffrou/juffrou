@@ -1,4 +1,4 @@
-package net.sf.juffrou.util.reflect;
+package net.sf.juffrou.reflect;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -10,16 +10,16 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import net.sf.juffrou.error.BeanInstanceBuilderException;
-import net.sf.juffrou.error.CannotWrapInterfaceException;
-import net.sf.juffrou.error.ReflectionException;
-import net.sf.juffrou.util.reflect.internal.BeanFieldHandler;
+import net.sf.juffrou.reflect.error.BeanInstanceBuilderException;
+import net.sf.juffrou.reflect.error.CannotWrapInterfaceException;
+import net.sf.juffrou.reflect.error.ReflectionException;
+import net.sf.juffrou.reflect.internal.BeanFieldHandler;
 
 
 
 /**
  * Holds introspection information for a java bean class.<p>
- * Performs introspection and holds metadata information about a class used by the {@link BeanWrapper}.<br>
+ * Performs introspection and holds metadata information about a class used by the {@link JuffrouBeanWrapper}.<br>
  * If you have to create several BeanWrappers for the same java class, use BeanWrapperContext and save the introspection overhead.<br>
  * This class is thread safe.
  * @author cemartins
@@ -31,19 +31,19 @@ public class BeanWrapperContext {
 	private final Class clazz;
 	private final Map<TypeVariable<?>, Type> typeArgumentsMap;
 	private final Map<String, BeanFieldHandler> fields;
-	private final BeanWrapperFactory bwFactory;
+	private final CustomizableBeanWrapperFactory bwFactory;
 
 	public static final BeanWrapperContext create(Class clazz) {
-		BeanWrapperFactory factory = new BeanWrapperFactory();
+		CustomizableBeanWrapperFactory factory = new CustomizableBeanWrapperFactory();
 		return factory.getBeanWrapperContext(clazz);
 	}
 
 	public static final BeanWrapperContext create(Class clazz, Type...types) {
-		BeanWrapperFactory factory = new BeanWrapperFactory();
+		CustomizableBeanWrapperFactory factory = new CustomizableBeanWrapperFactory();
 		return factory.getBeanWrapperContext(clazz, types);
 	}
 
-	protected BeanWrapperContext(BeanWrapperFactory factory, Class clazz, Type...types) {
+	protected BeanWrapperContext(CustomizableBeanWrapperFactory factory, Class clazz, Type...types) {
 		if(factory == null)
 			throw new IllegalArgumentException("BeanWrapperFactory cannot be null");
 		if(clazz.isInterface())
@@ -154,7 +154,7 @@ public class BeanWrapperContext {
 		return typeArgumentsMap;
 	}
 
-	public BeanWrapperFactory getFactory() {
+	public CustomizableBeanWrapperFactory getFactory() {
 		return bwFactory;
 	}
 

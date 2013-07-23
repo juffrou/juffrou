@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.sf.juffrou.util.reflect.BeanWrapperFactory;
-import net.sf.juffrou.util.reflect.ReflectionUtil;
+import net.sf.juffrou.reflect.CustomizableBeanWrapperFactory;
+import net.sf.juffrou.reflect.ReflectionUtil;
 import net.sf.juffrou.xml.error.NoImplementationClassException;
 import net.sf.juffrou.xml.error.NoSerializerException;
 import net.sf.juffrou.xml.error.UnknownXmlElementException;
@@ -42,7 +42,7 @@ import net.sf.juffrou.xml.serializer.StringSerializer;
 
 public class JuffrouBeanMetadata {
 
-	private final BeanWrapperFactory beanWrapperFactory;
+	private final CustomizableBeanWrapperFactory beanWrapperFactory;
 	private final Map<Class<?>, BeanClassBinding> classToBindingMap = new HashMap<Class<?>, BeanClassBinding>();
 	private final Map<String, BeanClassBinding> xmlElementNameToBindingMap = new HashMap<String, BeanClassBinding>();
 	private final Map<Class<?>, Class<?>> defaultImplementations = new HashMap<Class<?>, Class<?>>();
@@ -54,13 +54,13 @@ public class JuffrouBeanMetadata {
 	public JuffrouBeanMetadata() {
 		defaultSerializer = new BeanWrapperSerializer(this);
 		preferences = new JuffrouXmlPreferences();
-		beanWrapperFactory = new BeanWrapperFactory();
+		beanWrapperFactory = new CustomizableBeanWrapperFactory();
 		beanWrapperFactory.setBeanContextBuilder(new XmlBeanWrapperContextCreator(this));
 		setDefaultImplementations();
 		setDefaultConverters();
 	}
 	
-	public BeanWrapperFactory getBeanWrapperFactory() {
+	public CustomizableBeanWrapperFactory getBeanWrapperFactory() {
 		return beanWrapperFactory;
 	}
 
