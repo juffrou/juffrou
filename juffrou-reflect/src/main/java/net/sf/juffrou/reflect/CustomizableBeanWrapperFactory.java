@@ -70,7 +70,7 @@ public class CustomizableBeanWrapperFactory implements BeanWrapperFactory {
 	 */
 	@Override
 	public JuffrouBeanWrapper getBeanWrapper(Class clazz) {
-		return new JuffrouBeanWrapper(getBeanWrapperContext(clazz));
+		return new JuffrouBeanWrapper(getBeanWrapperContext(clazz, null));
 	}
 
 	/**

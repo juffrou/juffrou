@@ -152,10 +152,10 @@ public class BeanWrapperTestCase {
 		Long spring = new Long(stop - start);
 
 		Assert.assertTrue(withContext.longValue() < noContext.longValue());
-		System.out.println(loop + " instantiations without context: " + noContext);
-		System.out.println(loop + " instantiations with context: " + withContext);
-		System.out.println(loop + " instantiations with factory: " + withFactory);
-		System.out.println(loop + " instantiations with spring BeanWrapperImpl: " + spring);
+		System.out.println(loop + " instantiation and set value without context: " + noContext);
+		System.out.println(loop + " instantiation and set value with context: " + withContext);
+		System.out.println(loop + " instantiation and set value with factory: " + withFactory);
+		System.out.println(loop + " instantiation and set value with spring BeanWrapperImpl: " + spring);
 	}
 
 	@Test

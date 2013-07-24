@@ -89,7 +89,7 @@ This will allow you access the source code of the library as well as the javadoc
   </section>
   
   <section><title>Nested BeanWrappers</title>
-  	<para>When you access a nested property (i.e. a property of a nested bean), like in the case of <computeroutput>bw.setValue("home.city", "Lisboa")</computeroutput>, the JuffrouBeanWraper automatically creates another JuffrouBeanWrapper around the nested bean. In this case around an Address bean. This is called a nested bean wrapper.</para>
+  	<para>When you access a nested property (i.e. a property of a nested bean), like in the case of <computeroutput>bw.setValue("home.city", "Lisboa")</computeroutput>, the JuffrouBeanWrapper automatically creates another JuffrouBeanWrapper around the nested bean. In this case around an Address bean. This is called a nested bean wrapper.</para>
   	<para>Nested JuffrouBeanWrappers are created only when referenced by <computeroutput>beanWrapper.getValue</computeroutput>, <computeroutput>beanWrapper.setValue</computeroutput>, <computeroutput>beanWrapper.getType</computeroutput>, <computeroutput>beanWrapper.getClass</computeroutput> or <computeroutput>beanWrapper.getNestedWrapper</computeroutput>.</para>
   	<para>You can get a specific nested bean wrapper with the method <computeroutput>beanWrapper.getNestedWrapper("home")</computeroutput> and you can get all current nested bean wrappers with the method <computeroutput>beanWrapper.getNestedWrappers()</computeroutput>.</para>
   	<para>If you want to change the wrapped instance without creating a new JuffrouBeanWrapper you can call <literal>bw.setBean(newInstance)</literal> and if you want to zero all properties of the wrapped instance you can call <literal>bw.setBean(null)</literal>.</para>
@@ -114,7 +114,7 @@ This will allow you access the source code of the library as well as the javadoc
 			<title>BeanWrapperContext</title>
 			<para>The BeanWrapperContext is the object that holds metadata for a BeanWrapper. This metadata is composed by data collected through class introspection, including the references to the getter and setter methods of the class and all classes it extends.</para>
 			<para>If you instantiate a BeanWrapper using the default constructor, it will create a new BeanWrapperContext. But if you instantiate a BeanWrapper by passing a BeanWrapperContext, no introspection overhead is needed.</para>
-			<table><title>time in milliseconds to handle 10.000 BeanWrapers</title>
+			<table><title>time in milliseconds to handle 10.000 BeanWrappers</title>
 				<tgroup cols='3' align='left' colsep='1' rowsep='1'>
 				<thead>
 				<row>
@@ -125,16 +125,16 @@ This will allow you access the source code of the library as well as the javadoc
 				</thead>
 				<tbody>
 					<row>
-						<entry>Spring Framework's BeanWrapperImpl</entry><entry>73</entry><entry>329</entry>
+						<entry>Spring Framework's BeanWrapperImpl</entry><entry>64</entry><entry>291</entry>
 					</row>
 					<row>
-						<entry>JuffrouBeanWrapper</entry><entry>57</entry><entry>165</entry>
+						<entry>JuffrouBeanWrapper</entry><entry>9</entry><entry>41</entry>
 					</row>
 					<row>
-						<entry>JuffrouBeanWrapper with BeanWrapperContext</entry><entry>1</entry><entry>17</entry>
+						<entry>JuffrouBeanWrapper with BeanWrapperContext</entry><entry>1</entry><entry>20</entry>
 					</row>
 					<row>
-						<entry>JuffrouBeanWrapper with BeanWrapperFactory</entry><entry>4</entry><entry>20</entry>
+						<entry>JuffrouBeanWrapper with BeanWrapperFactory</entry><entry>9</entry><entry>20</entry>
 					</row>
 				</tbody>
 				</tgroup>

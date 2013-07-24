@@ -86,7 +86,7 @@
 					<charset>${project.build.sourceEncoding}</charset>
 					<encoding>${project.build.sourceEncoding}</encoding>
 					<docencoding>${project.build.sourceEncoding}</docencoding>
-					<excludePackageNames>net.sf.juffrou.xml.internal.*</excludePackageNames>
+					<excludePackageNames>net.sf.juffrou.internal*</excludePackageNames>
 				</configuration>
 			</plugin>
 		</plugins>

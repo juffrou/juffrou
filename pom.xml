@@ -147,7 +147,7 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>2.9</version>
+					<version>2.9.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -235,7 +235,7 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.5.1</version>
+				<version>3.1</version>
 				<configuration>
 					<source>1.6</source>
 					<target>1.6</target>
@@ -267,6 +267,7 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 								<charset>${project.build.sourceEncoding}</charset>
 								<encoding>${project.build.sourceEncoding}</encoding>
 								<docencoding>${project.build.sourceEncoding}</docencoding>
+								<excludePackageNames>*.internal*</excludePackageNames>
 							</configuration>
 							<reports>
 								<report>javadoc</report>

@@ -2,7 +2,7 @@
  
  Take a look at the javadocs to view the methods in detail:
 
-BeanWrapper
+JuffrouBeanWrapper
 
  The BeanWrapper utility class is an alternative to spring's BeanWrapperImpl with a few extra goodies:
  
