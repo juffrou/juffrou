@@ -1,8 +1,11 @@
 package net.sf.juffrou.reflect;
 
+import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.beans.PropertyEditor;
 import java.util.Map;
+
+import net.sf.juffrou.reflect.internal.BeanFieldHandler;
 
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeansException;
@@ -15,6 +18,9 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.TypeDescriptor;
 
 public class JuffrouSpringBeanWrapper extends JuffrouBeanWrapper implements BeanWrapper {
+	
+	private ConversionService conversionService;
+	private boolean extractOldValueForEditor;
 
 	public JuffrouSpringBeanWrapper(BeanWrapperContext context,
 			JuffrouBeanWrapper parentBeanWrapper, String parentBeanProperty) {
@@ -39,38 +45,32 @@ public class JuffrouSpringBeanWrapper extends JuffrouBeanWrapper implements Bean
 
 	@Override
 	public void setConversionService(ConversionService conversionService) {
-		// TODO Auto-generated method stub
-		
+		this.conversionService = conversionService;
 	}
 
 	@Override
 	public ConversionService getConversionService() {
-		// TODO Auto-generated method stub
-		return null;
+		return conversionService;
 	}
 
 	@Override
 	public void setExtractOldValueForEditor(boolean extractOldValueForEditor) {
-		// TODO Auto-generated method stub
-		
+		this.extractOldValueForEditor = extractOldValueForEditor;
 	}
 
 	@Override
 	public boolean isExtractOldValueForEditor() {
-		// TODO Auto-generated method stub
-		return false;
+		return extractOldValueForEditor;
 	}
 
 	@Override
 	public boolean isReadableProperty(String propertyName) {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isWritableProperty(String propertyName) {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
@@ -79,10 +79,8 @@ public class JuffrouSpringBeanWrapper extends JuffrouBeanWrapper implements Bean
 	}
 
 	@Override
-	public TypeDescriptor getPropertyTypeDescriptor(String propertyName)
-			throws BeansException {
-		// TODO Auto-generated method stub
-		return null;
+	public TypeDescriptor getPropertyTypeDescriptor(String propertyName) throws BeansException {
+		return new TypeDescriptor(getContext().getBeanFieldHandler(propertyName).getField());
 	}
 
 	@Override
@@ -174,15 +172,21 @@ public class JuffrouSpringBeanWrapper extends JuffrouBeanWrapper implements Bean
 
 	@Override
 	public PropertyDescriptor[] getPropertyDescriptors() {
-		// TODO Auto-generated method stub
-		return null;
+		String[] propertyNames = getPropertyNames();
+		PropertyDescriptor[] descriptors = new PropertyDescriptor[propertyNames.length];
+		for(int i=0; i < propertyNames.length; i++)
+			descriptors[i] = getPropertyDescriptor(propertyNames[i]);
+		return descriptors;
 	}
 
 	@Override
-	public PropertyDescriptor getPropertyDescriptor(String propertyName)
-			throws InvalidPropertyException {
-		// TODO Auto-generated method stub
-		return null;
+	public PropertyDescriptor getPropertyDescriptor(String propertyName) throws InvalidPropertyException {
+		BeanFieldHandler beanFieldHandler = getContext().getBeanFieldHandler(propertyName);
+		try {
+			return new JuffrouPropertyDescriptor(getClazz(propertyName), beanFieldHandler);
+		} catch (IntrospectionException e) {
+			throw new InvalidPropertyException(getClazz(propertyName), propertyName, "Cannot create PropertyDescriptor", e);
+		}
 	}
 
 	@Override

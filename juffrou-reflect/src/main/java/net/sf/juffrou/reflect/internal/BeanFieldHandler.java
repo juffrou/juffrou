@@ -7,8 +7,8 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 
-import net.sf.juffrou.reflect.JuffrouBeanWrapper;
 import net.sf.juffrou.reflect.BeanWrapperContext;
+import net.sf.juffrou.reflect.JuffrouBeanWrapper;
 import net.sf.juffrou.reflect.error.ReflectionException;
 
 
@@ -55,33 +55,11 @@ public class BeanFieldHandler {
 
 	public Object getValue(JuffrouBeanWrapper bw) {
 
-		if (getter == null) {
-			String name = field.getName();
-			String methodName = "get" + name.substring(0, 1).toUpperCase() + name.substring(1);
-			try {
-				getter = bw.getBeanClass().getMethod(methodName, null);
-			} catch (NoSuchMethodException e) {
-				
-				// try the boolean "is" pattern
-				if(this.field.getType() == boolean.class) {
-					if(name.startsWith("is"))
-						name = name.substring(2);
-					methodName = "is" + name.substring(0, 1).toUpperCase() + name.substring(1);
-					try {
-						getter = bw.getBeanClass().getMethod(methodName, null);
-					} catch (NoSuchMethodException e1) {
-						throw new ReflectionException("The class " + bw.getBeanClass().getSimpleName()	+ " does not have a getter method for the field " + field.getName());
-					}
-				}
-				else
-					throw new ReflectionException("The class " + bw.getBeanClass().getSimpleName()	+ " does not have a getter method for the field " + field.getName());
-
-			}
-		}
+		if (getter == null)
+			inspectReadMethod(bw.getBeanClass());
+		
 		try {
-			
 			return getter.invoke(bw.getBean(), null);
-			
 		} catch (IllegalAccessException e) {
 			throw new ReflectionException(e);
 		} catch (InvocationTargetException e) {
@@ -92,28 +70,8 @@ public class BeanFieldHandler {
 
 	public void setValue(JuffrouBeanWrapper bw, Object value) {
 
-		if (setter == null) {
-			String name = field.getName();
-			String methodName = "set" + name.substring(0, 1).toUpperCase() + name.substring(1);
-			try {
-				setter = bw.getBeanClass().getMethod(methodName, (Class<?>) this.field.getType());
-			} catch (NoSuchMethodException e) {
-				
-				// try the boolean "is" pattern
-				if(this.field.getType() == boolean.class) {
-					if(name.startsWith("is"))
-						name = name.substring(2);
-					methodName = "set" + name.substring(0, 1).toUpperCase() + name.substring(1);
-					try {
-						setter = bw.getBeanClass().getMethod(methodName, (Class<?>) this.field.getType());
-					} catch (NoSuchMethodException e1) {
-						throw new ReflectionException("The class " + bw.getBeanClass().getSimpleName() + " does not have a setter method for the field " + field.getName());
-					}
-				}
-				else
-					throw new ReflectionException("The class " + bw.getBeanClass().getSimpleName() + " does not have a setter method for the field " + field.getName());
-			}
-		}
+		if (setter == null)
+			inspectWriteMethod(bw.getBeanClass());
 
 		try {
 			
@@ -135,5 +93,65 @@ public class BeanFieldHandler {
 		}
 
 	}
+	
+	private void inspectReadMethod(Class<?> beanClass) {
+		String name = field.getName();
+		String methodName = "get" + name.substring(0, 1).toUpperCase() + name.substring(1);
+		try {
+			getter = beanClass.getMethod(methodName, null);
+		} catch (NoSuchMethodException e) {
+			
+			// try the boolean "is" pattern
+			if(this.field.getType() == boolean.class) {
+				if(name.startsWith("is"))
+					name = name.substring(2);
+				methodName = "is" + name.substring(0, 1).toUpperCase() + name.substring(1);
+				try {
+					getter = beanClass.getMethod(methodName, null);
+				} catch (NoSuchMethodException e1) {
+					throw new ReflectionException("The class " + beanClass.getSimpleName()	+ " does not have a getter method for the field " + field.getName());
+				}
+			}
+			else
+				throw new ReflectionException("The class " + beanClass.getSimpleName()	+ " does not have a getter method for the field " + field.getName());
 
+		}
+	}
+
+	private void inspectWriteMethod(Class<?> beanClass) {
+		String name = field.getName();
+		String methodName = "set" + name.substring(0, 1).toUpperCase() + name.substring(1);
+		try {
+			setter = beanClass.getMethod(methodName, (Class<?>) this.field.getType());
+		} catch (NoSuchMethodException e) {
+			
+			// try the boolean "is" pattern
+			if(this.field.getType() == boolean.class) {
+				if(name.startsWith("is"))
+					name = name.substring(2);
+				methodName = "set" + name.substring(0, 1).toUpperCase() + name.substring(1);
+				try {
+					setter = beanClass.getMethod(methodName, (Class<?>) this.field.getType());
+				} catch (NoSuchMethodException e1) {
+					throw new ReflectionException("The class " + beanClass.getSimpleName() + " does not have a setter method for the field " + field.getName());
+				}
+			}
+			else
+				throw new ReflectionException("The class " + beanClass.getSimpleName() + " does not have a setter method for the field " + field.getName());
+		}
+	}
+	
+	public Method getReadMethod(Class<?> beanClass) {
+		if(getter == null)
+			inspectReadMethod(beanClass);
+		
+		return getter;
+	}
+	
+	public Method getWriteMethod(Class<?> beanClass) {
+		if(setter == null)
+			inspectWriteMethod(beanClass);
+		
+		return setter;
+	}
 }
