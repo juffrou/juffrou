@@ -3,6 +3,8 @@ package net.sf.juffrou.reflect;
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.beans.PropertyEditor;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import net.sf.juffrou.reflect.internal.BeanFieldHandler;
@@ -10,6 +12,7 @@ import net.sf.juffrou.reflect.internal.BeanFieldHandler;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.InvalidPropertyException;
+import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.PropertyValue;
 import org.springframework.beans.PropertyValues;
 import org.springframework.beans.TypeMismatchException;
@@ -18,12 +21,11 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.TypeDescriptor;
 
 public class JuffrouSpringBeanWrapper extends JuffrouBeanWrapper implements BeanWrapper {
-	
+
 	private ConversionService conversionService;
 	private boolean extractOldValueForEditor;
 
-	public JuffrouSpringBeanWrapper(BeanWrapperContext context,
-			JuffrouBeanWrapper parentBeanWrapper, String parentBeanProperty) {
+	public JuffrouSpringBeanWrapper(BeanWrapperContext context, JuffrouBeanWrapper parentBeanWrapper, String parentBeanProperty) {
 		super(context, parentBeanWrapper, parentBeanProperty);
 	}
 
@@ -89,8 +91,7 @@ public class JuffrouSpringBeanWrapper extends JuffrouBeanWrapper implements Bean
 	}
 
 	@Override
-	public void setPropertyValue(String propertyName, Object value)
-			throws BeansException {
+	public void setPropertyValue(String propertyName, Object value) throws BeansException {
 		super.setValue(propertyName, value);
 	}
 
@@ -101,61 +102,54 @@ public class JuffrouSpringBeanWrapper extends JuffrouBeanWrapper implements Bean
 
 	@Override
 	public void setPropertyValues(Map<?, ?> map) throws BeansException {
-		// TODO Auto-generated method stub
-		
+		setPropertyValues(new MutablePropertyValues(map));
 	}
 
 	@Override
 	public void setPropertyValues(PropertyValues pvs) throws BeansException {
-		// TODO Auto-generated method stub
-		
+		setPropertyValues(pvs, false, false);
 	}
 
 	@Override
-	public void setPropertyValues(PropertyValues pvs, boolean ignoreUnknown)
-			throws BeansException {
-		// TODO Auto-generated method stub
-		
+	public void setPropertyValues(PropertyValues pvs, boolean ignoreUnknown) throws BeansException {
+		setPropertyValues(pvs, ignoreUnknown, false);
 	}
 
 	@Override
-	public void setPropertyValues(PropertyValues pvs, boolean ignoreUnknown,
-			boolean ignoreInvalid) throws BeansException {
-		// TODO Auto-generated method stub
-		
+	public void setPropertyValues(PropertyValues pvs, boolean ignoreUnknown, boolean ignoreInvalid) throws BeansException {
+		List<PropertyValue> propertyValues = (pvs instanceof MutablePropertyValues ? ((MutablePropertyValues) pvs).getPropertyValueList()
+				: Arrays.asList(pvs.getPropertyValues()));
+		for (PropertyValue pv : propertyValues) {
+			super.setValue(pv.getName(), pv.getValue());
+		}
 	}
 
 	@Override
-	public void registerCustomEditor(Class<?> requiredType,
-			PropertyEditor propertyEditor) {
+	public void registerCustomEditor(Class<?> requiredType, PropertyEditor propertyEditor) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public void registerCustomEditor(Class<?> requiredType,
-			String propertyPath, PropertyEditor propertyEditor) {
+	public void registerCustomEditor(Class<?> requiredType, String propertyPath, PropertyEditor propertyEditor) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public PropertyEditor findCustomEditor(Class<?> requiredType,
-			String propertyPath) {
+	public PropertyEditor findCustomEditor(Class<?> requiredType, String propertyPath) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <T> T convertIfNecessary(Object value, Class<T> requiredType)
-			throws TypeMismatchException {
+	public <T> T convertIfNecessary(Object value, Class<T> requiredType) throws TypeMismatchException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <T> T convertIfNecessary(Object value, Class<T> requiredType,
-			MethodParameter methodParam) throws TypeMismatchException {
+	public <T> T convertIfNecessary(Object value, Class<T> requiredType, MethodParameter methodParam) throws TypeMismatchException {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -174,7 +168,7 @@ public class JuffrouSpringBeanWrapper extends JuffrouBeanWrapper implements Bean
 	public PropertyDescriptor[] getPropertyDescriptors() {
 		String[] propertyNames = getPropertyNames();
 		PropertyDescriptor[] descriptors = new PropertyDescriptor[propertyNames.length];
-		for(int i=0; i < propertyNames.length; i++)
+		for (int i = 0; i < propertyNames.length; i++)
 			descriptors[i] = getPropertyDescriptor(propertyNames[i]);
 		return descriptors;
 	}
@@ -185,7 +179,8 @@ public class JuffrouSpringBeanWrapper extends JuffrouBeanWrapper implements Bean
 		try {
 			return new JuffrouPropertyDescriptor(getClazz(propertyName), beanFieldHandler);
 		} catch (IntrospectionException e) {
-			throw new InvalidPropertyException(getClazz(propertyName), propertyName, "Cannot create PropertyDescriptor", e);
+			throw new InvalidPropertyException(getClazz(propertyName), propertyName,
+					"Cannot create PropertyDescriptor", e);
 		}
 	}
 
