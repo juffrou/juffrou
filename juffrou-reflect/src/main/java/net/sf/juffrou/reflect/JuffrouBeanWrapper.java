@@ -58,10 +58,14 @@ public class JuffrouBeanWrapper {
 	 *            bean instance
 	 */
 	public JuffrouBeanWrapper(BeanWrapperContext context, Object instance) {
+
+		if (!context.getBeanClass().isAssignableFrom(instance.getClass()))
+			throw new InvalidParameterException("Bean must be of type " + context.getBeanClass().getSimpleName());
+
 		this.context = context;
 		this.parentBeanWrapper = null;
 		this.parentBeanProperty = null;
-		setBean(instance);
+		this.wrappedInstance = instance;
 	}
 
 	public JuffrouBeanWrapper(BeanWrapperContext context, JuffrouBeanWrapper parentBeanWrapper, String parentBeanProperty) {
