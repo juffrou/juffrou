@@ -12,6 +12,7 @@ import java.util.Map;
 
 import net.sf.juffrou.reflect.error.BeanInstanceBuilderException;
 import net.sf.juffrou.reflect.error.CannotWrapInterfaceException;
+import net.sf.juffrou.reflect.error.InvalidPropertyException;
 import net.sf.juffrou.reflect.error.ReflectionException;
 import net.sf.juffrou.reflect.internal.BeanFieldHandler;
 
@@ -107,8 +108,7 @@ public class BeanWrapperContext {
 	public BeanFieldHandler getBeanFieldHandler(String propertyName) {
 		BeanFieldHandler bfh = fields.get(propertyName);
 		if (bfh == null) {
-			throw new ReflectionException("The class " + clazz.getName() + " does not have a field with name "
-					+ propertyName);
+			throw new InvalidPropertyException(clazz, propertyName);
 		}
 		return bfh;
 	}

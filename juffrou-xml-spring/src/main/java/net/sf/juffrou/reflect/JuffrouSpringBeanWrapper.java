@@ -28,6 +28,7 @@ import java.util.TimeZone;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
+import net.sf.juffrou.reflect.error.ReflectionException;
 import net.sf.juffrou.reflect.internal.BeanFieldHandler;
 
 import org.springframework.beans.BeanWrapper;
@@ -172,7 +173,12 @@ public class JuffrouSpringBeanWrapper extends JuffrouBeanWrapper implements Bean
 
 	@Override
 	public Object getPropertyValue(String propertyName) throws BeansException {
-		return super.getValue(propertyName);
+		try {
+			return super.getValue(propertyName);
+		}
+		catch(net.sf.juffrou.reflect.error.InvalidPropertyException e) {
+			throw new org.springframework.beans.InvalidPropertyException(e.getClazz(), e.getPropertyName(), e.getMessage(), e);
+		}
 	}
 
 	@Override

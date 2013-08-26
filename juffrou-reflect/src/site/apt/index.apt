@@ -4,7 +4,7 @@
 
 JuffrouBeanWrapper
 
- The BeanWrapper utility class is an alternative to spring's BeanWrapperImpl with a few extra goodies:
+ The JuffrouBeanWrapper utility class is an alternative to spring's BeanWrapperImpl with a few extra goodies:
  
  * possible to change the wrapped instance with another instance of the same type, which is more performant than creating a new BeanWapper around a different bean.
  

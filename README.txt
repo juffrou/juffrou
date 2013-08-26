@@ -11,3 +11,7 @@ To deploy the site
 
 Before deploying, artifacts or site, create a shell on sourceforge with the command
 > ssh cemartins,juffrou@shell.sourceforge.net create
+
+Snapshot and release deployment are made with sonatype and you will need a GPG client installed on your command line path. 
+For more information, please refer to http://www.gnupg.org/.
+ 
