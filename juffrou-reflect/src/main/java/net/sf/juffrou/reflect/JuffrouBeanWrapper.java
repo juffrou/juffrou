@@ -196,7 +196,7 @@ public class JuffrouBeanWrapper {
 			// its a nested property
 			String thisProperty = propertyName.substring(0, nestedIndex);
 			String nestedProperty = propertyName.substring(nestedIndex + 1);
-			JuffrouBeanWrapper nestedWrapper = getNestedWrapper(thisProperty);
+			JuffrouBeanWrapper nestedWrapper = getLocalNestedWrapper(thisProperty);
 			return nestedWrapper.hasProperty(nestedProperty);
 		}
 
@@ -246,7 +246,7 @@ public class JuffrouBeanWrapper {
 			// its a nested property
 			String thisProperty = propertyName.substring(0, nestedIndex);
 			String nestedProperty = propertyName.substring(nestedIndex + 1);
-			JuffrouBeanWrapper nestedWrapper = getNestedWrapper(thisProperty);
+			JuffrouBeanWrapper nestedWrapper = getLocalNestedWrapper(thisProperty);
 			return nestedWrapper.getValue(nestedProperty);
 		}
 	}
@@ -314,7 +314,7 @@ public class JuffrouBeanWrapper {
 			// its a nested property
 			String thisProperty = propertyName.substring(0, nestedIndex);
 			String nestedProperty = propertyName.substring(nestedIndex + 1);
-			JuffrouBeanWrapper nestedWrapper = getNestedWrapper(thisProperty);
+			JuffrouBeanWrapper nestedWrapper = getLocalNestedWrapper(thisProperty);
 			return nestedWrapper.getTypeArguments(nestedProperty);
 		}
 	}
@@ -338,7 +338,7 @@ public class JuffrouBeanWrapper {
 			// its a nested property
 			String thisProperty = propertyName.substring(0, nestedIndex);
 			String nestedProperty = propertyName.substring(nestedIndex + 1);
-			JuffrouBeanWrapper nestedWrapper = getNestedWrapper(thisProperty);
+			JuffrouBeanWrapper nestedWrapper = getLocalNestedWrapper(thisProperty);
 			return nestedWrapper.getField(nestedProperty);
 		}
 	}
@@ -386,7 +386,7 @@ public class JuffrouBeanWrapper {
 			// its a nested property
 			String thisProperty = propertyName.substring(0, nestedIndex);
 			String nestedProperty = propertyName.substring(nestedIndex + 1);
-			JuffrouBeanWrapper nestedWrapper = getNestedWrapper(thisProperty);
+			JuffrouBeanWrapper nestedWrapper = getLocalNestedWrapper(thisProperty);
 			nestedWrapper.setValueOfString(nestedProperty, value);
 		}
 	}
@@ -415,8 +415,28 @@ public class JuffrouBeanWrapper {
 			// its a nested property
 			String thisProperty = propertyName.substring(0, nestedIndex);
 			String nestedProperty = propertyName.substring(nestedIndex + 1);
-			JuffrouBeanWrapper nestedWrapper = getNestedWrapper(thisProperty);
+			JuffrouBeanWrapper nestedWrapper = getLocalNestedWrapper(thisProperty);
 			nestedWrapper.setValue(nestedProperty, value);
+		}
+	}
+
+	/**
+	 * Obtains the BeanWrapper that corresponds to the bean instance of this property type.
+	 * 
+	 * @param propertyName
+	 *            property name in this bean wrapper or inside a nested bean. It must be of bean type.
+	 * @return
+	 */
+	public JuffrouBeanWrapper getNestedWrapper(String propertyName) {
+		int nestedIndex = propertyName.indexOf('.');
+		if (nestedIndex == -1) {
+			return getLocalNestedWrapper(propertyName);
+		} else {
+			// its a nested property
+			String thisProperty = propertyName.substring(0, nestedIndex);
+			String nestedProperty = propertyName.substring(nestedIndex + 1);
+			JuffrouBeanWrapper localNestedWrapper = getLocalNestedWrapper(thisProperty);
+			return localNestedWrapper.getNestedWrapper(nestedProperty);
 		}
 	}
 
@@ -427,7 +447,7 @@ public class JuffrouBeanWrapper {
 	 *            property name in this bean wrapper. It must be of bean type.
 	 * @return
 	 */
-	public JuffrouBeanWrapper getNestedWrapper(String thisProperty) {
+	public JuffrouBeanWrapper getLocalNestedWrapper(String thisProperty) {
 		JuffrouBeanWrapper nestedWrapper = nestedWrappers.get(thisProperty);
 		if (nestedWrapper == null) {
 			Object value = getValue(thisProperty);

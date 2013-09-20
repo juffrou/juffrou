@@ -208,7 +208,7 @@ public final class ReflectionUtil {
 					beanMap.put(pathPrefix + propertyName, new CircularReference(circularReferences.get(value)));
 			else {
 				circularReferences.put(value, pathPrefix + propertyName);
-				buildMapFromBean(factory, beanWrapper.getNestedWrapper(propertyName), circularReferences, pathPrefix + propertyName + ".", beanMap);
+				buildMapFromBean(factory, beanWrapper.getLocalNestedWrapper(propertyName), circularReferences, pathPrefix + propertyName + ".", beanMap);
 			}
 		}
 	}

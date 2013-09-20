@@ -25,13 +25,13 @@ public class BeanWrapperSerializer implements Serializer {
 	
 	@Override
 	public void serialize(JuffrouWriter writer, JuffrouBeanWrapper valueOwner, String valuePropertyName) {
-		JuffrouBeanWrapper nestedWrapper = valueOwner.getNestedWrapper(valuePropertyName);
+		JuffrouBeanWrapper nestedWrapper = valueOwner.getLocalNestedWrapper(valuePropertyName);
 		serializeBeanProperties(writer, nestedWrapper);
 	}
 
 	@Override
 	public void deserialize(JuffrouReader reader, JuffrouBeanWrapper valueOwner, String valuePropertyName) {
-		JuffrouBeanWrapper nestedWrapper = valueOwner.getNestedWrapper(valuePropertyName);
+		JuffrouBeanWrapper nestedWrapper = valueOwner.getLocalNestedWrapper(valuePropertyName);
 		deserializeBeanProperties(reader, nestedWrapper);
 	}
 	
