@@ -7,7 +7,7 @@
 	</parent>
 	<groupId>net.sf.juffrou</groupId>
 	<artifactId>juffrou</artifactId>
-	<version>2.1.2-SNAPSHOT</version>
+	<version>2.1.2</version>
 	<packaging>pom</packaging>
 
 	<name>Juffrou</name>
@@ -45,7 +45,7 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 		<connection>scm:git:ssh://cemartins@git.code.sf.net/p/juffrou/code</connection>
 		<developerConnection>scm:git:ssh://cemartins@git.code.sf.net/p/juffrou/code</developerConnection>
 		<url>http://sourceforge.net/p/juffrou/code/ci/master/tree/</url>
-		<tag>juffrou-2.0.9</tag>
+		<tag>juffrou-2.1.2</tag>
 	</scm>
 
 	<issueManagement>
