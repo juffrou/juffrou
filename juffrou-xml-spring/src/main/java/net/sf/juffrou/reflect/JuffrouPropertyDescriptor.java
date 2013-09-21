@@ -5,6 +5,11 @@ import java.beans.PropertyDescriptor;
 
 import net.sf.juffrou.reflect.internal.BeanFieldHandler;
 
+/**
+ * Spring framework's property descriptor for Juffrou BeanWrapper's properties
+ * @author cemartins
+ *
+ */
 public class JuffrouPropertyDescriptor extends PropertyDescriptor {
 	
 	public JuffrouPropertyDescriptor(Class<?> beanClass, BeanFieldHandler beanFieldHandler) throws IntrospectionException {

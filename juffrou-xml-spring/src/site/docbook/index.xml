@@ -8,9 +8,10 @@
 		</author>
 </articleinfo>
 <section><title>Introduction</title>
-<para>Juffrou-XML-Spring integrates juffrou-xml with spring-oxm. This allows the use of juffrou-xml marshalling and unmarshalling capabilities inside the world of spring.</para>
+<para>Juffrou-XML-Spring integrates juffrou-reflect and juffrou-xml with spring. This allows the use of juffrou-xml marshalling and unmarshalling capabilities inside the world of spring.</para>
 <section><title>Use cases</title>
 <itemizedlist mark="disc">
+<listitem>performant bean instrospection and manipulating</listitem>
 <listitem>spring-integration - marshalling and unmarshalling of XML message payloads</listitem>
 <listitem>spring-ws - webservices</listitem>
 <listitem>Configuration</listitem>

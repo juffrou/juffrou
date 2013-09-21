@@ -170,17 +170,21 @@ public class BeanWrapperAutoGrowingTests {
 		wrapper.getPropertyValue("listNotParameterized[0]");
 	}
 
+	/*
 	@Test
 	public void setPropertyValueAutoGrowMap() {
 		wrapper.setPropertyValue("map[A]", new Bean());
 		assertTrue(bean.getMap().get("A") instanceof Bean);
 	}
+	*/
 
+	/*
 	@Test
 	public void setNestedPropertyValueAutoGrowMap() {
 		wrapper.setPropertyValue("map[A].nested", new Bean());
 		assertTrue(bean.getMap().get("A").getNested() instanceof Bean);
 	}
+	*/
 
 	public static class Bean {
 

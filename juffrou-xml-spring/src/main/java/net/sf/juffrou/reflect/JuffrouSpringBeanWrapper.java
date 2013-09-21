@@ -28,7 +28,6 @@ import java.util.TimeZone;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
-import net.sf.juffrou.reflect.error.ReflectionException;
 import net.sf.juffrou.reflect.internal.BeanFieldHandler;
 
 import org.springframework.beans.BeanWrapper;
@@ -74,6 +73,11 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.xml.sax.InputSource;
 
+/**
+ * Spring framework's BeanWrapper implementation using JuffrouBeanWrapper
+ * @author cemartins
+ *
+ */
 public class JuffrouSpringBeanWrapper extends JuffrouBeanWrapper implements BeanWrapper {
 
 	private Map<Class<?>, PropertyEditor> customEditors;
