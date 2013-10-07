@@ -243,6 +243,15 @@ public class BeanWrapperTestCase {
 		Assert.assertEquals(value, Boolean.FALSE);
 		value = bw.getValue("hasCash");
 		Assert.assertEquals(value, Boolean.FALSE);
-
+	}
+	
+	@Test
+	public void testVirtualField() {
+		Person person = new Person();
+		person.setFirstName("Carlos");
+		person.setLastName("Martins");
+		JuffrouBeanWrapper bw = new JuffrouBeanWrapper(person);
+		Object value = bw.getValue("fullName");
+		Assert.assertEquals("Carlos Martins", value);
 	}
 }

@@ -38,7 +38,7 @@ public class ReflectionUtilTestCase {
 		BeanWrapperContext context = BeanWrapperContext.create(GenericPerson.class);
 		JuffrouBeanWrapper bw = new JuffrouBeanWrapper(context);
 		Type type = bw.getType("genericProperty");
-		Assert.assertTrue(Person.class.equals(type));
+		Assert.assertEquals(Person.class, type);
 	}
 	
 	
@@ -49,7 +49,7 @@ public class ReflectionUtilTestCase {
 		GenericBean<Person> genericPerson = new GenericBean<Person>();
 		JuffrouBeanWrapper bw = new JuffrouBeanWrapper(context, genericPerson);
 		Type type = bw.getType("genericProperty");
-		Assert.assertTrue(Person.class.equals(type));
+		Assert.assertEquals(Person.class,type);
 	}
 
 	@Test

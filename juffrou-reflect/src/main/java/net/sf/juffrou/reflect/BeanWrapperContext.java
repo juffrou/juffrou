@@ -1,6 +1,7 @@
 package net.sf.juffrou.reflect;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -96,7 +97,7 @@ public class BeanWrapperContext {
 		if (propertyValue != null)
 			propertyType = propertyValue.getClass();
 		else
-			propertyType = getBeanFieldHandler(thisProperty).getType();
+			propertyType = getBeanFieldHandler(thisProperty).getGenericType();
 		BeanWrapperContext nestedContext;
 		if (propertyType instanceof ParameterizedType)
 			nestedContext = bwFactory.getBeanWrapperContext((Class<?>) ((ParameterizedType) propertyType).getRawType(), ((ParameterizedType) propertyType).getActualTypeArguments());
@@ -108,7 +109,14 @@ public class BeanWrapperContext {
 	public BeanFieldHandler getBeanFieldHandler(String propertyName) {
 		BeanFieldHandler bfh = fields.get(propertyName);
 		if (bfh == null) {
-			throw new InvalidPropertyException(clazz, propertyName);
+			try {
+				Method getter = BeanFieldHandler.inspectReadMethod(clazz, propertyName, null);
+				bfh = new BeanFieldHandler(this, getter);
+				fields.put(propertyName, bfh);
+			}
+			catch (ReflectionException e) {
+				throw new InvalidPropertyException(clazz, propertyName, e);
+			}
 		}
 		return bfh;
 	}
@@ -127,7 +135,7 @@ public class BeanWrapperContext {
 	public Type getType(String propertyName) {
 		int nestedIndex = propertyName.indexOf('.');
 		if (nestedIndex == -1) {
-			return getBeanFieldHandler(propertyName).getType();
+			return getBeanFieldHandler(propertyName).getGenericType();
 		} else {
 			// its a nested property
 			String thisProperty = propertyName.substring(0, nestedIndex);

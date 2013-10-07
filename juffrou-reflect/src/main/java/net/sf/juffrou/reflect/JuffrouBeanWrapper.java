@@ -284,7 +284,7 @@ public class JuffrouBeanWrapper {
 			if (value != null)
 				return value.getClass();
 			else
-				return context.getBeanFieldHandler(propertyName).getType();
+				return context.getBeanFieldHandler(propertyName).getGenericType();
 		} else {
 			// its a nested property
 			String thisProperty = propertyName.substring(0, nestedIndex);
