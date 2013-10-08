@@ -1,4 +1,10 @@
-What's new in Juffrou 2.1.1
+What's new in Juffrou 2.1.3
+
+Improvements to Juffrou-reflect - added support for virtual properties, i.e. no actual property, but getter and setter methods present.
+
+Advancements towards compatibility between JuffrouBeanWrapper and SpringFramework's BeanWrapperImpl
+
+New in Juffrou 2.1.2
 
 juffrou-reflect Module:
 
