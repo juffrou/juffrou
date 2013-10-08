@@ -75,8 +75,8 @@ import org.xml.sax.InputSource;
 
 /**
  * Spring framework's BeanWrapper implementation using JuffrouBeanWrapper
+ * 
  * @author cemartins
- *
  */
 public class JuffrouSpringBeanWrapper extends JuffrouBeanWrapper implements BeanWrapper {
 
@@ -179,15 +179,22 @@ public class JuffrouSpringBeanWrapper extends JuffrouBeanWrapper implements Bean
 	public Object getPropertyValue(String propertyName) throws BeansException {
 		try {
 			return super.getValue(propertyName);
-		}
-		catch(net.sf.juffrou.reflect.error.InvalidPropertyException e) {
-			throw new org.springframework.beans.InvalidPropertyException(e.getClazz(), e.getPropertyName(), e.getMessage(), e);
+		} catch (net.sf.juffrou.reflect.error.InvalidPropertyException e) {
+			throw new org.springframework.beans.InvalidPropertyException(e.getClazz(), e.getPropertyName(),
+					e.getMessage(), e);
 		}
 	}
 
 	@Override
 	public void setPropertyValue(String propertyName, Object value) throws BeansException {
-		super.setValue(propertyName, value);
+		try {
+			if (value != null && String.class == value.getClass())
+				super.setValueOfString(propertyName, (String) value);
+			else
+				super.setValue(propertyName, value);
+		} catch (IllegalArgumentException e) {
+			throw new TypeMismatchException(value, null, e);
+		}
 	}
 
 	@Override

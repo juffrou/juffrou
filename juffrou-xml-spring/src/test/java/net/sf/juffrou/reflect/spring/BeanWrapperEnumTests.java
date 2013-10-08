@@ -18,6 +18,7 @@ package net.sf.juffrou.reflect.spring;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import net.sf.juffrou.reflect.BeanWrapperContext;
 import net.sf.juffrou.reflect.JuffrouSpringBeanWrapper;
 
 import org.junit.Test;
@@ -35,7 +36,8 @@ public final class BeanWrapperEnumTests {
 	@Test
 	public void testCustomEnum() {
 		GenericBean<?> gb = new GenericBean<Object>();
-		BeanWrapper bw = new JuffrouSpringBeanWrapper(gb);
+		BeanWrapperContext context = BeanWrapperContext.create(GenericBean.class, Object.class);
+		BeanWrapper bw = new JuffrouSpringBeanWrapper(context, gb);
 		bw.setPropertyValue("customEnum", "VALUE_1");
 		assertEquals(CustomEnum.VALUE_1, gb.getCustomEnum());
 	}

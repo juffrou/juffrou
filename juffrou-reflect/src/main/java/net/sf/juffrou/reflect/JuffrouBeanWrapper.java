@@ -358,11 +358,15 @@ public class JuffrouBeanWrapper {
 		if (nestedIndex == -1) {
 			// not a nested property
 			BeanFieldHandler beanFieldHandler = context.getBeanFieldHandler(propertyName);
-			Class<?> paramType = (Class<?>) beanFieldHandler.getType();
+			Class paramType = beanFieldHandler.getType();
 			try {
-				if (paramType.equals(String.class)) {
+				if (paramType == String.class)
 					beanFieldHandler.setValue(this, value);
-				} else {
+				else if (value.isEmpty())
+					beanFieldHandler.setValue(this, null);
+				else if (paramType.isEnum())
+					beanFieldHandler.setValue(this, Enum.valueOf(paramType, value));
+				else {
 					Constructor<?> constructor = paramType.getConstructor(new Class<?>[] { String.class });
 					Object convertedValue = constructor.newInstance(value);
 					beanFieldHandler.setValue(this, convertedValue);
@@ -406,12 +410,14 @@ public class JuffrouBeanWrapper {
 	 */
 	public void setValue(String propertyName, Object value) {
 		if (getBean() == null)
-			createInstance();
+			if (value == null)
+				return;
+			else
+				createInstance();
 		int nestedIndex = propertyName.indexOf('.');
-		if (nestedIndex == -1) {
-			// not a nested property
+		if (nestedIndex == -1)
 			context.getBeanFieldHandler(propertyName).setValue(this, value);
-		} else {
+		else {
 			// its a nested property
 			String thisProperty = propertyName.substring(0, nestedIndex);
 			String nestedProperty = propertyName.substring(nestedIndex + 1);
@@ -421,17 +427,18 @@ public class JuffrouBeanWrapper {
 	}
 
 	/**
-	 * Obtains the JuffrouBeanWrapper corresponding to the bean referred by propertyName.
-	 * If that property references a nested bean, the method will delegate to that nested bean.<br>
-	 * For example <code>getNestedWrapper("prop1.prop2")</code> will ask the bean wrapper on prop1 to return the bean wrapper of prop2.
-	 * If the value of prop1 was originally null, it would also be set to reference the new bean
+	 * Obtains the JuffrouBeanWrapper corresponding to the bean referred by propertyName. If that property references a
+	 * nested bean, the method will delegate to that nested bean.<br>
+	 * For example <code>getNestedWrapper("prop1.prop2")</code> will ask the bean wrapper on prop1 to return the bean
+	 * wrapper of prop2. If the value of prop1 was originally null, it would also be set to reference the new bean
 	 * holding the value of prop2<br>
 	 * For each nested bean referenced in this manner, a nested bean wrapper is automatically created. In the previous
 	 * example, a bean wrapper would be created for the bean referenced by property prop1.<br>
+	 * 
 	 * @param propertyName
 	 *            property name in this bean wrapper or inside a nested bean. It must be of bean type.
 	 * @return JuffrouBeanWrapper instance
-	 * @see {@link #getLocalNestedWrapper(String)} to obtain a bean wrapper corresponding to a non nested property. 
+	 * @see {@link #getLocalNestedWrapper(String)} to obtain a bean wrapper corresponding to a non nested property.
 	 */
 	public JuffrouBeanWrapper getNestedWrapper(String propertyName) {
 		int nestedIndex = propertyName.indexOf('.');
@@ -450,9 +457,10 @@ public class JuffrouBeanWrapper {
 	 * Obtains the BeanWrapper that corresponds to the bean instance of this property type.
 	 * 
 	 * @param thisProperty
-	 *            property name in this bean wrapper. The property type must be another bean and nested properties are not allowed.
+	 *            property name in this bean wrapper. The property type must be another bean and nested properties are
+	 *            not allowed.
 	 * @return JuffrouBeanWrapper instance
-	 * @see {@link #getNestedWrapper(String)} to obtain nested wrappers of nested wrappers. 
+	 * @see {@link #getNestedWrapper(String)} to obtain nested wrappers of nested wrappers.
 	 */
 	public JuffrouBeanWrapper getLocalNestedWrapper(String thisProperty) {
 		JuffrouBeanWrapper nestedWrapper = nestedWrappers.get(thisProperty);
