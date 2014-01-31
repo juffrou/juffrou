@@ -71,7 +71,7 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 		<site>
 			<id>github-pages-site</id>
 			<name>Deployment through GitHub's site deployment plugin</name>
-			<url>file://${project.build.directory}/gh-pages</url>
+			<url>gh-pages</url>
 		</site>
 	</distributionManagement>
 
@@ -127,6 +127,7 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 						<chmod>true</chmod>
 						<inputEncoding>UTF-8</inputEncoding>
 						<outputEncoding>UTF-8</outputEncoding>
+						<skipDeploy>true</skipDeploy>
 					</configuration>
 					<dependencies>
 						<dependency><!-- add support for ssh/scp -->
@@ -143,7 +144,10 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 					<configuration>
 						<message>Creating site for ${project.artifactId}, ${project.version}</message>
 						<merge>true</merge>
-						<outputDirectory>${project.build.directory}/gh-pages</outputDirectory>
+						<outputDirectory>${project.distributionManagement.site.url}</outputDirectory>
+						<!-- 
+						<path>${project.distributionManagement.site.url}</path>
+						 -->
 						<noJekyll>true</noJekyll>
 						<repositoryName>juffrou</repositoryName>
 						<repositoryOwner>cemartins</repositoryOwner>
