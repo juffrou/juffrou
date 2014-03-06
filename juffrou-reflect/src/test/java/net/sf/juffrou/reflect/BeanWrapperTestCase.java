@@ -9,6 +9,7 @@ import net.sf.juffrou.reflect.dom.MyContextBuilder;
 import net.sf.juffrou.reflect.dom.Person;
 import net.sf.juffrou.reflect.dom.PersonCircular;
 import net.sf.juffrou.reflect.dom.Programmer;
+import net.sf.juffrou.reflect.dom.VirtualDomain;
 import net.sf.juffrou.reflect.error.BeanInstanceBuilderException;
 
 import org.junit.Assert;
@@ -253,5 +254,14 @@ public class BeanWrapperTestCase {
 		JuffrouBeanWrapper bw = new JuffrouBeanWrapper(person);
 		Object value = bw.getValue("fullName");
 		Assert.assertEquals("Carlos Martins", value);
+	}
+	
+	@Test
+	public void testVirtualDomain() {
+		JuffrouBeanWrapper bw = new JuffrouBeanWrapper(VirtualDomain.class);
+		bw.setValue("name", "Mr. Smith");
+		bw.setValue("age", Integer.valueOf(2));
+		Object value = bw.getValue("name");
+		value = bw.getValue("age");
 	}
 }

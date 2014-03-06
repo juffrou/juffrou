@@ -43,11 +43,13 @@ public class BeanFieldHandler {
 
 	}
 
-	public BeanFieldHandler(BeanWrapperContext context, Method getterMethod) {
+	public BeanFieldHandler(BeanWrapperContext context, Method getterMethod, Method setterMethod) {
 		this.context = context;
 		this.field = null;
 		this.getter = getterMethod;
-		Type t = getterMethod.getGenericReturnType();
+		this.setter = setterMethod;
+		
+		Type t = getterMethod != null ? getterMethod.getGenericReturnType() : setterMethod.getGenericParameterTypes()[0];
 		if (t instanceof TypeVariable) {
 			t = context.getTypeArgumentsMap().get(t);
 			if(t == null)
@@ -59,7 +61,7 @@ public class BeanFieldHandler {
 		} else {
 			this.ftypeArguments = null;
 		}
-		this.ftype = getterMethod.getReturnType();
+		this.ftype = getterMethod != null ? getterMethod.getReturnType() : setterMethod.getParameterTypes()[0];
 		this.genericType = t;
 
 	}
@@ -149,12 +151,17 @@ public class BeanFieldHandler {
 	}
 
 	public static Method inspectWriteMethod(Class<?> beanClass, String fieldName, Class<?> fieldClass) {
-		Method setterMethod;
 		String name = fieldName;
 		String methodName = "set" + name.substring(0, 1).toUpperCase() + name.substring(1);
 		try {
-			setterMethod = beanClass.getMethod(methodName, fieldClass);
-			return setterMethod;
+			if(fieldClass == null) {
+				for(Method method : beanClass.getMethods())
+					if(method.getName().equals(methodName))
+						return method;
+				throw new ReflectionException("The class " + beanClass.getSimpleName() + " does not have a setter method for the field " + fieldName);
+			}
+			else
+				return beanClass.getMethod(methodName, fieldClass);
 		} catch (NoSuchMethodException e) {
 			
 			// try the boolean "is" pattern
@@ -163,8 +170,7 @@ public class BeanFieldHandler {
 					name = name.substring(2);
 				methodName = "set" + name.substring(0, 1).toUpperCase() + name.substring(1);
 				try {
-					setterMethod = beanClass.getMethod(methodName, fieldClass);
-					return setterMethod;
+					return beanClass.getMethod(methodName, fieldClass);
 				} catch (NoSuchMethodException e1) {
 					throw new ReflectionException("The class " + beanClass.getSimpleName() + " does not have a setter method for the field " + fieldName);
 				}

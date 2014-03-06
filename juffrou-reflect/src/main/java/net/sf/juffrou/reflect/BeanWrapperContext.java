@@ -109,13 +109,24 @@ public class BeanWrapperContext {
 	public BeanFieldHandler getBeanFieldHandler(String propertyName) {
 		BeanFieldHandler bfh = fields.get(propertyName);
 		if (bfh == null) {
+			// try and inspect getter and setter methods anyway
+			Method getter = null;
+			Method setter = null;
 			try {
-				Method getter = BeanFieldHandler.inspectReadMethod(clazz, propertyName, null);
-				bfh = new BeanFieldHandler(this, getter);
-				fields.put(propertyName, bfh);
+				getter = BeanFieldHandler.inspectReadMethod(clazz, propertyName, null);
 			}
 			catch (ReflectionException e) {
-				throw new InvalidPropertyException(clazz, propertyName, e);
+			}
+			try {
+				setter = BeanFieldHandler.inspectWriteMethod(clazz, propertyName, null);
+			}
+			catch (ReflectionException e) {
+			}
+			if(getter == null && setter == null)
+				throw new InvalidPropertyException(clazz, propertyName);
+			else {
+				bfh = new BeanFieldHandler(this, getter, setter);
+				fields.put(propertyName, bfh);
 			}
 		}
 		return bfh;
