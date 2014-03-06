@@ -172,6 +172,7 @@
 				</configuration>
 			</plugin>
 
+			<!-- Old distribution to sourceforge
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>wagon-maven-plugin</artifactId>
@@ -202,6 +203,7 @@
 					<url>${sf.url}${sf.downloads.dir}</url>
 				</configuration>
 			</plugin>
+			 -->
 
 		</plugins>
 	</build>

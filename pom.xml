@@ -13,7 +13,12 @@
 	<name>Juffrou</name>
 	<description>Juffrou stands for Java Utilities Framework For the Rest Of Us and is a collection of useful classes or mini frameworks to help the java developer.
 Checkout the juffrou-reflect module if you are into performant java bean handling. There is also an xml marshaller / unmarshaller which is easy to use and has cool features like the Simplified Marshalling of nested beans.</description>
-	<url>http://juffrou.sf.net</url>
+	<url>http://cemartins.github.io/juffrou</url>
+
+	<organization>
+		<name>Carlos Martins</name>
+		<url>http://martins.dtdns.net/~cemartins</url>
+	</organization>
 
 	<inceptionYear>2011</inceptionYear>
 
@@ -42,15 +47,14 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 	</modules>
 
 	<scm>
-		<connection>scm:git:ssh://cemartins@git.code.sf.net/p/juffrou/code</connection>
-		<developerConnection>scm:git:ssh://cemartins@git.code.sf.net/p/juffrou/code</developerConnection>
-		<url>http://sourceforge.net/p/juffrou/code/ci/master/tree/</url>
-		<tag>juffrou-2.0.9</tag>
+		<connection>scm:git:https://github.com/cemartins/juffrou.git</connection>
+		<developerConnection>scm:git:https://github.com/cemartins/juffrou.git</developerConnection>
+		<url>https://github.com/cemartins/juffrou/</url>
 	</scm>
 
 	<issueManagement>
-		<system>sourceforge</system>
-		<url>https://sourceforge.net/p/juffrou/tickets</url>
+		<system>Github</system>
+		<url>https://github.com/cemartins/juffrou/issues</url>
 	</issueManagement>
 
 	<distributionManagement>
@@ -65,18 +69,21 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
 		</snapshotRepository>
 		<site>
-			<id>juffrou.sf.net</id>
-			<name>Juffrou</name>
-			<url>scp://shell.sourceforge.net/home/project-web/juffrou/htdocs</url>
+			<id>github-pages-site</id>
+			<name>Deployment through GitHub's site deployment plugin</name>
+			<url>gh-pages</url>
 		</site>
 	</distributionManagement>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<reference.aggregate.dir>${project.build.directory}/reference-aggregate</reference.aggregate.dir>
+		<!-- 
 		<sf.url>scp://shell.sourceforge.net</sf.url>
 		<sf.downloads.dir>/home/frs/project/juffrou</sf.downloads.dir>
-		<juffrou.site.url>http://juffrou.sourceforge.net</juffrou.site.url>
+		<juffrou.site.url>http://cemartins.sourceforge.net</juffrou.site.url>
+		 -->
+		<github.global.server>github</github.global.server>
 	</properties>
 
 	<dependencyManagement>
@@ -94,7 +101,7 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 			<dependency>
 				<groupId>net.sf.docbook</groupId>
 				<artifactId>docbook-xsl</artifactId>
-				<version>1.78.0</version>
+				<version>1.78.1</version>
 				<type>zip</type>
 				<classifier>ns-resources</classifier>
 			</dependency>
@@ -107,7 +114,7 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 			<extension>
 				<groupId>org.apache.maven.wagon</groupId>
 				<artifactId>wagon-ssh</artifactId>
-				<version>2.4</version>
+				<version>2.6</version>
 			</extension>
 		</extensions>
 		<pluginManagement>
@@ -120,14 +127,31 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 						<chmod>true</chmod>
 						<inputEncoding>UTF-8</inputEncoding>
 						<outputEncoding>UTF-8</outputEncoding>
+						<skipDeploy>true</skipDeploy>
 					</configuration>
 					<dependencies>
 						<dependency><!-- add support for ssh/scp -->
 							<groupId>org.apache.maven.wagon</groupId>
 							<artifactId>wagon-ssh</artifactId>
-							<version>2.4</version>
+							<version>2.6</version>
 						</dependency>
 					</dependencies>
+				</plugin>
+				<plugin>
+					<groupId>com.github.github</groupId>
+					<artifactId>site-maven-plugin</artifactId>
+					<version>0.9</version>
+					<configuration>
+						<message>Creating site for ${project.artifactId}, ${project.version}</message>
+						<merge>true</merge>
+						<outputDirectory>${project.distributionManagement.site.url}</outputDirectory>
+						<!-- 
+						<path>${project.distributionManagement.site.url}</path>
+						 -->
+						<noJekyll>true</noJekyll>
+						<repositoryName>juffrou</repositoryName>
+						<repositoryOwner>cemartins</repositoryOwner>
+					</configuration>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -168,7 +192,7 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 					<!-- Configuration for the realease plugin -->
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-release-plugin</artifactId>
-					<version>2.4.1</version>
+					<version>2.4.2</version>
 					<configuration>
 						<autoVersionSubmodules>true</autoVersionSubmodules>
 					</configuration>
@@ -176,7 +200,7 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-deploy-plugin</artifactId>
-					<version>2.7</version>
+					<version>2.8.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -189,6 +213,7 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 					<version>1.7</version>
 				</plugin>
 				
+				<!-- 
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>wagon-maven-plugin</artifactId>
@@ -197,10 +222,11 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 						<url>${sf.url}${sf.downloads.dir}</url>
 					</configuration>
 				</plugin>
+				 -->
 				<plugin>
 					<groupId>com.agilejava.docbkx</groupId>
 					<artifactId>docbkx-maven-plugin</artifactId>
-					<version>2.0.14</version>
+					<version>2.0.15</version>
 					<dependencies>
 						<dependency>
 							<groupId>net.sf.docbook</groupId>
@@ -219,7 +245,7 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 						<dependency>
 							<groupId>net.sf.offo</groupId>
 							<artifactId>fop-hyph</artifactId>
-							<version>1.2</version>
+							<version>2.0</version>
 							<scope>runtime</scope>
 						</dependency>
 					</dependencies>
@@ -227,7 +253,7 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 				<plugin>
 					<groupId>com.agilejava.docbkx</groupId>
 					<artifactId>docbkx-fop-support</artifactId>
-					<version>2.0.14</version>
+					<version>2.0.15</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -312,39 +338,52 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 					<dependency>
 						<groupId>org.apache.maven.doxia</groupId>
 						<artifactId>doxia-module-docbook-simple</artifactId>
-						<version>1.4</version>
+						<version>1.5</version>
 					</dependency>
 					<dependency>
 						<groupId>org.apache.maven.wagon</groupId>
 						<artifactId>wagon-scm</artifactId>
-						<version>2.4</version>
+						<version>2.6</version>
 					</dependency>
 					<dependency>
 						<groupId>org.apache.maven.wagon</groupId>
 						<artifactId>wagon-ssh-external</artifactId>
-						<version>2.4</version>
+						<version>2.6</version>
 					</dependency>
 					<dependency>
 						<groupId>org.apache.maven.scm</groupId>
 						<artifactId>maven-scm-manager-plexus</artifactId>
-						<version>1.8</version>
+						<version>1.9</version>
 					</dependency>
 					<dependency>
 						<groupId>org.apache.maven.scm</groupId>
 						<artifactId>maven-scm-api</artifactId>
-						<version>1.8</version>
+						<version>1.9</version>
 					</dependency>
 					<dependency>
 						<groupId>org.apache.maven.scm</groupId>
 						<artifactId>maven-scm-provider-svn-commons</artifactId>
-						<version>1.8</version>
+						<version>1.9</version>
 					</dependency>
 					<dependency>
 						<groupId>org.apache.maven.scm</groupId>
 						<artifactId>maven-scm-provider-svnexe</artifactId>
-						<version>1.8</version>
+						<version>1.9</version>
 					</dependency>
 				</dependencies>
+			</plugin>
+			<plugin>
+				<groupId>com.github.github</groupId>
+				<artifactId>site-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>github_site_deploy</id>
+						<goals>
+							<goal>site</goal>
+						</goals>
+						<phase>site-deploy</phase>
+					</execution>
+				</executions>
 			</plugin>
 
 		</plugins>
