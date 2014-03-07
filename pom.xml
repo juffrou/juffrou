@@ -79,11 +79,6 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<reference.aggregate.dir>${project.build.directory}/reference-aggregate</reference.aggregate.dir>
-		<!-- 
-		<sf.url>scp://shell.sourceforge.net</sf.url>
-		<sf.downloads.dir>/home/frs/project/juffrou</sf.downloads.dir>
-		<juffrou.site.url>http://cemartins.sourceforge.net</juffrou.site.url>
-		 -->
 		<github.global.server>github</github.global.server>
 	</properties>
 
@@ -373,6 +368,7 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 					</dependency>
 				</dependencies>
 			</plugin>
+			<!-- commented temporarily just to perform a release
 			<plugin>
 				<groupId>com.github.github</groupId>
 				<artifactId>site-maven-plugin</artifactId>
@@ -386,6 +382,7 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 					</execution>
 				</executions>
 			</plugin>
+			-->
 
 		</plugins>
 	</build>
