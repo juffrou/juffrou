@@ -116,6 +116,7 @@ public class BeanWrapperTestCase {
 			JuffrouBeanWrapper bw = new JuffrouBeanWrapper(PersonCircular.class);
 			bw.setValue("firstName", "Carlos");
 			bw.setValue("address.street", "Bean street");
+			bw.getValue("address.street");
 		}
 		long stop = System.currentTimeMillis();
 		Long noContext = new Long(stop - start);
@@ -127,6 +128,7 @@ public class BeanWrapperTestCase {
 			JuffrouBeanWrapper bw = new JuffrouBeanWrapper(context);
 			bw.setValue("firstName", "Carlos");
 			bw.setValue("address.street", "Bean street");
+			bw.getValue("address.street");
 		}
 		stop = System.currentTimeMillis();
 		Long withContext = new Long(stop - start);
@@ -137,6 +139,7 @@ public class BeanWrapperTestCase {
 			JuffrouBeanWrapper bw = factory.getBeanWrapper(PersonCircular.class);
 			bw.setValue("firstName", "Carlos");
 			bw.setValue("address.street", "Bean street");
+			bw.getValue("address.street");
 		}
 		stop = System.currentTimeMillis();
 		Long withFactory = new Long(stop - start);

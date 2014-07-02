@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Juffrou Reflect">
+	<body>
+
+		<breadcrumbs>
+			<item name="Juffrou" href="http://juffrou.sourceforge.net/index.html"/>
+			<item name="Reflect" href="http://juffrou.sourceforge.net/juffrou-reflect/index.html"/>
+		</breadcrumbs>
+
+		<menu ref="parent" />
+		
+		<menu name="Juffrou Reflect">
+			<item name="Introduction" href="index.html" />
+			<item name="Reference" href="reflect-reference.html" />
+		</menu>
+		<menu name="Project Documentation">
+			<item name="Javadocs" href="apidocs/index.html" />
+		</menu>
+
+	</body>
+</project>

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://juffrou.sourceforge.net/juffrou-xml" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://juffrou.sourceforge.net/juffrou-xml">
+	<xs:element name="xml">
+		<xs:complexType>
+			<xs:attribute name="id" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="serializer">
+		<xs:complexType>
+			<xs:attribute name="id">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="class">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="ref">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="bean">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="root-element">
+		<xs:complexType>
+			<xs:sequence minOccurs="0">
+				<xs:element ref="xml" minOccurs="0"/>
+				<xs:element ref="serializer" minOccurs="0"/>
+				<xs:element ref="attribute" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="text" minOccurs="0" maxOccurs="1"/>
+				<xs:element ref="element" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attribute name="xml">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="type" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="preferences">
+		<xs:complexType>
+			<xs:sequence maxOccurs="unbounded">
+				<xs:any namespace="##any" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!--  Top-level <beans> tag  -->
+	<xs:element name="mapping">
+		<xs:annotation>
+			<xs:documentation>
+				<![CDATA[Configuration for Juffrou-xml. Contains <root-elements>, <preferences> and <serializer> elements.]]>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence minOccurs="0">
+				<xs:element ref="preferences" minOccurs="0"/>
+				<xs:element ref="serializer" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="root-element" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="attribute">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="xml" minOccurs="0"/>
+				<xs:element ref="serializer" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute name="property" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="xml">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="type">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="text">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="xml" minOccurs="0"/>
+				<xs:element ref="serializer" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute name="property" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="xml">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="type">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="element">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="xml" minOccurs="0"/>
+				<xs:element ref="serializer" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute name="property" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="xml">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="type">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="collectionWithSizeAttribute" type="xs:boolean"/>
+</xs:schema>

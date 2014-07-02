@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book [
+<!ENTITY nbsp " ">
+<!ENTITY juffrou.site.url "http://juffrou.sourceforge.net">
+]>
+<book xmlns="http://docbook.org/ns/docbook" version="5.0"
+	xmlns:xi="http://www.w3.org/2001/XInclude">
+	<title>Juffrou-XML Reference Documentation</title>
+	<subtitle><?eval ${project.version}?></subtitle>
+	<info>
+		<releaseinfo>This document refers to version <?eval ${project.version}?> of the Juffrou-XML.</releaseinfo>
+<legalnotice><para>Copies of this document may be made for your own use and for distribution to others, provided
+that you do not charge any fee for such copies and further provided that each copy contains this
+Copyright Notice, whether distributed in print or electronically.</para></legalnotice>
+		<author>
+			<personname>
+				<firstname>Carlos</firstname>
+				<surname>Martins</surname>
+			</personname>
+		</author>
+	</info>
+	<chapter>
+		<title>Getting Started with Juffrou-XML</title>
+		<section>
+			<title>Introduction</title>
+			<para>Juffrou-XML is an open source java library to marshall beans to xml and back. The objective is to make this simple, logical and flexible.</para>
+			<para>With Juffrou-XML you have simplified marshalling, wich means that you can obtain the XML representation of complex structure of java beans with all its nested beans represented as nested elements, but
+			you can also get a "flattened" XML representation with properties from the root bean and properties from the nested beans in a very simple manner.</para>
+			<para>Enough talk! Let's see how it works:</para>
+		</section>
+		<section>
+			<title>Installing</title>
+			<section>
+				<title>Maven projects</title>
+				<para>To start using Juffrou-XML in your maven project just add the following dependency:
+<programlisting language="xml"><![CDATA[
+<dependency>
+	<groupId>net.sf.juffrou</groupId>
+	<artifactId>juffrou-xml</artifactId>
+	<version>]]><?eval ${project.version}?><![CDATA[</version>
+</dependency>
+]]></programlisting>
+This will allow you access the source code of the library as well as the javadoc files, if you have checked the options "download artifact sources" and "download atifact javadoc in your IDE."
+				</para>
+			</section>
+			<section>
+				<title>Non maven projects</title>
+					<para>Download the file <filename>juffrou-<?eval ${project.version}?>-bundle.zip</filename> from the <ulink url="http://juffrou.sourceforge.net"><citetitle>website</citetitle></ulink> and extract it's contents to a temporary directory.</para>
+					<para>Add <filename>juffrou-reflect-<?eval ${project.version}?>.jar</filename> and <filename>juffrou-xml-<?eval ${project.version}?>.jar</filename> to the classpath of your project and you are good to go.</para>
+			</section>
+			<para>With these libraries in your classpath you can start using juffrou-XML right away:</para>
+<example><title>Marshalling a java bean:</title>
+	<programlisting language="java">
+	Person person = new Person();
+	person.setFirstName("Carlos");
+	person.setLastName("Martins");
+	person.setBirthDay(new SimpleDateFormat("yyyy-MM-dd").parse("1967-10-01"));
+
+	JuffrouXml juffrouXml = new JuffrouXml();
+	String xmlString = juffrouXml.toXml(person);
+	</programlisting>
+<para>The output will be the following XML:</para>
+<programlisting language="xml"><![CDATA[
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<net.sf.juffrou.xml.test.dom.Person>
+	<firstName>Carlos</firstName>
+	<lastName>Martins</lastName>
+	<birthDay>10/1/67 12:00 AM</birthDay>
+</net.sf.juffrou.xml.test.dom.Person>
+]]></programlisting>
+</example>
+<para>Without configuration, the names of root elements will be the class name of the corresponding bean, all its 
+properties will be marshalled and the names of the child elements will be the names of the corresponding property.
+Juffrou-XML is also able to unmarshall the XML text back to a person bean as long as the classes in the 
+root elements are in the program classpath like in the following example:</para>
+<example><title>Unmarshalling from XML to Person:</title>
+<programlisting language="java">
+	Person person = (Person) juffrouXml.fromXml(xmlString);
+</programlisting></example>
+		</section>
+		<section>
+			<title>Configuring Juffrou-XML</title>
+				<para>If you want to change the element names of the beans or how those beans are marshalled / unmarshalled, then you need configuration. Configuration can be done either through direct coding or by means of an XML file.</para>
+				<para>To configure by file you can instantiate Juffrou-XML and pass the file name in the constructor, or you can instantiate Juffrou-XML with the default constructor and then call the readConfigFile method.</para>
+				<example><title>Configuring Juffrou-XML:</title>
+<programlisting language="java"><![CDATA[
+	JuffrouXml juffrouXml = new JuffrouXml("classpath:juffrou-config.xml");
+	
+	JuffrouXml juffrouXml = new JuffrouXml();
+	juffrouXml.readConfigFile("classpath:config-file-one.xml");
+	juffrouXml.readConfigFile("file:/etc/config-file-two.xml");
+]]></programlisting></example>
+		<section><title>Defining root element names</title>
+		<example><title>define root element names through code</title>
+<programlisting language="java"><![CDATA[
+	JuffrouXml juffrouXml = new JuffrouXml();
+	juffrouXml.registerRootElement(Person.class, "Person");
+]]></programlisting>
+		</example>
+		<example><title>Defining root element in configuration file</title>
+<programlisting language="xml"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns="http://juffrou.sourceforge.net/juffrou-xml"
+	xsi:schemaLocation="http://juffrou.sourceforge.net/juffrou-xml 
+	http://juffrou.sourceforge.net/juffrou-xml/schemas/juffrou-xml.xsd">
+
+	<root-element xml="Person" type="net.sf.juffrou.xml.test.dom.Person" />
+	
+</mapping>
+]]></programlisting>
+		</example>
+		<para>The corresponding XML now looks like this:</para>
+<programlisting language="xml"><![CDATA[
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Person>
+	<firstName>Carlos</firstName>
+	<lastName>Martins</lastName>
+	<birthDay>10/1/67 12:00 AM</birthDay>
+</Person>
+]]></programlisting>
+		</section>
+		
+		<section><title>Defining element names</title>
+		<example><title>define element names through code</title>
+<programlisting language="java"><![CDATA[
+	JuffrouXml juffrouXml = new JuffrouXml();
+	juffrouXml.registerElement(Person.class, "lastName", "Surname");
+]]></programlisting>
+		</example>
+		<example><title>Defining element names in configuration file</title>
+<programlisting language="xml"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns="http://juffrou.sourceforge.net/juffrou-xml"
+	xsi:schemaLocation="http://juffrou.sourceforge.net/juffrou-xml 
+	http://juffrou.sourceforge.net/juffrou-xml/schemas/juffrou-xml.xsd">
+
+	<root-element xml="Person" type="net.sf.juffrou.xml.test.dom.Person">
+		<element property="firstName" />
+		<element property="lastName" xml="Surname" />
+		<element property="birthDay" />
+	</root-element>
+	
+</mapping>
+]]></programlisting>
+		</example>
+		<para>The corresponding XML now looks like this:</para>
+<programlisting language="xml"><![CDATA[
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Person>
+	<firstName>Carlos</firstName>
+	<Surname>Martins</Surname>
+	<birthDay>10/1/67 12:00 AM</birthDay>
+</Person>
+]]></programlisting>
+		
+		</section>
+
+		<section><title>Defining attributes</title>
+		<example><title>define attributes through code</title>
+<programlisting language="java"><![CDATA[
+	JuffrouXml juffrouXml = new JuffrouXml();
+	juffrouXml.registerAttribute(Person.class, "firstName", "name");
+]]></programlisting>
+		</example>
+		<example><title>Defining attributes in configuration file</title>
+<programlisting language="xml"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns="http://juffrou.sourceforge.net/juffrou-xml"
+	xsi:schemaLocation="http://juffrou.sourceforge.net/juffrou-xml 
+	http://juffrou.sourceforge.net/juffrou-xml/schemas/juffrou-xml.xsd">
+
+	<root-element xml="Person" type="net.sf.juffrou.xml.test.dom.Person">
+		<attribute property="firstName" xml="name" />
+		<element property="lastName" xml="Surname" />
+		<element property="birthDay" />
+	</root-element>
+	
+</mapping>
+]]></programlisting>
+		</example>
+		<para>The corresponding XML now looks like this:</para>
+<programlisting language="xml"><![CDATA[
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Person name="Carlos">
+	<Surname>Martins</Surname>
+	<birthDay>10/1/67 12:00 AM</birthDay>
+</Person>
+]]></programlisting>
+
+		</section>
+
+		</section>
+	</chapter>
+	<chapter xml:id="xml_ref_chpt_02">
+		<title>More Advanced Stuff</title>
+		<section>
+			<title>Serializers</title>
+			<para>Serializers are the classes responsible for translating bean property values to XML and back. Juffrou-xml comes with serializers for the basic java types, like <literal>String</literal>, <literal>Integer</literal> and <literal>Boolean</literal> for instance. <remark>You can see the complete list of serializers in the javadoc for the package net.sf.juffrou.xml.serializer</remark>.</para>
+			<para>You may want to create your own serializers and tell juffrou to use them. For intance, you may want to have properties of type <literal>Date</literal> displayed in a particular format, so you create a serailizer that knows how to convert between <literal>Date</literal> and that specific format.
+			You can also use serializers to convert between the text in an XML element and a more complex type. For example, in a class called <literal>Person</literal>, with a property <literal>private Address home</literal> you may want to represent <literal>home</literal> as a single text string. In this case you create a serializer that knows how to convert between <literal>Address</literal> and that text string.
+			</para>
+			<para>Creating your own serializer is simple. Just implement the <command>Serializer</command> interface like in the following example:</para>
+<programlisting language="java">
+public class SimpleDateSerializer implements Serializer {
+
+	private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+	
+	@Override
+	public void serialize(JuffrouWriter writer, BeanWrapper valueOwner, 
+			String valuePropertyName) {
+		writer.write(formatter.format((Date)valueOwner.getValue(valuePropertyName)));
+	}
+
+	@Override
+	public void deserialize(JuffrouReader reader, BeanWrapper valueOwner, 
+			String valuePropertyName) {
+		String value = reader.getText();
+		try {
+			valueOwner.setValue(valuePropertyName, formatter.parse(value));
+		} catch (ParseException e) {
+		}
+	}
+}
+</programlisting>
+		<para>Once your serializer class is created, you can use it to translate your beans or bean properties using by configuring through code or mapping file.</para>
+		<example><title>using serializers through code</title>
+<programlisting language="java"><![CDATA[
+	JuffrouXml juffrouXml = new JuffrouXml();
+	juffrouXml.registerSerializer("mySimpleDateSerializer", new SimpleDateSerializer());
+	juffrouXml.registerElement(Person.class, "birthDay", "birthday", "mySimpleDateSerializer");
+]]></programlisting>
+		</example>
+		<example><title>using serializers through configuration file</title>
+		<para>When using a configuration file you can define reusable serializers to share between bean properties or define a serializer that is exlusive to a perticular bean property.</para>
+<programlisting language="xml"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns="http://juffrou.sourceforge.net/juffrou-xml"
+	xsi:schemaLocation="http://juffrou.sourceforge.net/juffrou-xml 
+	http://juffrou.sourceforge.net/juffrou-xml/schemas/juffrou-xml.xsd">
+
+	<serializer id="mySimpleDateSerializer" 
+		class="net.sf.juffrou.xml.test.dom.SimpleDateSerializer"/>
+	
+	<root-element xml="Person" type="net.sf.juffrou.xml.test.dom.Person">
+		<attribute property="firstName" xml="name" />
+		<element property="lastName" xml="Surname">
+			<serializer class="net.sf.juffrou.xml.serializer.StringSerializer"/>
+		</element>
+		<element property="birthDay" xml="birthday">
+			<serializer ref="mySimpleDateSerializer"/>
+		</element>
+	</root-element>
+	
+</mapping>
+]]></programlisting>
+		</example>
+
+		<para>You can define serializers to share between bean properties with <literal>serializer</literal> element in the mapping file:</para>
+<programlisting language="xml"><![CDATA[
+	<serializer id="mySimpleDateSerializer"]]> <co xml:id="srl_id" linkends="l_srl_id" /> <![CDATA[
+		class="net.sf.juffrou.xml.test.dom.SimpleDateSerializer"/>]]>  <co xml:id="srl_classimpl" linkends="l_srl_classimpl" />
+</programlisting>
+<calloutlist>
+  <callout arearefs="srl_id" xml:id="l_srl_id" >
+    <para>Id of the serializer to be referenced by the bean property serializers.</para>
+  </callout>
+  <callout arearefs="srl_classimpl" xml:id="l_srl_classimpl">
+    <para>Class name of the serializer. This class will be instantiated only once and will be shared between the bean properties that reference it.</para>
+  </callout>
+</calloutlist>
+
+		<para>You can define a serializer for a bean property by nesting a <literal>serializer</literal> element like in the above example. Below are all the properties for a property serializer:</para>
+<programlisting language="xml"><![CDATA[
+	<serializer 
+		class="net.sf.juffrou.xml.test.dom.SimpleDateSerializer" ]]> <co xml:id="srl_class" linkends="l_srl_class" /> <![CDATA[
+		ref="mySimpleDateSerializer" ]]> <co xml:id="srl_ref" linkends="l_srl_ref" /> <![CDATA[
+		bean="mySpringBeanSerializer" /> ]]> <co xml:id="srl_bean" linkends="l_srl_bean" />
+</programlisting>
+<calloutlist>
+  <callout arearefs="srl_class" xml:id="l_srl_class" >
+    <para>Class name of the specific serializer class to use. This class will be instantiated and used exclusively for the bean property.</para>
+  </callout>
+  <callout arearefs="srl_ref" xml:id="l_srl_ref">
+    <para>Id of the shared serializer.</para>
+  </callout>
+  <callout arearefs="srl_bean" xml:id="l_srl_bean">
+    <para>Id of a springframework bean which implements <literal>serializer</literal>. This is only valid when using the library <literal>juffrou-xml-spring</literal></para>
+  </callout>
+</calloutlist>
+			
+		</section>
+		<section>
+			<title>Simplified Marshalling</title>
+<para>Simplified marshalling is the possibility of marshalling nested beans into a "flat" XML structure like this: imagine that you don't want the whole home address marshalled for this person. You only want his home city 
+and you want it displayed as it were a simple property of person.</para>
+<para>Easy! All you have to do is this:</para>
+<programlisting language="java">
+	JuffrouXml juffrouXml = new JuffrouXml();
+	juffrouXml.registerRootElement(Person.class, "Person");
+	juffrouXml.registerElement(Person.class, "home.city", "homeTown", null);
+	String xmlString = juffrouXml.toXml(person);
+</programlisting>
+<para>The output will now be:</para>
+<programlisting language="xml"><![CDATA[
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Person>
+  <firstName>Carlos</firstName>
+  <lastName>Martins</lastName>
+  <birthDay>1967-10-01</birthDay>
+  <homeTown>Lisboa</homeTown>
+</Person>
+]]></programlisting>
+<para>Of course this XML will also be unmarshalled back to a person object. That person object will have a home with city Lisboa.</para>
+		</section>
+	</chapter>
+</book>

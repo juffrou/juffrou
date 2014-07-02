@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book [
+<!ENTITY nbsp " ">
+<!ENTITY juffrou.site.url "http://juffrou.sourceforge.net">
+]>
+<book xmlns="http://docbook.org/ns/docbook" version="5.0"
+	xmlns:xi="http://www.w3.org/2001/XInclude">
+	<title>Juffrou-XML-Spring Reference Documentation</title>
+	<subtitle><?eval ${project.version}?></subtitle>
+	<info>
+		<releaseinfo>This document refers to version <?eval ${project.version}?> of the Juffrou-XML-Spring.</releaseinfo>
+<legalnotice><para>Copies of this document may be made for your own use and for distribution to others, provided
+that you do not charge any fee for such copies and further provided that each copy contains this
+Copyright Notice, whether distributed in print or electronically.</para></legalnotice>
+		<author>
+			<personname>
+				<firstname>Carlos</firstname>
+				<surname>Martins</surname>
+			</personname>
+		</author>
+	</info>
+	<chapter xml:id="spring_ref_chpt_01">
+		<title>Getting Started with Juffrou-XML-Spring</title>
+		<section>
+			<title>Introduction</title>
+			<para>Juffrou-XML-Spring is the implementation of springframework's (spring-oxm) Marshaller and Unmarshaller interfaces using Juffrou-XML.</para>
+		</section>
+		<section>
+			<title>Installing</title>
+			<section>
+				<title>Maven projects</title>
+				<para>To start using Juffrou-XML in your maven project just add the following dependency:
+<programlisting language="xml"><![CDATA[
+<dependency>
+	<groupId>net.sf.juffrou</groupId>
+	<artifactId>juffrou-xml-spring</artifactId>
+	<version>]]><?eval ${project.version}?><![CDATA[</version>
+</dependency>
+]]></programlisting>
+This will allow you access the source code of the library as well as the javadoc files, if you have checked the options "download artifact sources" and "download atifact javadoc in your IDE."
+				</para>
+			</section>
+			<section>
+				<title>Non maven projects</title>
+					<para>Download the file <filename>juffrou-<?eval ${project.version}?>-bundle.zip</filename> from the <ulink url="http://juffrou.sourceforge.net"><citetitle>website</citetitle></ulink> and extract it's contents to a temporary directory.</para>
+					<para>Add <filename>juffrou-reflect-<?eval ${project.version}?>.jar</filename>, <filename>juffrou-xml-<?eval ${project.version}?>.jar</filename> and <filename>juffrou-xml-spring-<?eval ${project.version}?>.jar</filename> to the classpath of your project and you are good to go.</para>
+			</section>
+		</section>
+		<section>
+			<title>Configuring Juffrou-XML though Spring</title>
+				<para>In a spring application context, Juffrou-XML is a bean and can be configured like any other bean in spring.</para>
+				<example><title>Juffrou-XML Spring Configuration</title>
+<programlisting language="xml"><![CDATA[
+    <bean id="marshaller" class="net.sf.juffrou.xml.JuffrouXmlSpring">
+    	<property name="mappingLocations">
+    		<list>
+    			<value>classpath:/net/sf/juffrou/**/*-xml-mapping.xml</value>
+    			<value>file:${CONFIG_LOCATION}/juffrou-xml/**/*-xml-mapping.xml</value>
+    		</list>
+    	</property>
+    </bean>
+]]></programlisting></example>
+			<para>In the above example spring tells juffrou-xml to load its configuration from several mapping files.</para>
+		<section><title>Defining serializers as spring beans</title>
+		<para>Serializers may be used to convert between the text in an XML element and a complex type. With juffrou-xml-spring you can define your serializers as java beans and thus take advantage of spring's dependency injection mechanism.</para>
+		<para>For example purposes lets consider the <literal>SimpleDateSerializer</literal> from the spring-xml reference. First we would define the serializer bean:</para>
+<programlisting language="xml"><![CDATA[
+	<bean id="mySimpleDateSerializerBean" class="net.sf.juffrou.xml.test.dom.SimpleDateSerializer">
+
+    <bean id="marshaller" class="net.sf.juffrou.xml.JuffrouMarshaller">
+    	<property name="mappingLocations">
+    		<list>
+    			<value>classpath:/net/sf/juffrou/**/*-xml-mapping.xml</value>
+    			<value>file:${CONFIG_LOCATION}/juffrou-xml/**/*-xml-mapping.xml</value>
+    		</list>
+    	</property>
+    </bean>
+]]></programlisting>
+		<para>To use this serializer bean in juffrou-xml you would configure the configuration mapping like the following example:</para>
+<programlisting language="xml"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns="http://juffrou.sourceforge.net/juffrou-xml"
+	xsi:schemaLocation="http://juffrou.sourceforge.net/juffrou-xml 
+	http://juffrou.sourceforge.net/juffrou-xml/schemas/juffrou-xml.xsd">
+
+	<root-element xml="Person" type="net.sf.juffrou.xml.test.dom.Person">
+		<attribute property="firstName" xml="name" />
+		<element property="lastName" xml="Surname" />
+		<element property="birthDay" xml="birthday">
+			<serializer bean="mySimpleDateSerializerBean"/>
+		</element>
+	</root-element>
+	
+</mapping>
+]]></programlisting>
+		</section>
+		</section>
+	</chapter>
+</book>
