@@ -37,8 +37,8 @@ public class BeanConverter<T1, T2> {
 	
 	/**
 	 * Get bean 1 from an instance of bean 2
-	 * @param bean2
-	 * @return
+	 * @param bean2 instance of bean 2
+	 * @return instance of bean 1
 	 */
 	public T1 getBean1(T2 bean2) {
 		bw1.setBean(null);
@@ -51,8 +51,8 @@ public class BeanConverter<T1, T2> {
 	
 	/**
 	 * Get bean 2 from an instance of bean 1
-	 * @param bean1
-	 * @return
+	 * @param bean1 instance of bean 1
+	 * @return instance of bean 2
 	 */
 	public T2 getBean2(T1 bean1) {
 		bw2.setBean(null);

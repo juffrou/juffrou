@@ -15,8 +15,8 @@ public interface BeanContextBuilder {
 	 * @param bwFactory
 	 * @param clazz
 	 * @param types
-	 * @return
+	 * @return a bean wrapper context with bean metadata
 	 */
 	@SuppressWarnings("rawtypes")
-	public BeanWrapperContext build(CustomizableBeanWrapperFactory bwFactory, Class clazz, Type...types);
+	BeanWrapperContext build(CustomizableBeanWrapperFactory bwFactory, Class clazz, Type...types);
 }

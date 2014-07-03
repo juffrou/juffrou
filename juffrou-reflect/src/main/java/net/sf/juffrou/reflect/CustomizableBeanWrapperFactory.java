@@ -9,9 +9,10 @@ import net.sf.juffrou.reflect.internal.DefaultBeanInstanceCreator;
 /**
  * This class is responsible for creating and caching BeanWrapperContexts.
  * <p>
- * A BeanWrapper uses the same BeanWrapperFactory to create the BeanWrapperContexts for its nested BeanWrappers.
- * BeanWrapperFactory can also be used as an umbrella to create BeanWrappers in a more performant way as it caches the
- * introspection information and re-uses it whenever possible.
+ * A BeanWrapper uses the same BeanWrapperFactory to create the
+ * BeanWrapperContexts for its nested BeanWrappers. BeanWrapperFactory can also
+ * be used as an umbrella to create BeanWrappers in a more performant way as it
+ * caches the introspection information and re-uses it whenever possible.
  * 
  * @author cemartins
  */
@@ -30,8 +31,8 @@ public class CustomizableBeanWrapperFactory implements BeanWrapperFactory {
 	 * 
 	 * @param clazz
 	 *            the bean class to inspect
-	 * @return a BeanWrapperContext with introspection information about the specified class.
-	 * @see {@link #getBeanWrapperContext(Class, Type...)}
+	 * @return a BeanWrapperContext with introspection information about the
+	 *         specified class.
 	 */
 	@Override
 	public BeanWrapperContext getBeanWrapperContext(Class clazz) {
@@ -39,7 +40,8 @@ public class CustomizableBeanWrapperFactory implements BeanWrapperFactory {
 	}
 
 	/**
-	 * Retrieves a BeanWrapperContext for a parameterized (generic) java bean class.
+	 * Retrieves a BeanWrapperContext for a parameterized (generic) java bean
+	 * class.
 	 * <p>
 	 * If the BeanWrapperContext is not in cache then creates a new one.
 	 * 
@@ -47,7 +49,8 @@ public class CustomizableBeanWrapperFactory implements BeanWrapperFactory {
 	 *            the generic bean class to inspect.
 	 * @param types
 	 *            the parameters that defined the generic bean class.
-	 * @return a BeanWrapperContext with introspection information about the specified class.
+	 * @return a BeanWrapperContext with introspection information about the
+	 *         specified class.
 	 */
 	@Override
 	public BeanWrapperContext getBeanWrapperContext(Class clazz, Type... types) {
@@ -62,7 +65,8 @@ public class CustomizableBeanWrapperFactory implements BeanWrapperFactory {
 	/**
 	 * Construct a bean wrapper around a class.
 	 * <p>
-	 * Bean instances will be instances of that class and will be created only when necessary.<br>
+	 * Bean instances will be instances of that class and will be created only
+	 * when necessary.<br>
 	 * Try to use a cached BeanWrapperContext to save introspection time.
 	 * 
 	 * @param clazz
@@ -83,7 +87,8 @@ public class CustomizableBeanWrapperFactory implements BeanWrapperFactory {
 	 */
 	@Override
 	public JuffrouBeanWrapper getBeanWrapper(Object instance) {
-		return new JuffrouBeanWrapper(getBeanWrapperContext(instance.getClass(), null), instance);
+		return new JuffrouBeanWrapper(getBeanWrapperContext(
+				instance.getClass(), null), instance);
 	}
 
 	@Override
@@ -96,8 +101,9 @@ public class CustomizableBeanWrapperFactory implements BeanWrapperFactory {
 	/**
 	 * Control the instantiation of beans and wrapped beans.
 	 * <p>
-	 * The bean wrapper creates new instances using Class.newIntance() by default. You can use this this if you want to
-	 * create class instances yourself.
+	 * The bean wrapper creates new instances using Class.newIntance() by
+	 * default. You can use this this if you want to create class instances
+	 * yourself.
 	 * 
 	 * @param beanInstanceBuilder
 	 */
@@ -114,19 +120,24 @@ public class CustomizableBeanWrapperFactory implements BeanWrapperFactory {
 	/**
 	 * Control the creation of BeanWrapperContexts.
 	 * <p>
-	 * Provide a custom BeanContextBuilder that will instantiate your custom BeanWrapperContext. This way you can extend
-	 * the BeanWrapperContext class and attach more information to a bean.
+	 * Provide a custom BeanContextBuilder that will instantiate your custom
+	 * BeanWrapperContext. This way you can extend the BeanWrapperContext class
+	 * and attach more information to a bean.
 	 * 
 	 * @param beanContextBuilder
+	 *            an instance of BeanContextBuilder to be called when a new bean
+	 *            instance is required
 	 */
 	public void setBeanContextBuilder(BeanContextBuilder beanContextBuilder) {
 		this.beanContextCreator = beanContextBuilder;
 	}
 
-	private static class DefaultBeanContextCreator implements BeanContextBuilder {
+	private static class DefaultBeanContextCreator implements
+			BeanContextBuilder {
 
 		@Override
-		public BeanWrapperContext build(CustomizableBeanWrapperFactory factory, Class clazz, Type... types) {
+		public BeanWrapperContext build(CustomizableBeanWrapperFactory factory,
+				Class clazz, Type... types) {
 			return new BeanWrapperContext(factory, clazz, types);
 		}
 

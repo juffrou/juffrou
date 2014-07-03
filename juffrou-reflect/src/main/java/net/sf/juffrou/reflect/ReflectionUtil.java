@@ -172,7 +172,7 @@ public final class ReflectionUtil {
 	 * Properties with null values are not put in the map.
 	 * @param bean The bean to transform
 	 * @return a Map with keys and values corresponding to the bean.
-	 * @see {@link #getMapFromBean(CustomizableBeanWrapperFactory factory, Object bean)} for increased performance.
+	 * @see #getMapFromBean(CustomizableBeanWrapperFactory factory, Object bean) for increased performance.
 	 */
 	public static Map<String, Object> getMapFromBean(Object bean) {
 		return getMapFromBean(new CustomizableBeanWrapperFactory(), bean);
@@ -185,7 +185,7 @@ public final class ReflectionUtil {
 	 * @param factory a BeanWrapperFactory instance to cache introspection information. Increases performance if re-used.
 	 * @param bean The bean to transform
 	 * @return a Map with keys and values corresponding to the bean.
-	 * @see {@link #getBeanFromMap(CustomizableBeanWrapperFactory, Map, Object)}
+	 * @see #getBeanFromMap(CustomizableBeanWrapperFactory, Map, Object)
 	 */
 	public static Map<String, Object> getMapFromBean(CustomizableBeanWrapperFactory factory, Object bean) {
 		Map<String, Object> beanMap = new HashMap<String, Object>();
@@ -217,7 +217,7 @@ public final class ReflectionUtil {
 	 * Fill up a java bean with the contents of a map where the keys are property names.
 	 * @param beanMap Map with property names and values
 	 * @param bean bean instance to fill up
-	 * @see {@link #getBeanFromMap(CustomizableBeanWrapperFactory, Map, Object)} for increased performance.
+	 * @see #getBeanFromMap(CustomizableBeanWrapperFactory, Map, Object) for increased performance.
 	 */
 	public static void getBeanFromMap(Map<String, Object> beanMap, Object bean) {
 		getBeanFromMap(new CustomizableBeanWrapperFactory(), beanMap, bean);

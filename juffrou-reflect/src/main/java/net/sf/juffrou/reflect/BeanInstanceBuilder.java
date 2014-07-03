@@ -4,8 +4,8 @@ import net.sf.juffrou.reflect.error.BeanInstanceBuilderException;
 
 /**
  * Used by the {@link BeanWrapperContext#newBeanInstance()} to instantiate the wrapped bean when necessary.<br>
- * Implement this interface and {@link BeanWrapperContext#setBeanInstanceCreator(BeanInstanceCreator)} to handle
- * bean instatiation.
+ * Implement this interface and {@link CustomizableBeanWrapperFactory#setBeanInstanceBuilder(BeanInstanceBuilder)} to handle
+ * bean instantiation.
  * @author cemartins
  */
 public interface BeanInstanceBuilder {

@@ -12,7 +12,6 @@ public interface BeanWrapperFactory {
 	 * @param clazz
 	 *            the bean class to inspect
 	 * @return a BeanWrapperContext with introspection information about the specified class.
-	 * @see {@link #getBeanWrapperContext(Class, Type...)}
 	 */
 	BeanWrapperContext getBeanWrapperContext(Class clazz);
 

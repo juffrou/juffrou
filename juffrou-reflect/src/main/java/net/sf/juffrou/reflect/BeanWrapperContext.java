@@ -90,7 +90,7 @@ public class BeanWrapperContext {
 	 * 
 	 * @param thisProperty
 	 *            property name in this bean wrapper context (bean class). It must be of bean type.
-	 * @return
+	 * @return a bean wrapper context with bean metadata
 	 */
 	public BeanWrapperContext getNestedContext(String thisProperty, Object propertyValue) {
 		Type propertyType;
@@ -141,7 +141,7 @@ public class BeanWrapperContext {
 	 * example, a bean wrapper would be created for the bean referenced by property prop1.<br>
 	 * 
 	 * @param propertyName
-	 * @return
+	 * @return the type of the specified property
 	 */
 	public Type getType(String propertyName) {
 		int nestedIndex = propertyName.indexOf('.');
@@ -159,7 +159,7 @@ public class BeanWrapperContext {
 	/**
 	 * Get the wrapped bean class
 	 * 
-	 * @return
+	 * @return the class of the wrapped bean
 	 */
 	public Class<?> getBeanClass() {
 		return clazz;

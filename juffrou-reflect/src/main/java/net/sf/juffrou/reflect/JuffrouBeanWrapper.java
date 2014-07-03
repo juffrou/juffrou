@@ -88,7 +88,7 @@ public class JuffrouBeanWrapper {
 	 * Construct a bean wrapper around an existing bean instance.<br>
 	 * This constructor will have to create a BeanWrapperContext to get
 	 * introspection metadata. You can use
-	 * {@link #BeanWrapper(BeanWrapperContext, Object)} instead.
+	 * {@link #JuffrouBeanWrapper(BeanWrapperContext, Object)} instead.
 	 * 
 	 * @param instance
 	 */
@@ -104,7 +104,7 @@ public class JuffrouBeanWrapper {
 	 * of that class.<br>
 	 * This constructor will have to create a BeanWrapperContext to get
 	 * introspection metadata. You can use
-	 * {@link #BeanWrapper(BeanWrapperContext, Object)} instead.
+	 * {@link #JuffrouBeanWrapper(BeanWrapperContext, Object)} instead.
 	 * 
 	 * @param clazz
 	 *            class to instantiate the wrapped bean
@@ -208,7 +208,7 @@ public class JuffrouBeanWrapper {
 	/**
 	 * Get the wrapped bean class
 	 * 
-	 * @return
+	 * @return the class of the wrapped object
 	 */
 	public Class<?> getBeanClass() {
 		return context.getBeanClass();
@@ -238,8 +238,8 @@ public class JuffrouBeanWrapper {
 	 * automatically created. In the previous example, a bean wrapper would be
 	 * created for the bean referenced by property prop1.<br>
 	 * 
-	 * @param propertyName
-	 * @return
+	 * @param propertyName property name to search for
+	 * @return true if the bean has a property with the specified property name
 	 */
 	public boolean hasProperty(String propertyName) {
 
@@ -320,8 +320,8 @@ public class JuffrouBeanWrapper {
 	 * automatically created. In the previous example, a bean wrapper would be
 	 * created for the bean referenced by property prop1.<br>
 	 * 
-	 * @param propertyName
-	 * @return
+	 * @param propertyName the property name to search
+	 * @return the class of the object referenced by the specified property
 	 */
 	public Class<?> getClazz(String propertyName) {
 		return ReflectionUtil.getClass(getType(propertyName));
@@ -337,8 +337,8 @@ public class JuffrouBeanWrapper {
 	 * automatically created. In the previous example, a bean wrapper would be
 	 * created for the bean referenced by property prop1.<br>
 	 * 
-	 * @param propertyName
-	 * @return
+	 * @param propertyName the property name
+	 * @return the type of the object referenced by the specified property
 	 */
 	public Type getType(String propertyName) {
 		int nestedIndex = propertyName.indexOf('.');
@@ -363,17 +363,17 @@ public class JuffrouBeanWrapper {
 	}
 
 	/**
-	 * Gets the type of a property in the wrapped bean. If that property
+	 * Gets the type arguments of a property in the wrapped bean. If that property
 	 * references another bean (a nested bean) Its property types can also be
 	 * obtained by specifying a property path.<br>
-	 * For example <code>getType("pro1.prop2")</code> will get the type of prop2
+	 * For example <code>getTypeArguments("pro1.prop2")</code> will get the type arguments of prop2
 	 * from the nested bean referenced by prop1.<br>
 	 * For each nested bean referenced in this manner, a nested bean wrapper is
 	 * automatically created. In the previous example, a bean wrapper would be
 	 * created for the bean referenced by property prop1.<br>
 	 * 
-	 * @param propertyName
-	 * @return
+	 * @param propertyName the property name
+	 * @return an array of types
 	 */
 	public Type[] getTypeArguments(String propertyName) {
 		int nestedIndex = propertyName.indexOf('.');
@@ -389,17 +389,17 @@ public class JuffrouBeanWrapper {
 	}
 
 	/**
-	 * Gets the type of a property in the wrapped bean. If that property
-	 * references another bean (a nested bean) Its property types can also be
+	 * Gets the field of a property in the wrapped bean. If that property
+	 * references another bean (a nested bean) Its property field can also be
 	 * obtained by specifying a property path.<br>
-	 * For example <code>getType("pro1.prop2")</code> will get the type of prop2
+	 * For example <code>getField("pro1.prop2")</code> will get the field of prop2
 	 * from the nested bean referenced by prop1.<br>
 	 * For each nested bean referenced in this manner, a nested bean wrapper is
 	 * automatically created. In the previous example, a bean wrapper would be
 	 * created for the bean referenced by property prop1.<br>
 	 * 
-	 * @param propertyName
-	 * @return
+	 * @param propertyName the property
+	 * @return the field which represents the specified bean property
 	 */
 	public Field getField(String propertyName) {
 		int nestedIndex = propertyName.indexOf('.');
@@ -522,7 +522,7 @@ public class JuffrouBeanWrapper {
 	 *            property name in this bean wrapper or inside a nested bean. It
 	 *            must be of bean type.
 	 * @return JuffrouBeanWrapper instance
-	 * @see {@link #getLocalNestedWrapper(String)} to obtain a bean wrapper
+	 * @see #getLocalNestedWrapper(String) to obtain a bean wrapper
 	 *      corresponding to a non nested property.
 	 */
 	public JuffrouBeanWrapper getNestedWrapper(String propertyName) {
@@ -546,7 +546,7 @@ public class JuffrouBeanWrapper {
 	 *            property name in this bean wrapper. The property type must be
 	 *            another bean and nested properties are not allowed.
 	 * @return JuffrouBeanWrapper instance
-	 * @see {@link #getNestedWrapper(String)} to obtain nested wrappers of
+	 * @see #getNestedWrapper(String) to obtain nested wrappers of
 	 *      nested wrappers.
 	 */
 	public JuffrouBeanWrapper getLocalNestedWrapper(String thisProperty) {
