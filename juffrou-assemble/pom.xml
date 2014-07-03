@@ -143,15 +143,15 @@
 						<goals>
 							<goal>run</goal>
 						</goals>
+						<configuration>
+							<failOnError>true</failOnError>
+							<target>
+								<copy file="${project.build.directory}/reference-manual.pdf" toDir="${project.build.directory}/site" />
+								<copy file="${basedir}/src/resources/README.txt" toDir="${project.build.directory}" />
+							</target>
+						</configuration>
 					</execution>
 				</executions>
-				<configuration>
-					<failOnError>true</failOnError>
-					<target>
-						<copy file="${project.build.directory}/reference-manual.pdf" toDir="${project.build.directory}/site" />
-						<copy file="${basedir}/src/resources/README.txt" toDir="${project.build.directory}" />
-					</target>
-				</configuration>
 			</plugin>
 
 			<plugin>

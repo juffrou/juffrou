@@ -402,7 +402,7 @@ public class JuffrouSpringBeanWrapper extends JuffrouBeanWrapper implements Bean
 	 * @param requiredType
 	 *            type of the property
 	 * @return the default editor, or <code>null</code> if none found
-	 * @see #registerDefaultEditors
+	 * @see #registerCustomEditor(Class, PropertyEditor)
 	 */
 	public PropertyEditor getDefaultEditor(Class<?> requiredType) {
 		if (!this.defaultEditorsActive) {

@@ -50,8 +50,8 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 		<connection>scm:git:https://github.com/cemartins/juffrou.git</connection>
 		<developerConnection>scm:git:https://github.com/cemartins/juffrou.git</developerConnection>
 		<url>https://github.com/cemartins/juffrou/</url>
-	  <tag>HEAD</tag>
-  </scm>
+		<tag>HEAD</tag>
+	</scm>
 
 	<issueManagement>
 		<system>Github</system>
@@ -72,14 +72,12 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 		<site>
 			<id>github-pages-site</id>
 			<name>Deployment through GitHub's site deployment plugin</name>
-			<url>gh-pages</url>
+			<url>file:${site.deploy.dir}</url>
 		</site>
 	</distributionManagement>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<reference.aggregate.dir>${project.build.directory}/reference-aggregate</reference.aggregate.dir>
-		<github.global.server>github</github.global.server>
 	</properties>
 
 	<dependencyManagement>
@@ -123,7 +121,9 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 						<chmod>true</chmod>
 						<inputEncoding>UTF-8</inputEncoding>
 						<outputEncoding>UTF-8</outputEncoding>
+						<!-- 
 						<skipDeploy>true</skipDeploy>
+						 -->
 					</configuration>
 					<dependencies>
 						<dependency><!-- add support for ssh/scp -->
@@ -368,7 +368,27 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 					</dependency>
 				</dependencies>
 			</plugin>
-			<!-- commented temporarily just to perform a release
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>ant_copy_site</id>
+						<goals>
+							<goal>site</goal>
+						</goals>
+						<phase>post-site</phase>
+						<configuration>
+							<target>
+								<delete dir="${project.build.directory}/site" />
+								<copy todir="${project.build.directory}/site">
+		                            <fileset dir="${site.deploy.dir}" />
+		                        </copy>
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>com.github.github</groupId>
 				<artifactId>site-maven-plugin</artifactId>
@@ -379,11 +399,14 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 							<goal>site</goal>
 						</goals>
 						<phase>site-deploy</phase>
+						<!-- 
+						<configuration>
+							<outputDirectory>${site.deploy.dir}</outputDirectory>
+						</configuration>
+						 -->
 					</execution>
 				</executions>
 			</plugin>
-			-->
-
 		</plugins>
 	</build>
 
@@ -414,6 +437,7 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 			</activation>
 			<properties>
 				<javadoc-executable-path>/usr/bin/javadoc</javadoc-executable-path>
+				<site.deploy.dir>/tmp/deploy</site.deploy.dir>
 			</properties>
 		</profile>
 		<profile>
@@ -425,6 +449,7 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 			</activation>
 			<properties>
 				<javadoc-executable-path>${env.JAVA_HOME}/bin/javadoc</javadoc-executable-path>
+				<site.deploy.dir>/C:/tmp/deploy</site.deploy.dir>
 			</properties>
 		</profile>
 		<profile>
