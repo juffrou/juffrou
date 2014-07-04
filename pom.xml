@@ -368,14 +368,16 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 					</dependency>
 				</dependencies>
 			</plugin>
+			<!-- 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
+				<inherited>false</inherited>
 				<executions>
 					<execution>
 						<id>ant_copy_site</id>
 						<goals>
-							<goal>site</goal>
+							<goal>run</goal>
 						</goals>
 						<phase>post-site</phase>
 						<configuration>
@@ -392,6 +394,7 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 			<plugin>
 				<groupId>com.github.github</groupId>
 				<artifactId>site-maven-plugin</artifactId>
+				<inherited>false</inherited>
 				<executions>
 					<execution>
 						<id>github_site_deploy</id>
@@ -399,14 +402,13 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 							<goal>site</goal>
 						</goals>
 						<phase>site-deploy</phase>
-						<!-- 
 						<configuration>
 							<outputDirectory>${site.deploy.dir}</outputDirectory>
 						</configuration>
-						 -->
 					</execution>
 				</executions>
 			</plugin>
+			 -->
 		</plugins>
 	</build>
 
