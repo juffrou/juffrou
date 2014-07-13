@@ -7,6 +7,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -15,6 +16,7 @@ import net.sf.juffrou.reflect.error.BeanInstanceBuilderException;
 import net.sf.juffrou.reflect.error.CannotWrapInterfaceException;
 import net.sf.juffrou.reflect.error.InvalidPropertyException;
 import net.sf.juffrou.reflect.error.ReflectionException;
+import net.sf.juffrou.reflect.internal.BeanCollectionFieldHandler;
 import net.sf.juffrou.reflect.internal.BeanFieldHandler;
 
 /**
@@ -81,7 +83,10 @@ public class BeanWrapperContext {
 		}
 		for (Field f : clazz.getDeclaredFields()) {
 			if (!Modifier.isStatic(f.getModifiers()))
-				fs.put(f.getName(), new BeanFieldHandler(this, f));
+				if (Collection.class.isAssignableFrom(f.getType()))
+					fs.put(f.getName(), new BeanCollectionFieldHandler(this, f));
+				else
+					fs.put(f.getName(), new BeanFieldHandler(this, f));
 		}
 	}
 

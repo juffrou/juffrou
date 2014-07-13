@@ -2,6 +2,7 @@ package net.sf.juffrou.reflect;
 
 import java.lang.reflect.Type;
 
+import net.sf.juffrou.reflect.dom.Address;
 import net.sf.juffrou.reflect.dom.BooleanHolder;
 import net.sf.juffrou.reflect.dom.Country;
 import net.sf.juffrou.reflect.dom.MyBeanWrapperContext;
@@ -20,7 +21,7 @@ public class BeanWrapperTestCase {
 
 	@Test
 	public void testNestedBeanIntrospection() {
-		String[] expectedPropertyNames = new String[] { "firstName", "lastName", "birthDay", "home", "specialization" };
+		String[] expectedPropertyNames = new String[] { "firstName", "lastName", "birthDay", "home", "otherAddresses", "specialization" };
 		BeanWrapperContext context = BeanWrapperContext.create(Programmer.class);
 		Programmer programmer = new Programmer();
 		JuffrouBeanWrapper bw = new JuffrouBeanWrapper(context, programmer);
@@ -267,4 +268,28 @@ public class BeanWrapperTestCase {
 		Object value = bw.getValue("name");
 		value = bw.getValue("age");
 	}
+	
+	@Test
+	public void testAddElementToCollectionField() {
+		Address address = new Address();
+		address.setStreet("Super Street");
+		address.setTown("Super Town");
+		JuffrouBeanWrapper bw = new JuffrouBeanWrapper(Person.class);
+		bw.addElement("otherAddresses", address);
+		Person person = (Person) bw.getBean();
+		Assert.assertEquals(1, person.getOtherAddresses().size());
+	}
+
+	@Test
+	public void testRemoveElementFromCollectionField() {
+		Address address = new Address();
+		address.setStreet("Super Street");
+		address.setTown("Super Town");
+		Person person = new Person();
+		person.addAddress(address);
+		JuffrouBeanWrapper bw = new JuffrouBeanWrapper(person);
+		bw.removeElement("otherAddresses", address);
+		Assert.assertEquals(0, person.getOtherAddresses().size());
+	}
+
 }

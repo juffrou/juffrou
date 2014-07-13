@@ -1,6 +1,8 @@
 package net.sf.juffrou.reflect.dom;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Person {
 
@@ -8,6 +10,7 @@ public class Person {
 	private String lastName;
 	private Date birthDay;
 	private Address home;
+	private List<Address> otherAddresses;
 	
 	
 	public String getFirstName() {
@@ -37,5 +40,19 @@ public class Person {
 	public void setHome(Address home) {
 		this.home = home;
 	}
-	
+	public List<Address> getOtherAddresses() {
+		return otherAddresses;
+	}
+	public void setOtherAddresses(List<Address> otherAddresses) {
+		this.otherAddresses = otherAddresses;
+	}
+	public void addAddress(Address address) {
+		if(otherAddresses == null)
+			otherAddresses = new ArrayList<Address>();
+		otherAddresses.add(address);
+	}
+	public void removeAddress(Address address) {
+		if(otherAddresses != null)
+			otherAddresses.remove(address);
+	}
 }

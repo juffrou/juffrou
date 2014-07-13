@@ -33,6 +33,7 @@ public class DefaultBeanWrapperFactory implements BeanWrapperFactory {
 	 *            the bean class to inspect
 	 * @return a BeanWrapperContext with introspection information about the specified class.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Override
 	public BeanWrapperContext getBeanWrapperContext(Class clazz) {
 		return getBeanWrapperContext(clazz, null);

@@ -10,7 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.sf.juffrou.reflect.error.NonCollectionPropertyException;
 import net.sf.juffrou.reflect.error.ReflectionException;
+import net.sf.juffrou.reflect.internal.BeanCollectionFieldHandler;
 import net.sf.juffrou.reflect.internal.BeanFieldHandler;
 
 /**
@@ -503,6 +505,72 @@ public class JuffrouBeanWrapper {
 			String nestedProperty = propertyName.substring(nestedIndex + 1);
 			JuffrouBeanWrapper nestedWrapper = getLocalNestedWrapper(thisProperty);
 			nestedWrapper.setValue(nestedProperty, value);
+		}
+	}
+	
+	/**
+	 * Add an element to a collection property.<p>
+	 * The collection must be a parameterized collection, for example {@code List<ElementBean>}.<br>
+	 * This method will first try to find an add method in the bean that has the collection with the pattern {@code addElementBean(ElementBean arg)}. 
+	 * If no such method is found then the element will be added directly to the collection field using the {@code Collection.add} method.
+	 * @param propertyName name of the collection type property. Can be a nested property path.
+	 * @param value element to add
+	 */
+	public void addElement(String propertyName, Object element) {
+		if (getBean(false) == null)
+			if (element == null)
+				return;
+			else
+				createInstance();
+		int nestedIndex = propertyName.indexOf('.');
+		if (nestedIndex == -1) {
+			BeanFieldHandler beanFieldHandler = context.getBeanFieldHandler(propertyName);
+			try {
+				((BeanCollectionFieldHandler)beanFieldHandler).addElement(this, element);
+			}
+			catch(ClassCastException e) {
+				throw new NonCollectionPropertyException(beanFieldHandler.getType(), propertyName);
+			}
+		}
+		else {
+			// its a nested property
+			String thisProperty = propertyName.substring(0, nestedIndex);
+			String nestedProperty = propertyName.substring(nestedIndex + 1);
+			JuffrouBeanWrapper nestedWrapper = getLocalNestedWrapper(thisProperty);
+			nestedWrapper.addElement(nestedProperty, element);
+		}
+	}
+
+	/**
+	 * Remove an element from a collection property.<p>
+	 * The collection must be a parameterized collection, for example {@code List<ElementBean>}.<br>
+	 * This method will first try to find a remove method in the bean that has the collection with the pattern {@code removeElementBean(ElementBean arg)}. 
+	 * If no such method is found then the element will be removed directly from the collection field using the {@code Collection.remove} method.
+	 * @param propertyName name of the collection type property. Can be a nested property path.
+	 * @param value element to remove
+	 */
+	public void removeElement(String propertyName, Object element) {
+		if (getBean() == null)
+			if (element == null)
+				return;
+			else
+				createInstance();
+		int nestedIndex = propertyName.indexOf('.');
+		if (nestedIndex == -1) {
+			BeanFieldHandler beanFieldHandler = context.getBeanFieldHandler(propertyName);
+			try {
+				((BeanCollectionFieldHandler)beanFieldHandler).removeElement(this, element);
+			}
+			catch(ClassCastException e) {
+				throw new NonCollectionPropertyException(beanFieldHandler.getType(), propertyName);
+			}
+		}
+		else {
+			// its a nested property
+			String thisProperty = propertyName.substring(0, nestedIndex);
+			String nestedProperty = propertyName.substring(nestedIndex + 1);
+			JuffrouBeanWrapper nestedWrapper = getLocalNestedWrapper(thisProperty);
+			nestedWrapper.removeElement(nestedProperty, element);
 		}
 	}
 
