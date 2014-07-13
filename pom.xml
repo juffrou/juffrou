@@ -290,6 +290,7 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 								<encoding>${project.build.sourceEncoding}</encoding>
 								<docencoding>${project.build.sourceEncoding}</docencoding>
 								<excludePackageNames>*.internal*</excludePackageNames>
+								<failOnError>false</failOnError>
 							</configuration>
 							<reports>
 								<report>javadoc</report>
