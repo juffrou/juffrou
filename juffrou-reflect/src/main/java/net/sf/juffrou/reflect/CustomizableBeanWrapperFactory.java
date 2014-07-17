@@ -71,6 +71,8 @@ public class CustomizableBeanWrapperFactory implements BeanWrapperFactory {
 	 * 
 	 * @param clazz
 	 *            class to instantiate the wrapped bean
+	 * @return a BeanWrapper around a null bean of type clazz. The bean will be instantiated automatically upon calling {@link JuffrouBeanWrapper#setValue(String, Object)}
+	 * or {@link JuffrouBeanWrapper#getBean()}
 	 */
 	@Override
 	public JuffrouBeanWrapper getBeanWrapper(Class clazz) {
@@ -84,6 +86,7 @@ public class CustomizableBeanWrapperFactory implements BeanWrapperFactory {
 	 * 
 	 * @param instance
 	 *            the bean object to be wrapped
+	 * @return a BeanWrapper around the object passed.
 	 */
 	@Override
 	public JuffrouBeanWrapper getBeanWrapper(Object instance) {
@@ -105,7 +108,7 @@ public class CustomizableBeanWrapperFactory implements BeanWrapperFactory {
 	 * default. You can use this this if you want to create class instances
 	 * yourself.
 	 * 
-	 * @param beanInstanceBuilder
+	 * @param beanInstanceBuilder the builder that will be used to create bean instances every time a bean instantiation is needed.
 	 */
 	public void setBeanInstanceBuilder(BeanInstanceBuilder beanInstanceBuilder) {
 		this.beanInstanceCreator = beanInstanceBuilder;

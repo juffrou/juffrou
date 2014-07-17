@@ -92,7 +92,7 @@ public class JuffrouBeanWrapper {
 	 * introspection metadata. You can use
 	 * {@link #JuffrouBeanWrapper(BeanWrapperContext, Object)} instead.
 	 * 
-	 * @param instance
+	 * @param instance object to wrap.
 	 */
 	public JuffrouBeanWrapper(Object instance) {
 		this.wrappedInstance = instance;
@@ -294,7 +294,7 @@ public class JuffrouBeanWrapper {
 	 * automatically created. In the previous example, a bean wrapper would be
 	 * created for the bean referenced by property prop1.<br>
 	 * 
-	 * @param propertyName
+	 * @param propertyName property to get the value of.
 	 * @return the value held in the bean property
 	 */
 	public Object getValue(String propertyName) {
@@ -421,7 +421,7 @@ public class JuffrouBeanWrapper {
 	 * value will be converted from String to whatever type the property
 	 * referenced by propertyName is.
 	 * 
-	 * @param propertyName
+	 * @param propertyName property to set the value of
 	 * @param value
 	 *            String representation of the value to be set
 	 */
@@ -486,7 +486,7 @@ public class JuffrouBeanWrapper {
 	 * automatically created. In the previous example, a bean wrapper would be
 	 * created for the bean referenced by property prop1.<br>
 	 * 
-	 * @param propertyName
+	 * @param propertyName property to set the value of.
 	 * @param value
 	 *            value to be set
 	 */
@@ -513,8 +513,9 @@ public class JuffrouBeanWrapper {
 	 * The collection must be a parameterized collection, for example {@code List<ElementBean>}.<br>
 	 * This method will first try to find an add method in the bean that has the collection with the pattern {@code addElementBean(ElementBean arg)}. 
 	 * If no such method is found then the element will be added directly to the collection field using the {@code Collection.add} method.
+
 	 * @param propertyName name of the collection type property. Can be a nested property path.
-	 * @param value element to add
+	 * @param element element to add
 	 */
 	public void addElement(String propertyName, Object element) {
 		if (getBean(false) == null)
@@ -547,7 +548,7 @@ public class JuffrouBeanWrapper {
 	 * This method will first try to find a remove method in the bean that has the collection with the pattern {@code removeElementBean(ElementBean arg)}. 
 	 * If no such method is found then the element will be removed directly from the collection field using the {@code Collection.remove} method.
 	 * @param propertyName name of the collection type property. Can be a nested property path.
-	 * @param value element to remove
+	 * @param element element to remove
 	 */
 	public void removeElement(String propertyName, Object element) {
 		if (getBean() == null)

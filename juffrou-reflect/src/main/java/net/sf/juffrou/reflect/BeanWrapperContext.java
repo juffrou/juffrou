@@ -95,6 +95,7 @@ public class BeanWrapperContext {
 	 * 
 	 * @param thisProperty
 	 *            property name in this bean wrapper context (bean class). It must be of bean type.
+	 * @param propertyValue the value of thisProperty or null. If present, propertyValue.getClass() will be used to infer the type of the underlying field.
 	 * @return a bean wrapper context with bean metadata
 	 */
 	public BeanWrapperContext getNestedContext(String thisProperty, Object propertyValue) {
@@ -145,7 +146,7 @@ public class BeanWrapperContext {
 	 * For each nested bean referenced in this manner, a nested bean wrapper is automatically created. In the previous
 	 * example, a bean wrapper would be created for the bean referenced by property prop1.<br>
 	 * 
-	 * @param propertyName
+	 * @param propertyName name of the property to get the type of.
 	 * @return the type of the specified property
 	 */
 	public Type getType(String propertyName) {

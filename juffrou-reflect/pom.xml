@@ -58,8 +58,8 @@
 					<charset>${project.build.sourceEncoding}</charset>
 					<encoding>${project.build.sourceEncoding}</encoding>
 					<docencoding>${project.build.sourceEncoding}</docencoding>
-					<excludePackageNames>net.sf.juffrou.reflect.internal</excludePackageNames>
-					<failOnError>false</failOnError>
+					<excludePackageNames>net.sf.juffrou.reflect.internal.*</excludePackageNames>
+					<failOnError>true</failOnError>
 				</configuration>
 			</plugin>
 		</plugins>

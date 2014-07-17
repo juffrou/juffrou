@@ -36,6 +36,8 @@ public interface BeanWrapperFactory {
 	 * 
 	 * @param clazz
 	 *            class to instantiate the wrapped bean
+	 * @return a BeanWrapper around a null bean of type clazz. The bean will be instantiated automatically upon calling {@link JuffrouBeanWrapper#setValue(String, Object)}
+	 * or {@link JuffrouBeanWrapper#getBean()}
 	 */
 	JuffrouBeanWrapper getBeanWrapper(Class clazz);
 
@@ -46,9 +48,13 @@ public interface BeanWrapperFactory {
 	 * 
 	 * @param instance
 	 *            the bean object to be wrapped
+	 * @return a BeanWrapper around the object passed.
 	 */
 	JuffrouBeanWrapper getBeanWrapper(Object instance);
 
+	/**
+	 * Obtains the builder that will be used to create bean instances every time a bean instantiation is needed.
+	 * @return an instance of BeanInstanceBuilder.
+	 */
 	BeanInstanceBuilder getBeanInstanceBuilder();
-
 }

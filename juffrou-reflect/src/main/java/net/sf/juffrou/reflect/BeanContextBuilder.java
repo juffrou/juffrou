@@ -12,9 +12,9 @@ public interface BeanContextBuilder {
 
 	/**
 	 * Called by the BeanWrapperFactory to instantiate a new BeanWrapperContext
-	 * @param bwFactory
-	 * @param clazz
-	 * @param types
+	 * @param bwFactory and instance of CustomizableBeanWrapperFactory
+	 * @param clazz the Class to instantiate
+	 * @param types the parameters that defined the generic Class, or null if clazz is not generic
 	 * @return a bean wrapper context with bean metadata
 	 */
 	@SuppressWarnings("rawtypes")

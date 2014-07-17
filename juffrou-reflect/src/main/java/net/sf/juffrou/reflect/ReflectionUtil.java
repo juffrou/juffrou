@@ -54,6 +54,7 @@ public final class ReflectionUtil {
 	/**
 	 * Get the actual type arguments a child class has used to extend a generic base class.
 	 * 
+	 * @param <T> the generic type
 	 * @param baseClass
 	 *            the base class
 	 * @param childClass
@@ -119,6 +120,7 @@ public final class ReflectionUtil {
 	/**
 	 * Get the type parameters and the corresponding actual type arguments a child class has used to extend a generic base class.
 	 * 
+	 * @param <T> the generic type
 	 * @param baseClass
 	 *            the base class
 	 * @param childClass
