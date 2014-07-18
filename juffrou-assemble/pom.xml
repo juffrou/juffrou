@@ -175,11 +175,11 @@
 						<goals>
 							<goal>run</goal>
 						</goals>
-						<phase>post-site</phase>
+						<phase>site-deploy</phase>
 						<configuration>
 							<target>
-								<delete dir="${project.parent.build.directory}/site" />
-								<copy todir="${project.parent.build.directory}/site">
+								<delete dir="${project.build.directory}/site" />
+								<copy todir="${project.build.directory}/site">
 		                            <fileset dir="${site.deploy.dir}" />
 		                        </copy>
 							</target>
@@ -201,7 +201,7 @@
 						<phase>site-deploy</phase>
 						<configuration>
 							<server>github</server>
-							<outputDirectory>${project.parent.build.directory}/site</outputDirectory>
+							<outputDirectory>${project.build.directory}/site</outputDirectory>
 						</configuration>
 					</execution>
 				</executions>
@@ -242,4 +242,5 @@
 
 		</plugins>
 	</build>
+
 </project>

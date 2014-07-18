@@ -39,7 +39,7 @@ This will allow you access the source code of the library as well as the javadoc
 			</section>
 			<section>
 				<title>Non maven projects</title>
-					<para>Download the file <filename>juffrou-<?eval ${project.version}?>-bundle.zip</filename> from the <ulink url="http://juffrou.sourceforge.net"><citetitle>website</citetitle></ulink> and extract it's contents to a temporary directory.</para>
+					<para>Download the file <filename>juffrou-<?eval ${project.version}?>-bundle.zip</filename> from the <ulink url="http://cemartins.github.io/juffrou/index.html"><citetitle>website</citetitle></ulink> and extract it's contents to a temporary directory.</para>
 					<para>Add <filename>juffrou-reflect-<?eval ${project.version}?>.jar</filename> to the classpath of your project and you are good to go.</para>
 			</section>
 		</section>
@@ -87,6 +87,14 @@ This will allow you access the source code of the library as well as the javadoc
   <para>When you execute the method <literal>bw.setValue("birthDay", someObject)</literal> to set the value of the birthDay property, the JuffrouBeanWrapper expects <literal>someObject</literal> to be of the same type as the bean property (in this case Date). And if it is not, it will throw an IllegalArgumentException exception.</para>
   <para>But if you use the method <literal>setValueOfString("birthDay", "1967-10-01")</literal>, then the JuffrouBeanWrapper will try to convert the string value into the type of the property before setting it.</para>
   </section>
+
+  <section><title>Collection properties</title>
+  <para>The methods <literal>addElement(String propertyName, Object element)</literal> and <literal>removeElement(String propertyName, Object element)</literal> allow you to add and remove elements from a bean property of type collection.</para>
+  <para>These methods will add/remove the element directly from the collection property or call a method in the underlying bean to do the job.</para>
+  <para>If you have a bean with a property like <literal><![CDATA[List<Address> addresses]]></literal> and that bean contains the methods
+  <literal><![CDATA[addAddress(Address address)]]></literal> and <literal><![CDATA[removeAddress(Address address)]]></literal>, then these methods will be used to add remove elements from the collection.</para>
+  </section>
+  
   
   <section><title>Nested BeanWrappers</title>
   	<para>When you access a nested property (i.e. a property of a nested bean), like in the case of <computeroutput>bw.setValue("home.city", "Lisboa")</computeroutput>, the JuffrouBeanWrapper automatically creates another JuffrouBeanWrapper around the nested bean. In this case around an Address bean. This is called a nested bean wrapper.</para>

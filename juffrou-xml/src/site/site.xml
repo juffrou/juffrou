@@ -3,8 +3,7 @@
 	<body>
 
 		<breadcrumbs>
-			<item name="Juffrou" href="http://juffrou.sourceforge.net/index.html"/>
-			<item name="XML" href="http://juffrou.sourceforge.net/juffrou-xml/index.html"/>
+			<item name="XML" href="http://cemartins.github.io/juffrou/juffrou-xml/index.html"/>
 		</breadcrumbs>
 
 		<menu ref="parent" />

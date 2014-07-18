@@ -2,8 +2,7 @@
 <project name="Juffrou XML Spring">
 	<body>
 		<breadcrumbs>
-			<item name="Juffrou" href="http://juffrou.sourceforge.net/index.html"/>
-			<item name="Spring" href="http://juffrou.sourceforge.net/juffrou-spring-xml/index.html"/>
+			<item name="Spring" href="http://cemartins.github.io/juffrou/juffrou-spring-xml/index.html"/>
 		</breadcrumbs>
 
 		<menu ref="parent" />
