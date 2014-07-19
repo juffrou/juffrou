@@ -56,7 +56,7 @@
 	<part>
 		<title>Juffrou Reflect</title>
 		 -->
-		<chapter xml:id="reflect_ref_chpt_01" xml:base="file:///D:/Development/workspaces/myprojects/juffrou/juffrou-reflect/src/site/docbook/reflect-reference.xml">
+		<chapter xml:id="reflect_ref_chpt_01" xml:base="file:///Users/cemartins/Development/workspaces/myprojects/juffrou/baseversion/juffrou-reflect/src/site/docbook/reflect-reference.xml">
 		<title>Getting Started with Juffrou-reflect</title>
 		<section>
 			<title>Introduction</title>
@@ -80,12 +80,12 @@ This will allow you access the source code of the library as well as the javadoc
 			</section>
 			<section>
 				<title>Non maven projects</title>
-					<para>Download the file <filename>juffrou-<?eval ${project.version}?>-bundle.zip</filename> from the <ulink url="http://juffrou.sourceforge.net"><citetitle>website</citetitle></ulink> and extract it's contents to a temporary directory.</para>
+					<para>Download the file <filename>juffrou-<?eval ${project.version}?>-bundle.zip</filename> from the <ulink url="http://cemartins.github.io/juffrou/index.html"><citetitle>website</citetitle></ulink> and extract it's contents to a temporary directory.</para>
 					<para>Add <filename>juffrou-reflect-<?eval ${project.version}?>.jar</filename> to the classpath of your project and you are good to go.</para>
 			</section>
 		</section>
 	</chapter>
-		<chapter xml:id="reflect_ref_chpt_02" xml:base="file:///D:/Development/workspaces/myprojects/juffrou/juffrou-reflect/src/site/docbook/reflect-reference.xml">
+		<chapter xml:id="reflect_ref_chpt_02" xml:base="file:///Users/cemartins/Development/workspaces/myprojects/juffrou/baseversion/juffrou-reflect/src/site/docbook/reflect-reference.xml">
 		<title>Using Juffrou-reflect</title>
 		<section>
 			<title>JuffrouBeanWrapper</title>
@@ -130,8 +130,19 @@ This will allow you access the source code of the library as well as the javadoc
   </section>
 
   <section><title>Collection properties</title>
-  <para>The methods <literal>addElement(String propertyName, Object element)</literal> and <literal>removeElement(String propertyName, Object element)</literal> allows you to add and remove elements from a bean property of type collection.</para>
+  <para>The methods <literal>addElement(String propertyName, Object element)</literal> and <literal>removeElement(String propertyName, Object element)</literal> allow you to add and remove elements from a bean property of type collection.</para>
   <para>These methods will add/remove the element directly from the collection property or call a method in the underlying bean to do the job.</para>
+			<figure xml:id="BeanWithCollection"><title>Example bean with a collection property</title>
+			<mediaobject>
+				<imageobject>
+					<imagedata fileref="images/BeanWithCollection.png" format="PNG"/>
+				</imageobject>
+			</mediaobject>
+			</figure>
+  <para>If you have a bean with a property like <literal><![CDATA[List<Address> addresses]]></literal> and that bean contains the methods
+  <literal><![CDATA[addAddress(Address address)]]></literal> and <literal><![CDATA[removeAddress(Address address)]]></literal>, then these methods will be used to add remove elements from the collection.
+  If not, then the normall collection methods will be used. In this case, the method <literal>addElement(propertyName, element)</literal> will be the equivalent of 
+  <literal>((Collection)getValue(propertyName)).add(element).</literal></para>
   </section>
   
   
@@ -285,7 +296,7 @@ public class MyContextBuilder implements BeanContextBuilder {
 	<part>
 		<title>Juffrou XML</title>
 	 -->
-		<chapter xml:base="file:///D:/Development/workspaces/myprojects/juffrou/juffrou-xml/src/site/docbook/xml-reference.xml">
+		<chapter xml:base="file:///Users/cemartins/Development/workspaces/myprojects/juffrou/baseversion/juffrou-xml/src/site/docbook/xml-reference.xml">
 		<title>Getting Started with Juffrou-XML</title>
 		<section>
 			<title>Introduction</title>
@@ -460,7 +471,7 @@ root elements are in the program classpath like in the following example:</para>
 
 		</section>
 	</chapter>
-		<chapter xml:id="xml_ref_chpt_02" xml:base="file:///D:/Development/workspaces/myprojects/juffrou/juffrou-xml/src/site/docbook/xml-reference.xml">
+		<chapter xml:id="xml_ref_chpt_02" xml:base="file:///Users/cemartins/Development/workspaces/myprojects/juffrou/baseversion/juffrou-xml/src/site/docbook/xml-reference.xml">
 		<title>More Advanced Stuff</title>
 		<section>
 			<title>Serializers</title>
@@ -587,7 +598,7 @@ and you want it displayed as it were a simple property of person.</para>
 	</part>
 	 -->
 	 
-	 		<chapter xml:id="spring_ref_chpt_01" xml:base="file:///D:/Development/workspaces/myprojects/juffrou/juffrou-xml-spring/src/site/docbook/spring-reference.xml">
+	 		<chapter xml:id="spring_ref_chpt_01" xml:base="file:///Users/cemartins/Development/workspaces/myprojects/juffrou/baseversion/juffrou-xml-spring/src/site/docbook/spring-reference.xml">
 		<title>Getting Started with Juffrou-XML-Spring</title>
 		<section>
 			<title>Introduction</title>

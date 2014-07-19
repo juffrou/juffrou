@@ -1,0 +1,26 @@
+-classpath
+'/Users/cemartins/Development/workspaces/myprojects/juffrou/baseversion/target/checkout/juffrou-xml/target/classes:/Users/cemartins/Development/workspaces/myprojects/juffrou/baseversion/target/checkout/juffrou-reflect/target/juffrou-reflect-2.1.7.jar'
+-encoding
+'UTF-8'
+-protected
+-sourcepath
+'/Users/cemartins/Development/workspaces/myprojects/juffrou/baseversion/target/checkout/juffrou-xml/src/main/java'
+-author
+-bottom
+'Copyright &#169; 2011-2014 <a href="http://martins.dtdns.net/~cemartins">Carlos Martins</a>. All Rights Reserved.'
+-charset
+'UTF-8'
+-d
+'/Users/cemartins/Development/workspaces/myprojects/juffrou/baseversion/target/checkout/juffrou-xml/target/site/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'Juffrou XML 2.1.7 API'
+-link
+'http://java.sun.com/javase/6/docs/api'
+-linkoffline
+'http://cemartins.github.io/juffrou/juffrou-reflect/apidocs' '/Users/cemartins/Development/workspaces/myprojects/juffrou/baseversion/target/checkout/juffrou-reflect/target/site/apidocs'
+-use
+-version
+-windowtitle
+'Juffrou XML 2.1.7 API'

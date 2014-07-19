@@ -1,0 +1,24 @@
+-classpath
+'/Users/cemartins/Development/workspaces/myprojects/juffrou/baseversion/target/checkout/juffrou-reflect/target/classes'
+-encoding
+'UTF-8'
+-protected
+-sourcepath
+'/Users/cemartins/Development/workspaces/myprojects/juffrou/baseversion/target/checkout/juffrou-reflect/src/main/java'
+-author
+-bottom
+'Copyright &#169; 2011-2014 <a href="http://martins.dtdns.net/~cemartins">Carlos Martins</a>. All Rights Reserved.'
+-charset
+'UTF-8'
+-d
+'/Users/cemartins/Development/workspaces/myprojects/juffrou/baseversion/target/checkout/juffrou-reflect/target/site/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'Juffrou Reflect 2.1.7 API'
+-link
+'http://java.sun.com/javase/6/docs/api'
+-use
+-version
+-windowtitle
+'Juffrou Reflect 2.1.7 API'

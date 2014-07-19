@@ -1,0 +1,28 @@
+-classpath
+'/Users/cemartins/Development/workspaces/myprojects/juffrou/baseversion/target/checkout/juffrou-xml-spring/target/classes:/Users/cemartins/.m2/repository/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar:/Users/cemartins/.m2/repository/org/springframework/spring-beans/3.1.4.RELEASE/spring-beans-3.1.4.RELEASE.jar:/Users/cemartins/.m2/repository/org/springframework/spring-context/3.1.4.RELEASE/spring-context-3.1.4.RELEASE.jar:/Users/cemartins/Development/workspaces/myprojects/juffrou/baseversion/target/checkout/juffrou-xml/target/juffrou-xml-2.1.7.jar:/Users/cemartins/.m2/repository/org/springframework/spring-expression/3.1.4.RELEASE/spring-expression-3.1.4.RELEASE.jar:/Users/cemartins/.m2/repository/org/springframework/spring-oxm/3.1.4.RELEASE/spring-oxm-3.1.4.RELEASE.jar:/Users/cemartins/.m2/repository/org/springframework/spring-core/3.1.4.RELEASE/spring-core-3.1.4.RELEASE.jar:/Users/cemartins/Development/workspaces/myprojects/juffrou/baseversion/target/checkout/juffrou-reflect/target/juffrou-reflect-2.1.7.jar:/Users/cemartins/.m2/repository/commons-lang/commons-lang/2.5/commons-lang-2.5.jar:/Users/cemartins/.m2/repository/org/springframework/spring-aop/3.1.4.RELEASE/spring-aop-3.1.4.RELEASE.jar:/Users/cemartins/.m2/repository/org/springframework/spring-asm/3.1.4.RELEASE/spring-asm-3.1.4.RELEASE.jar:/Users/cemartins/.m2/repository/aopalliance/aopalliance/1.0/aopalliance-1.0.jar'
+-encoding
+'UTF-8'
+-protected
+-sourcepath
+'/Users/cemartins/Development/workspaces/myprojects/juffrou/baseversion/target/checkout/juffrou-xml-spring/src/main/java'
+-author
+-bottom
+'Copyright &#169; 2011-2014 <a href="http://martins.dtdns.net/~cemartins">Carlos Martins</a>. All Rights Reserved.'
+-charset
+'UTF-8'
+-d
+'/Users/cemartins/Development/workspaces/myprojects/juffrou/baseversion/target/checkout/juffrou-xml-spring/target/site/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'Juffrou XML Spring 2.1.7 API'
+-link
+'http://java.sun.com/javase/6/docs/api'
+-linkoffline
+'http://cemartins.github.io/juffrou/juffrou-reflect/apidocs' '/Users/cemartins/Development/workspaces/myprojects/juffrou/baseversion/target/checkout/juffrou-reflect/target/site/apidocs'
+-linkoffline
+'http://cemartins.github.io/juffrou/juffrou-xml/apidocs' '/Users/cemartins/Development/workspaces/myprojects/juffrou/baseversion/target/checkout/juffrou-xml/target/site/apidocs'
+-use
+-version
+-windowtitle
+'Juffrou XML Spring 2.1.7 API'
