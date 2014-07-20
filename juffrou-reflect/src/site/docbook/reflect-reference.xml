@@ -91,8 +91,17 @@ This will allow you access the source code of the library as well as the javadoc
   <section><title>Collection properties</title>
   <para>The methods <literal>addElement(String propertyName, Object element)</literal> and <literal>removeElement(String propertyName, Object element)</literal> allow you to add and remove elements from a bean property of type collection.</para>
   <para>These methods will add/remove the element directly from the collection property or call a method in the underlying bean to do the job.</para>
+			<figure xml:id="BeanWithCollection"><title>Example bean with a collection property</title>
+			<mediaobject>
+				<imageobject>
+					<imagedata fileref="images/BeanWithCollection.png" format="PNG" />
+				</imageobject>
+			</mediaobject>
+			</figure>
   <para>If you have a bean with a property like <literal><![CDATA[List<Address> addresses]]></literal> and that bean contains the methods
-  <literal><![CDATA[addAddress(Address address)]]></literal> and <literal><![CDATA[removeAddress(Address address)]]></literal>, then these methods will be used to add remove elements from the collection.</para>
+  <literal><![CDATA[addAddress(Address address)]]></literal> and <literal><![CDATA[removeAddress(Address address)]]></literal>, then these methods will be used to add remove elements from the collection.
+  If not, then the normall collection methods will be used. In this case, the method <literal>addElement(propertyName, element)</literal> will be the equivalent of 
+  <literal>((Collection)getValue(propertyName)).add(element).</literal></para>
   </section>
   
   

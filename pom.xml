@@ -335,7 +335,7 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 					<dependency>
 						<groupId>org.apache.maven.doxia</groupId>
 						<artifactId>doxia-module-docbook-simple</artifactId>
-						<version>1.5</version>
+						<version>1.6</version>
 					</dependency>
 					<dependency>
 						<groupId>org.apache.maven.wagon</groupId>
