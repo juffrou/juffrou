@@ -55,23 +55,18 @@ public class BeanWrapperContext {
 					+ clazz.getSimpleName());
 		this.bwFactory = factory;
 		this.typeArgumentsMap = new HashMap<TypeVariable<?>, Type>();
-		if (types != null) {
-			TypeVariable<?>[] typeParameters = clazz.getTypeParameters();
-			for (int i = 0; i < types.length; i++) {
+		TypeVariable<?>[] typeParameters = clazz.getTypeParameters();
+		//TODO find a way to resolve the generic parameter types
+		if (types != null)
+			for (int i = 0; i < types.length; i++)
 				this.typeArgumentsMap.put(typeParameters[i], types[i]);
-			}
-		}
+		else
+			if(typeParameters != null && typeParameters.length > 0)
+				for(TypeVariable typeVariable :  typeParameters)
+					this.typeArgumentsMap.put(typeVariable, Object.class);
+		
 		this.clazz = clazz;
 		this.typeArgumentsMap.putAll(ReflectionUtil.getTypeArgumentsMap(Class.class, clazz));
-		if (!this.typeArgumentsMap.keySet().containsAll(Arrays.asList(clazz.getTypeParameters()))) {
-			if (types == null)
-				throw new ReflectionException(
-						clazz.getSimpleName()
-								+ " is a parameterized type. Please use the BeanWrapperContext(Class clazz, Type...types) constructor.");
-			else
-				throw new ReflectionException(clazz.getSimpleName()
-						+ " has more parameterized types than those specified.");
-		}
 		this.fields = new LinkedHashMap<String, BeanFieldHandler>();
 		initFieldInfo(this.clazz, this.fields);
 	}

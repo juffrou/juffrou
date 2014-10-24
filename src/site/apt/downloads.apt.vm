@@ -4,17 +4,13 @@ Latest Release
 
  Click {{{http://sourceforge.net/projects/juffrou/files/juffrou-${project.version}-bundle.zip/download}here}} for the last release bundle.
 
- You can also download the latest and earlier releases from the sourceforge downloads {{{http://sourceforge.net/projects/juffrou/files}page}}.
- 
 Source Code
 
- Juffrou project is hosted on sourceforge at juffrou.sourceforge.net
+ Juffrou project is hosted on Github at github.com/cemartins/juffrou
  The source code is kept under a Git repository and can be checked out with the command
  
- <<<git clone git://git.code.sf.net/p/juffrou/code juffrou-code>>>
+ <<<git clone https://github.com/cemartins/juffrou.git>>>
  
- You can browse the online source repository {{{https://sourceforge.net/p/juffrou/code/ci/master/tree}here}}.
-
 Maven Artifacts
 
  Juffrou artifacts released to the {{{http://nexus.sonatype.org/oss-repository-hosting.html}Sonatype OSS Repository}}

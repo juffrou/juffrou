@@ -4,17 +4,15 @@ import java.lang.reflect.Type;
 import java.util.Map;
 
 import junit.framework.Assert;
-import net.sf.juffrou.reflect.JuffrouBeanWrapper;
-import net.sf.juffrou.reflect.BeanWrapperContext;
-import net.sf.juffrou.reflect.CustomizableBeanWrapperFactory;
-import net.sf.juffrou.reflect.ReflectionUtil;
 import net.sf.juffrou.reflect.dom.AddressCircular;
 import net.sf.juffrou.reflect.dom.GenericBean;
+import net.sf.juffrou.reflect.dom.GenericBean2;
 import net.sf.juffrou.reflect.dom.GenericPerson;
 import net.sf.juffrou.reflect.dom.Person;
 import net.sf.juffrou.reflect.dom.PersonCircular;
 
 import org.junit.Test;
+import org.springframework.beans.BeanWrapperImpl;
 
 public class ReflectionUtilTestCase {
 
@@ -70,5 +68,18 @@ public class ReflectionUtilTestCase {
 		ReflectionUtil.getBeanFromMap(factory, beanMap, fromMap);
 		
 		Assert.assertEquals(person.getFirstName(), fromMap.getFirstName());
+	}
+	
+	@Test
+	public void testGenericBean() {
+		
+		GenericBean2<String, Integer> genericBean = new GenericBean2<String, Integer>();
+
+		BeanWrapperImpl bw = new BeanWrapperImpl(genericBean);
+		Class propertyType = bw.getPropertyType("genericProperty");
+		Class propertyType2 = bw.getPropertyType("otherGenericProperty");
+		
+		
+		ReflectionUtil.findGenericArgumentTypes(genericBean);
 	}
 }

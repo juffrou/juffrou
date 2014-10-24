@@ -298,7 +298,7 @@ public class JuffrouBeanWrapper {
 	 * @return the value held in the bean property
 	 */
 	public Object getValue(String propertyName) {
-		if (getBean() == null)
+		if (getBean(false) == null)
 			return null;
 		int nestedIndex = propertyName.indexOf('.');
 		if (nestedIndex == -1) {
@@ -426,8 +426,11 @@ public class JuffrouBeanWrapper {
 	 *            String representation of the value to be set
 	 */
 	public void setValueOfString(String propertyName, String value) {
-		if (getBean() == null)
-			createInstance();
+		if (getBean(false) == null)
+			if (value == null)
+				return;
+			else
+				createInstance();
 		int nestedIndex = propertyName.indexOf('.');
 		if (nestedIndex == -1) {
 			// not a nested property
@@ -491,7 +494,7 @@ public class JuffrouBeanWrapper {
 	 *            value to be set
 	 */
 	public void setValue(String propertyName, Object value) {
-		if (getBean() == null)
+		if (getBean(false) == null)
 			if (value == null)
 				return;
 			else
