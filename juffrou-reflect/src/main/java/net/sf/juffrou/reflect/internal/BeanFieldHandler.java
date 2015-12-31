@@ -126,7 +126,7 @@ public class BeanFieldHandler {
 	public static Method inspectReadMethod(Class<?> beanClass, String fieldName, Class<?> fieldClass) {
 		Method getterMethod;
 		String name = fieldName;
-		String methodName = "get" + name.substring(0, 1).toUpperCase() + name.substring(1);
+		String methodName = "get" + Character.toUpperCase(name.charAt(0)) + name.substring(1);
 		try {
 			getterMethod = beanClass.getMethod(methodName, null);
 			return getterMethod;
@@ -136,7 +136,7 @@ public class BeanFieldHandler {
 			if(fieldClass == boolean.class || fieldClass == null) {
 				if(name.startsWith("is"))
 					name = name.substring(2);
-				methodName = "is" + name.substring(0, 1).toUpperCase() + name.substring(1);
+				methodName = "is" + Character.toUpperCase(name.charAt(0)) + name.substring(1);
 				try {
 					getterMethod = beanClass.getMethod(methodName, null);
 					return getterMethod;
@@ -152,7 +152,7 @@ public class BeanFieldHandler {
 
 	public static Method inspectWriteMethod(Class<?> beanClass, String fieldName, Class<?> fieldClass) {
 		String name = fieldName;
-		String methodName = "set" + name.substring(0, 1).toUpperCase() + name.substring(1);
+		String methodName = "set" + Character.toUpperCase(name.charAt(0)) + name.substring(1);
 		try {
 			if(fieldClass == null) {
 				for(Method method : beanClass.getMethods())
@@ -168,7 +168,7 @@ public class BeanFieldHandler {
 			if(fieldClass == boolean.class) {
 				if(name.startsWith("is"))
 					name = name.substring(2);
-				methodName = "set" + name.substring(0, 1).toUpperCase() + name.substring(1);
+				methodName = "set" + Character.toUpperCase(name.charAt(0)) + name.substring(1);
 				try {
 					return beanClass.getMethod(methodName, fieldClass);
 				} catch (NoSuchMethodException e1) {
