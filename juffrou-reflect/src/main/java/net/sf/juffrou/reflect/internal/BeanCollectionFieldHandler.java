@@ -38,7 +38,7 @@ public class BeanCollectionFieldHandler extends BeanFieldHandler {
 	}
 
 	public void addElement(JuffrouBeanWrapper bw, Object element) {
-		if (adder == null && accessType == AccessType.THROUGHBEAN) {
+		if (accessType == AccessType.THROUGHBEAN && adder == null) {
 			
 			adder = inspectMethod(bw.getBeanClass(), getField().getName(), "add");
 			if(adder != null)
@@ -60,7 +60,7 @@ public class BeanCollectionFieldHandler extends BeanFieldHandler {
 	}
 
 	public void removeElement(JuffrouBeanWrapper bw, Object element) {
-		if (remover == null && accessType == AccessType.THROUGHBEAN) {
+		if (accessType == AccessType.THROUGHBEAN && remover == null) {
 			
 			remover = inspectMethod(bw.getBeanClass(), getField().getName(), "remove");
 			if(remover != null)
@@ -77,8 +77,8 @@ public class BeanCollectionFieldHandler extends BeanFieldHandler {
 				}
 		}
 
-		// if the code reaches here, there is no adder method in the main bean. Try adding to the collection directly
-		addDirectlyToCollection(bw, element);
+		// if the code reaches here, there is no remover method in the main bean. Try removing from the collection directly
+		removeDirectlyFromCollection(bw, element);
 		
 	}
 
@@ -99,12 +99,13 @@ public class BeanCollectionFieldHandler extends BeanFieldHandler {
 	
 		if(type != null && type instanceof Class) {
 			Class<?> argumentClass = (Class<?>) type;
-			String methodName = methodPrefix + argumentClass.getSimpleName();
-				try {
-					return beanClass.getMethod(methodName, argumentClass);
-				} catch (NoSuchMethodException | SecurityException e) {
-					// proceed
-				}
+
+			String methodName = methodPrefix + Character.toUpperCase(fieldName.charAt(0)) + fieldName.substring(1);
+			try {
+				return beanClass.getMethod(methodName, argumentClass);
+			} catch (NoSuchMethodException | SecurityException e) {
+				// proceed
+			}
 		}
 		
 		// if the code reaches here, then there is no addMethod in the holding bean
