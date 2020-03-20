@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:xslthl="http://xslthl.sf.net"
-	exclude-result-prefixes="xslthl" version="1.0">
+                xmlns:xslthl="http://xslthl.sf.net"
+                exclude-result-prefixes="xslthl" version="1.0">
 	<!-- import the main stylesheet, here pointing to fo/docbook.xsl -->
 	<xsl:import href="urn:docbkx:stylesheet" />
 	<!-- highlight.xsl must be imported in order to enable highlighting support, 

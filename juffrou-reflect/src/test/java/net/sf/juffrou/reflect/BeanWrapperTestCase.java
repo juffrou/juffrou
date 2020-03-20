@@ -1,21 +1,12 @@
 package net.sf.juffrou.reflect;
 
-import java.lang.reflect.Type;
-
-import net.sf.juffrou.reflect.dom.Address;
-import net.sf.juffrou.reflect.dom.BooleanHolder;
-import net.sf.juffrou.reflect.dom.Country;
-import net.sf.juffrou.reflect.dom.MyBeanWrapperContext;
-import net.sf.juffrou.reflect.dom.MyContextBuilder;
-import net.sf.juffrou.reflect.dom.Person;
-import net.sf.juffrou.reflect.dom.PersonCircular;
-import net.sf.juffrou.reflect.dom.Programmer;
-import net.sf.juffrou.reflect.dom.VirtualDomain;
+import net.sf.juffrou.reflect.dom.*;
 import net.sf.juffrou.reflect.error.BeanInstanceBuilderException;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.BeanWrapperImpl;
+
+import java.lang.reflect.Type;
 
 public class BeanWrapperTestCase {
 
@@ -74,7 +65,7 @@ public class BeanWrapperTestCase {
 			JuffrouBeanWrapper bw = new JuffrouBeanWrapper(Programmer.class);
 		}
 		long stop = System.currentTimeMillis();
-		Long noContext = new Long(stop - start);
+		Long noContext = stop - start;
 
 		// create a bean wrapper context and use that to create the bean wrappers
 		start = System.currentTimeMillis();
@@ -83,7 +74,7 @@ public class BeanWrapperTestCase {
 			JuffrouBeanWrapper bw = new JuffrouBeanWrapper(context);
 		}
 		stop = System.currentTimeMillis();
-		Long withContext = new Long(stop - start);
+		Long withContext = stop - start;
 
 		start = System.currentTimeMillis();
 		CustomizableBeanWrapperFactory factory = new CustomizableBeanWrapperFactory();
@@ -91,7 +82,7 @@ public class BeanWrapperTestCase {
 			JuffrouBeanWrapper bw = factory.getBeanWrapper(Programmer.class);
 		}
 		stop = System.currentTimeMillis();
-		Long withFactory = new Long(stop - start);
+		Long withFactory = stop - start;
 
 		// compare with Springs BeanWrapperImpl
 		start = System.currentTimeMillis();
@@ -99,7 +90,7 @@ public class BeanWrapperTestCase {
 			BeanWrapperImpl bw = new BeanWrapperImpl(Programmer.class);
 		}
 		stop = System.currentTimeMillis();
-		Long spring = new Long(stop - start);
+		Long spring = stop - start;
 
 		Assert.assertTrue(withContext.longValue() < noContext.longValue());
 		System.out.println(loop + " instantiations without context: " + noContext);
@@ -120,7 +111,7 @@ public class BeanWrapperTestCase {
 			bw.getValue("address.street");
 		}
 		long stop = System.currentTimeMillis();
-		Long noContext = new Long(stop - start);
+		Long noContext = stop - start;
 
 		// create a bean wrapper context and use that to create the bean wrappers
 		start = System.currentTimeMillis();
@@ -132,7 +123,7 @@ public class BeanWrapperTestCase {
 			bw.getValue("address.street");
 		}
 		stop = System.currentTimeMillis();
-		Long withContext = new Long(stop - start);
+		Long withContext = stop - start;
 
 		start = System.currentTimeMillis();
 		CustomizableBeanWrapperFactory factory = new CustomizableBeanWrapperFactory();
@@ -143,7 +134,7 @@ public class BeanWrapperTestCase {
 			bw.getValue("address.street");
 		}
 		stop = System.currentTimeMillis();
-		Long withFactory = new Long(stop - start);
+		Long withFactory = stop - start;
 
 		// compare with Springs BeanWrapperImpl
 		start = System.currentTimeMillis();
@@ -154,7 +145,7 @@ public class BeanWrapperTestCase {
 			bw.setPropertyValue("address.street", "Bean street");
 		}
 		stop = System.currentTimeMillis();
-		Long spring = new Long(stop - start);
+		Long spring = stop - start;
 
 		Assert.assertTrue(withContext.longValue() < noContext.longValue());
 		System.out.println(loop + " instantiation and set value without context: " + noContext);
@@ -286,7 +277,7 @@ public class BeanWrapperTestCase {
 		address.setStreet("Super Street");
 		address.setTown("Super Town");
 		Person person = new Person();
-		person.addAddress(address);
+		person.addOtherAddress(address);
 		JuffrouBeanWrapper bw = new JuffrouBeanWrapper(person);
 		bw.removeElement("otherAddresses", address);
 		Assert.assertEquals(0, person.getOtherAddresses().size());

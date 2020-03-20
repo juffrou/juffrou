@@ -1,13 +1,13 @@
 package net.sf.juffrou.xml.serializer;
 
+import net.sf.juffrou.reflect.JuffrouBeanWrapper;
+import net.sf.juffrou.xml.internal.io.JuffrouReader;
+import net.sf.juffrou.xml.internal.io.JuffrouWriter;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-
-import net.sf.juffrou.reflect.JuffrouBeanWrapper;
-import net.sf.juffrou.xml.internal.io.JuffrouReader;
-import net.sf.juffrou.xml.internal.io.JuffrouWriter;
 
 public class DateSerializer implements Serializer {
 

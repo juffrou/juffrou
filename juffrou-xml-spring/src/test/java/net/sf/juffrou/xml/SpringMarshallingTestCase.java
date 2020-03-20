@@ -1,12 +1,12 @@
 package net.sf.juffrou.xml;
 
-import static org.junit.Assert.*;
-
-import java.io.IOException;
-
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import java.io.IOException;
+
+import static org.junit.Assert.fail;
 
 public class SpringMarshallingTestCase {
 

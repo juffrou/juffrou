@@ -16,46 +16,10 @@
 
 package net.sf.juffrou.reflect.spring;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.beans.PropertyEditorSupport;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-import java.util.SortedMap;
-import java.util.SortedSet;
-import java.util.TreeMap;
-import java.util.TreeSet;
-
 import net.sf.juffrou.reflect.JuffrouSpringBeanWrapper;
-
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.MutablePropertyValues;
-import org.springframework.beans.NotReadablePropertyException;
-import org.springframework.beans.NotWritablePropertyException;
-import org.springframework.beans.NullValueInNestedPathException;
-import org.springframework.beans.PropertyAccessException;
-import org.springframework.beans.PropertyBatchUpdateException;
-import org.springframework.beans.PropertyValue;
-import org.springframework.beans.TypeMismatchException;
+import org.springframework.beans.*;
 import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.beans.propertyeditors.StringArrayPropertyEditor;
@@ -66,12 +30,14 @@ import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.util.StopWatch;
 import org.springframework.util.StringUtils;
+import test.beans.*;
 
-import test.beans.BooleanTestBean;
-import test.beans.ITestBean;
-import test.beans.IndexedTestBean;
-import test.beans.NumberTestBean;
-import test.beans.TestBean;
+import java.beans.PropertyEditorSupport;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.*;
+
+import static org.junit.Assert.*;
 
 /**
  * @author Rod Johnson

@@ -1,16 +1,5 @@
 package net.sf.juffrou.xml.internal;
 
-import java.lang.reflect.Type;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import net.sf.juffrou.reflect.CustomizableBeanWrapperFactory;
 import net.sf.juffrou.reflect.ReflectionUtil;
 import net.sf.juffrou.xml.error.NoImplementationClassException;
@@ -20,24 +9,12 @@ import net.sf.juffrou.xml.internal.binding.BeanClassBinding;
 import net.sf.juffrou.xml.internal.binding.BeanPropertyBinding;
 import net.sf.juffrou.xml.internal.binding.XmlBeanWrapperContextCreator;
 import net.sf.juffrou.xml.internal.config.JuffrouXmlPreferences;
-import net.sf.juffrou.xml.serializer.ArrayListSerializer;
-import net.sf.juffrou.xml.serializer.BeanWrapperSerializer;
-import net.sf.juffrou.xml.serializer.BigDecimalSerializer;
-import net.sf.juffrou.xml.serializer.BigIntegerSerializer;
-import net.sf.juffrou.xml.serializer.BooleanSerializer;
-import net.sf.juffrou.xml.serializer.ByteSerializer;
-import net.sf.juffrou.xml.serializer.CharacterSerializer;
-import net.sf.juffrou.xml.serializer.DateSerializer;
-import net.sf.juffrou.xml.serializer.DoubleSerializer;
-import net.sf.juffrou.xml.serializer.EnumSerializer;
-import net.sf.juffrou.xml.serializer.FloatSerializer;
-import net.sf.juffrou.xml.serializer.HashMapSerializer;
-import net.sf.juffrou.xml.serializer.HashSetSerializer;
-import net.sf.juffrou.xml.serializer.IntegerSerializer;
-import net.sf.juffrou.xml.serializer.LongSerializer;
-import net.sf.juffrou.xml.serializer.Serializer;
-import net.sf.juffrou.xml.serializer.ShortSerializer;
-import net.sf.juffrou.xml.serializer.StringSerializer;
+import net.sf.juffrou.xml.serializer.*;
+
+import java.lang.reflect.Type;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.*;
 
 
 public class JuffrouBeanMetadata {

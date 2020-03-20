@@ -1,13 +1,13 @@
 package net.sf.juffrou.xml;
 
-import java.io.InputStream;
-
 import net.sf.juffrou.xml.internal.JuffrouBeanMetadata;
 import net.sf.juffrou.xml.internal.JuffrouXmlMarshaller;
 import net.sf.juffrou.xml.internal.NodeType;
 import net.sf.juffrou.xml.internal.XmlConstants;
 import net.sf.juffrou.xml.internal.config.ConfigReader;
 import net.sf.juffrou.xml.serializer.Serializer;
+
+import java.io.InputStream;
 
 public class JuffrouXml {
 

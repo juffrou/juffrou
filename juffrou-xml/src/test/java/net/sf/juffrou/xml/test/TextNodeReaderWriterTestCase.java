@@ -2,7 +2,6 @@ package net.sf.juffrou.xml.test;
 
 import net.sf.juffrou.xml.JuffrouXml;
 import net.sf.juffrou.xml.test.dom.Person;
-
 import org.junit.Assert;
 import org.junit.Test;
 

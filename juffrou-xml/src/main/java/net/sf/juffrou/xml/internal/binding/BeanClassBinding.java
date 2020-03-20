@@ -1,18 +1,18 @@
 package net.sf.juffrou.xml.internal.binding;
 
-import java.lang.reflect.Type;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import net.sf.juffrou.reflect.BeanWrapperContext;
 import net.sf.juffrou.reflect.CustomizableBeanWrapperFactory;
 import net.sf.juffrou.reflect.ReflectionUtil;
 import net.sf.juffrou.reflect.internal.BeanFieldHandler;
 import net.sf.juffrou.xml.internal.NodeType;
 import net.sf.juffrou.xml.serializer.Serializer;
+
+import java.lang.reflect.Type;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class BeanClassBinding extends BeanWrapperContext {
 

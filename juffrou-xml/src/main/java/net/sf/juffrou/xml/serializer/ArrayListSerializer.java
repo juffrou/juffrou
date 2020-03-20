@@ -1,9 +1,9 @@
 package net.sf.juffrou.xml.serializer;
 
+import net.sf.juffrou.xml.internal.JuffrouBeanMetadata;
+
 import java.util.ArrayList;
 import java.util.Collection;
-
-import net.sf.juffrou.xml.internal.JuffrouBeanMetadata;
 
 public class ArrayListSerializer extends AbstractCollectionSerializer {
 

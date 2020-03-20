@@ -1,10 +1,10 @@
 package net.sf.juffrou.reflect;
 
+import net.sf.juffrou.reflect.internal.DefaultBeanInstanceCreator;
+
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
-
-import net.sf.juffrou.reflect.internal.DefaultBeanInstanceCreator;
 
 /**
  * This class is responsible for creating and caching BeanWrapperContexts.

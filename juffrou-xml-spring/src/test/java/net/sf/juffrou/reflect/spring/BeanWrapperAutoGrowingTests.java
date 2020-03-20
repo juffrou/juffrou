@@ -16,21 +16,16 @@
 
 package net.sf.juffrou.reflect.spring;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import net.sf.juffrou.reflect.JuffrouSpringBeanWrapper;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.beans.InvalidPropertyException;
 
 import java.util.List;
 import java.util.Map;
 
-import net.sf.juffrou.reflect.JuffrouSpringBeanWrapper;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.beans.InvalidPropertyException;
-import org.springframework.beans.NullValueInNestedPathException;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * @author Keith Donald

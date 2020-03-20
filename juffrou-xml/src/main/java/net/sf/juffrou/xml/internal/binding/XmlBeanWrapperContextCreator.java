@@ -1,10 +1,10 @@
 package net.sf.juffrou.xml.internal.binding;
 
-import java.lang.reflect.Type;
-
 import net.sf.juffrou.reflect.BeanContextBuilder;
 import net.sf.juffrou.reflect.CustomizableBeanWrapperFactory;
 import net.sf.juffrou.xml.internal.JuffrouBeanMetadata;
+
+import java.lang.reflect.Type;
 
 public class XmlBeanWrapperContextCreator implements BeanContextBuilder {
 

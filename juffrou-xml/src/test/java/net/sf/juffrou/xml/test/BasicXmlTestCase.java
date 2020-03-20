@@ -1,24 +1,18 @@
 package net.sf.juffrou.xml.test;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
+import com.thoughtworks.xstream.XStream;
 import net.sf.juffrou.xml.JuffrouXml;
 import net.sf.juffrou.xml.test.dom.Address;
 import net.sf.juffrou.xml.test.dom.Country;
 import net.sf.juffrou.xml.test.dom.Person;
 import net.sf.juffrou.xml.test.dom.SimpleDateSerializer;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.thoughtworks.xstream.XStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class BasicXmlTestCase {
 	

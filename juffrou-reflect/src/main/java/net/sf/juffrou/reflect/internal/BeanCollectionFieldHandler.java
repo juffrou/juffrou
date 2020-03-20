@@ -1,18 +1,19 @@
 package net.sf.juffrou.reflect.internal;
 
+import net.sf.juffrou.reflect.BeanWrapperContext;
+import net.sf.juffrou.reflect.JuffrouBeanWrapper;
+import net.sf.juffrou.reflect.error.ReflectionException;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.Collection;
 
-import net.sf.juffrou.reflect.BeanWrapperContext;
-import net.sf.juffrou.reflect.JuffrouBeanWrapper;
-import net.sf.juffrou.reflect.error.ReflectionException;
-
 public class BeanCollectionFieldHandler extends BeanFieldHandler {
 
-	private enum AccessType {DIRECT, THROUGHBEAN;}; 
+	private enum AccessType {DIRECT, THROUGHBEAN;};
+	private String[] pluralSufixes = new String[] {"es", "s"};
 	
 	private AccessType accessType;
 	private Method adder = null;
@@ -104,7 +105,18 @@ public class BeanCollectionFieldHandler extends BeanFieldHandler {
 			try {
 				return beanClass.getMethod(methodName, argumentClass);
 			} catch (NoSuchMethodException | SecurityException e) {
-				// proceed
+				// try and remove plural sufix from the filed name
+				for(String suffix : pluralSufixes) {
+					if (methodName.endsWith("es")) {
+						methodName = methodName.substring(0, methodName.lastIndexOf("es"));
+						try {
+							return beanClass.getMethod(methodName, argumentClass);
+						}
+						catch (NoSuchMethodException | SecurityException t) {
+							// continue loop
+						}
+					}
+				}
 			}
 		}
 		

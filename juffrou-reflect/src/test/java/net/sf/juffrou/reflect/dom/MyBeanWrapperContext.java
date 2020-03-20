@@ -1,9 +1,9 @@
 package net.sf.juffrou.reflect.dom;
 
-import java.lang.reflect.Type;
-
 import net.sf.juffrou.reflect.BeanWrapperContext;
 import net.sf.juffrou.reflect.CustomizableBeanWrapperFactory;
+
+import java.lang.reflect.Type;
 
 public class MyBeanWrapperContext extends BeanWrapperContext {
 

@@ -1,16 +1,16 @@
 package net.sf.juffrou.xml.serializer;
 
-import java.lang.reflect.Type;
-import java.util.Collection;
-
-import net.sf.juffrou.reflect.JuffrouBeanWrapper;
 import net.sf.juffrou.reflect.BeanWrapperContext;
+import net.sf.juffrou.reflect.JuffrouBeanWrapper;
 import net.sf.juffrou.xml.internal.JuffrouBeanMetadata;
 import net.sf.juffrou.xml.internal.NodeType;
 import net.sf.juffrou.xml.internal.ValueHolder;
 import net.sf.juffrou.xml.internal.binding.BeanClassBinding;
 import net.sf.juffrou.xml.internal.io.JuffrouReader;
 import net.sf.juffrou.xml.internal.io.JuffrouWriter;
+
+import java.lang.reflect.Type;
+import java.util.Collection;
 
 public abstract class AbstractCollectionSerializer implements Serializer {
 	

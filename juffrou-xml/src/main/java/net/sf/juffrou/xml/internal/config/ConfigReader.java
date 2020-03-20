@@ -1,17 +1,7 @@
 package net.sf.juffrou.xml.internal.config;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URL;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import net.sf.juffrou.reflect.JuffrouBeanWrapper;
 import net.sf.juffrou.reflect.BeanWrapperContext;
+import net.sf.juffrou.reflect.JuffrouBeanWrapper;
 import net.sf.juffrou.xml.error.JuffrouXmlConfigReaderException;
 import net.sf.juffrou.xml.error.XmlMappingReaderException;
 import net.sf.juffrou.xml.internal.JuffrouBeanMetadata;
@@ -21,11 +11,19 @@ import net.sf.juffrou.xml.internal.binding.BeanClassBinding;
 import net.sf.juffrou.xml.internal.binding.BeanPropertyBinding;
 import net.sf.juffrou.xml.internal.config.protocols.classpath.Handler;
 import net.sf.juffrou.xml.serializer.Serializer;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
 
 /**
  * Reads the mapping file and sets the metadata values

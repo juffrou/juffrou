@@ -16,24 +16,7 @@
 
 package net.sf.juffrou.reflect.spring;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import net.sf.juffrou.reflect.JuffrouSpringBeanWrapper;
-
 import org.junit.Test;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.TypeMismatchException;
@@ -41,11 +24,15 @@ import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-
 import test.beans.GenericBean;
 import test.beans.GenericIntegerBean;
 import test.beans.GenericSetOfIntegerBean;
 import test.beans.TestBean;
+
+import java.net.MalformedURLException;
+import java.util.*;
+
+import static org.junit.Assert.*;
 
 /**
  * @author Juergen Hoeller

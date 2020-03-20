@@ -46,12 +46,12 @@ public class Person {
 	public void setOtherAddresses(List<Address> otherAddresses) {
 		this.otherAddresses = otherAddresses;
 	}
-	public void addAddress(Address address) {
+	public void addOtherAddress(Address address) {
 		if(otherAddresses == null)
 			otherAddresses = new ArrayList<Address>();
 		otherAddresses.add(address);
 	}
-	public void removeAddress(Address address) {
+	public void removeOtherAddress(Address address) {
 		if(otherAddresses != null)
 			otherAddresses.remove(address);
 	}

@@ -2,7 +2,6 @@ package net.sf.juffrou.xml.internal.config;
 
 import net.sf.juffrou.xml.internal.JuffrouBeanMetadata;
 import net.sf.juffrou.xml.serializer.Serializer;
-
 import org.springframework.context.ApplicationContext;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;

@@ -1,23 +1,17 @@
 package net.sf.juffrou.reflect;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import net.sf.juffrou.reflect.error.BeanInstanceBuilderException;
 import net.sf.juffrou.reflect.error.CannotWrapInterfaceException;
 import net.sf.juffrou.reflect.error.InvalidPropertyException;
 import net.sf.juffrou.reflect.error.ReflectionException;
 import net.sf.juffrou.reflect.internal.BeanCollectionFieldHandler;
 import net.sf.juffrou.reflect.internal.BeanFieldHandler;
+
+import java.lang.reflect.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Holds introspection information for a java bean class.

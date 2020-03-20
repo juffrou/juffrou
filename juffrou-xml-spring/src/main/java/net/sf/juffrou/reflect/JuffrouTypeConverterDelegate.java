@@ -16,6 +16,17 @@
 
 package net.sf.juffrou.reflect;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.*;
+import org.springframework.core.CollectionFactory;
+import org.springframework.core.MethodParameter;
+import org.springframework.core.convert.ConversionFailedException;
+import org.springframework.core.convert.ConversionService;
+import org.springframework.core.convert.TypeDescriptor;
+import org.springframework.util.ClassUtils;
+import org.springframework.util.StringUtils;
+
 import java.beans.PropertyEditor;
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
@@ -24,21 +35,6 @@ import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.BeanWrapperImpl;
-import org.springframework.beans.PropertyAccessor;
-import org.springframework.beans.PropertyEditorRegistrySupport;
-import org.springframework.beans.SimpleTypeConverter;
-import org.springframework.core.CollectionFactory;
-import org.springframework.core.MethodParameter;
-import org.springframework.core.convert.ConversionFailedException;
-import org.springframework.core.convert.ConversionService;
-import org.springframework.core.convert.TypeDescriptor;
-import org.springframework.util.ClassUtils;
-import org.springframework.util.StringUtils;
 
 /**
  * Internal helper class for converting property values to target types.

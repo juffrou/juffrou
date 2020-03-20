@@ -1,10 +1,10 @@
 package net.sf.juffrou.xml.serializer;
 
-import java.math.BigDecimal;
-
 import net.sf.juffrou.reflect.JuffrouBeanWrapper;
 import net.sf.juffrou.xml.internal.io.JuffrouReader;
 import net.sf.juffrou.xml.internal.io.JuffrouWriter;
+
+import java.math.BigDecimal;
 
 public class BigDecimalSerializer implements Serializer {
 

@@ -1,13 +1,13 @@
 package net.sf.juffrou.xml.test.dom;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import net.sf.juffrou.reflect.JuffrouBeanWrapper;
 import net.sf.juffrou.xml.internal.io.JuffrouReader;
 import net.sf.juffrou.xml.internal.io.JuffrouWriter;
 import net.sf.juffrou.xml.serializer.Serializer;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class SimpleDateSerializer implements Serializer {
 

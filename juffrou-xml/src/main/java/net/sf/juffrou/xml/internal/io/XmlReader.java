@@ -1,20 +1,19 @@
 package net.sf.juffrou.xml.internal.io;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.Stack;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.Stack;
 
 public class XmlReader implements JuffrouReader {
 

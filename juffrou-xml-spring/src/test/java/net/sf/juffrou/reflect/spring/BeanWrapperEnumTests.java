@@ -16,16 +16,15 @@
 
 package net.sf.juffrou.reflect.spring;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import net.sf.juffrou.reflect.BeanWrapperContext;
 import net.sf.juffrou.reflect.JuffrouSpringBeanWrapper;
-
 import org.junit.Test;
 import org.springframework.beans.BeanWrapper;
-
 import test.beans.CustomEnum;
 import test.beans.GenericBean;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Juergen Hoeller

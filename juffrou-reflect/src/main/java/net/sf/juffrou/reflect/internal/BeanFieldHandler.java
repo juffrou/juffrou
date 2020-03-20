@@ -1,15 +1,10 @@
 package net.sf.juffrou.reflect.internal;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
-
 import net.sf.juffrou.reflect.BeanWrapperContext;
 import net.sf.juffrou.reflect.JuffrouBeanWrapper;
 import net.sf.juffrou.reflect.error.ReflectionException;
+
+import java.lang.reflect.*;
 
 
 

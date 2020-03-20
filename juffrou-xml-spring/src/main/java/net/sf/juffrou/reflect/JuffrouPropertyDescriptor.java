@@ -1,9 +1,9 @@
 package net.sf.juffrou.reflect;
 
+import net.sf.juffrou.reflect.internal.BeanFieldHandler;
+
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
-
-import net.sf.juffrou.reflect.internal.BeanFieldHandler;
 
 /**
  * Spring framework's property descriptor for Juffrou BeanWrapper's properties

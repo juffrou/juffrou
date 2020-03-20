@@ -1,11 +1,10 @@
 package net.sf.juffrou.xml.test.dom;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class Country {

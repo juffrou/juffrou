@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chapter id="xml-chapter-01" xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xi="http://www.w3.org/2001/XInclude">
+<chapter id="xml-chapter-01" xmlns="http://docbook.org/ns/docbook" version="5.0">
 <section id="xml_intro"><title>Introduction</title>
 <para>Juffrou-XML is a simple library to Marshall java beans to XML and back. It uses the bean wrapper and thus allows for the simplified marshalling of an object graph to xml elements.</para>
 <para>Take a look at the Three minute tutorial and the javadocs to view the methods in detail.</para>

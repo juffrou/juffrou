@@ -4,7 +4,7 @@
 <!ENTITY juffrou.site.url "http://juffrou.sourceforge.net">
 ]>
 <book xmlns="http://docbook.org/ns/docbook" version="5.0"
-	xmlns:xi="http://www.w3.org/2001/XInclude">
+>
 	<title>Juffrou-XML Reference Documentation</title>
 	<subtitle><?eval ${project.version}?></subtitle>
 	<info>

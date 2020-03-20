@@ -1,10 +1,7 @@
 package net.sf.juffrou.xml;
 
-import java.io.InputStream;
-
 import net.sf.juffrou.xml.internal.config.ConfigReader;
 import net.sf.juffrou.xml.internal.config.JuffrouSpringConfigReader;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeansException;
@@ -13,6 +10,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.io.Resource;
 import org.springframework.util.ObjectUtils;
+
+import java.io.InputStream;
 
 public class JuffrouXmlSpring extends JuffrouXml implements ApplicationContextAware, InitializingBean {
 

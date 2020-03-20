@@ -1,14 +1,13 @@
 package net.sf.juffrou.xml;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import org.springframework.oxm.Marshaller;
+import org.springframework.oxm.Unmarshaller;
 
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-
-import org.springframework.oxm.Marshaller;
-import org.springframework.oxm.Unmarshaller;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class MockApplication {
 

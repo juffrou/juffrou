@@ -1,7 +1,5 @@
 package net.sf.juffrou.xml.serializer;
 
-import java.util.Collection;
-
 import net.sf.juffrou.reflect.JuffrouBeanWrapper;
 import net.sf.juffrou.xml.error.UnknownXmlElementException;
 import net.sf.juffrou.xml.internal.JuffrouBeanMetadata;
@@ -9,6 +7,8 @@ import net.sf.juffrou.xml.internal.binding.BeanClassBinding;
 import net.sf.juffrou.xml.internal.binding.BeanPropertyBinding;
 import net.sf.juffrou.xml.internal.io.JuffrouReader;
 import net.sf.juffrou.xml.internal.io.JuffrouWriter;
+
+import java.util.Collection;
 
 /**
  * Main serializer / deserializer class.<p>

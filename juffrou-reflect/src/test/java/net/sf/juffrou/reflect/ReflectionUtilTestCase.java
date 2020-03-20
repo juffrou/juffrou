@@ -1,18 +1,12 @@
 package net.sf.juffrou.reflect;
 
-import java.lang.reflect.Type;
-import java.util.Map;
-
 import junit.framework.Assert;
-import net.sf.juffrou.reflect.dom.AddressCircular;
-import net.sf.juffrou.reflect.dom.GenericBean;
-import net.sf.juffrou.reflect.dom.GenericBean2;
-import net.sf.juffrou.reflect.dom.GenericPerson;
-import net.sf.juffrou.reflect.dom.Person;
-import net.sf.juffrou.reflect.dom.PersonCircular;
-
+import net.sf.juffrou.reflect.dom.*;
 import org.junit.Test;
 import org.springframework.beans.BeanWrapperImpl;
+
+import java.lang.reflect.Type;
+import java.util.Map;
 
 public class ReflectionUtilTestCase {
 

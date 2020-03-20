@@ -1,20 +1,15 @@
 package net.sf.juffrou.xml.test;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import net.sf.juffrou.xml.JuffrouXml;
 import net.sf.juffrou.xml.test.dom.Country;
 import net.sf.juffrou.xml.test.dom.Person;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class MappingFileReaderTestCase {
 	

@@ -1,9 +1,9 @@
 package net.sf.juffrou.xml.serializer;
 
+import net.sf.juffrou.xml.internal.JuffrouBeanMetadata;
+
 import java.util.Collection;
 import java.util.HashSet;
-
-import net.sf.juffrou.xml.internal.JuffrouBeanMetadata;
 
 public class HashSetSerializer extends AbstractCollectionSerializer {
 

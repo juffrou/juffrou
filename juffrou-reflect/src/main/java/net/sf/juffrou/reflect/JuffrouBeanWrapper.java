@@ -1,5 +1,10 @@
 package net.sf.juffrou.reflect;
 
+import net.sf.juffrou.reflect.error.NonCollectionPropertyException;
+import net.sf.juffrou.reflect.error.ReflectionException;
+import net.sf.juffrou.reflect.internal.BeanCollectionFieldHandler;
+import net.sf.juffrou.reflect.internal.BeanFieldHandler;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -9,11 +14,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import net.sf.juffrou.reflect.error.NonCollectionPropertyException;
-import net.sf.juffrou.reflect.error.ReflectionException;
-import net.sf.juffrou.reflect.internal.BeanCollectionFieldHandler;
-import net.sf.juffrou.reflect.internal.BeanFieldHandler;
 
 /**
  * Bean handling through property names.
