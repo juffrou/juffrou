@@ -5,7 +5,7 @@ _Java Utilities Framework For the Rest Of Us_
 
 ---
 
-Please see the [juffrou site](http://cemartins.github.io/juffrou) for detailed documentation
+Please see the [juffrou site](http://juffrou.github.io/juffrou) for detailed documentation
 
 ---
 
