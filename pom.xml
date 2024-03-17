@@ -73,6 +73,7 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<spring.version>5.3.20</spring.version>
 	</properties>
 
 	<dependencyManagement>
@@ -80,12 +81,12 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
-				<version>4.10</version>
+				<version>4.13.2</version>
 			</dependency>
 			<dependency>
 				<groupId>net.sf.xslthl</groupId>
 				<artifactId>xslthl</artifactId>
-				<version>2.1.0</version>
+				<version>2.1.3</version>
 			</dependency>
 			<dependency>
 				<groupId>net.sf.docbook</groupId>
@@ -95,7 +96,7 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 			<dependency>
 				<groupId>net.sf.docbook</groupId>
 				<artifactId>docbook-xsl</artifactId>
-				<version>1.78.1</version>
+				<version>1.79.1</version>
 				<type>zip</type>
 				<classifier>ns-resources</classifier>
 			</dependency>
@@ -108,7 +109,7 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 			<extension>
 				<groupId>org.apache.maven.wagon</groupId>
 				<artifactId>wagon-ssh</artifactId>
-				<version>2.6</version>
+				<version>3.5.1</version>
 			</extension>
 		</extensions>
 		<pluginManagement>
@@ -116,7 +117,7 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-site-plugin</artifactId>
-					<version>3.9.0</version>
+					<version>3.12.0</version>
 					<configuration>
 						<chmod>true</chmod>
 						<inputEncoding>UTF-8</inputEncoding>
@@ -129,7 +130,7 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 						<dependency><!-- add support for ssh/scp -->
 							<groupId>org.apache.maven.wagon</groupId>
 							<artifactId>wagon-ssh</artifactId>
-							<version>2.6</version>
+							<version>3.5.1</version>
 						</dependency>
 					</dependencies>
 				</plugin>
@@ -152,37 +153,40 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-gpg-plugin</artifactId>
-					<version>1.6</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-pdf-plugin</artifactId>
-					<version>1.2</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-resources-plugin</artifactId>
-					<version>3.0.2</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>3.0.0</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-source-plugin</artifactId>
 					<version>3.0.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-pdf-plugin</artifactId>
+					<version>1.6.0</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>3.2.0</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>3.4.0</version>
+					<configuration>
+						<source>8</source>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>3.2.1</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-project-info-reports-plugin</artifactId>
-					<version>2.9</version>
+					<version>3.3.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-changes-plugin</artifactId>
-					<version>2.10</version>
+					<version>2.12.1</version>
 				</plugin>
 				<plugin>
 					<!-- Configuration for the realease plugin -->
@@ -203,12 +207,12 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-assembly-plugin</artifactId>
-					<version>3.2.0</version>
+					<version>3.3.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-antrun-plugin</artifactId>
-					<version>1.8</version>
+					<version>3.1.0</version>
 				</plugin>
 				
 				<plugin>
@@ -227,7 +231,7 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version>
+				<version>3.10.1</version>
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
@@ -342,7 +346,7 @@ Checkout the juffrou-reflect module if you are into performant java bean handlin
 			<plugin>
 				<groupId>org.sonatype.plugins</groupId>
 				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<version>1.6.8</version>
+				<version>1.6.13</version>
 				<extensions>true</extensions>
 				<configuration>
 					<serverId>sonatype-nexus-staging</serverId>
